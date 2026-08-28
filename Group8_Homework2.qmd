@@ -108,5 +108,75 @@ knitr::kable(bp_dataframe, row.names = FALSE)
 
 ## Task 3: List Practice
 
+### 1. Creating Placebo Data Frame
+Pre-treatment and post-treatment blood pressure measurements from the placebo experiment are used to create a second data frame similar to the treatment data frame.
+
+```{r}
+# Create placebo pre-treatment blood pressure vector
+placebo_pre <- c(138, 135, 147, 117, 152, 134, 114, 121, 131, 130)
+
+# Create placebo post-treatment blood pressure vector
+placebo_post <- c(105, 136, 123, 130, 134, 143, 135, 139, 120, 124)
+
+# Assign subject names to placebo_pre vector
+names(placebo_pre) <- paste("PlaceboSubject", 1:10, sep = "_")
+
+# Assign subject names to placebo_post vector
+names(placebo_post) <- paste("PlaceboSubject", 1:10, sep = "_")
+
+# Calculate change in blood pressure for placebo
+placebo_diff_bp <- placebo_pre - placebo_post
+
+# Create vector containing placebo subject names
+placebo_patient <- names(placebo_pre)
+
+#Combine placebo blood pressure information into a data frame
+placebo_dataframe <- data.frame(
+  patient = placebo_patient,
+  pre_bp = placebo_pre,
+  post_bp = placebo_post,
+  diff_bp = placebo_diff_bp
+)
+
+# Add a TRUE/FALSE column based on post-placebo blood pressure
+placebo_dataframe$post_lessThan_120 <- placebo_dataframe$post_bp < 120
+
+placebo_dataframe
+```
+
+### 2. Create and Store Lists
+A list is created to store the treatment and placebo data frames as separate named elements. 
+
+```{r}
+# Create a list containing the treatment and placebo data frames
+bp_list <- list(
+  treatment = bp_dataframe,
+  placebo = placebo_dataframe
+)
+
+bp_list
+```
+### 3. Accessing First List Element
+The treatment data frame, which is the first element of "bp_list", is accessed using three different list-indexing methods.
+
+```{r}
+# Access first element using single brackets
+bp_list[1]
+
+# Access first element using double brackets
+bp_list[[1]]
+
+# Access first element using its name
+bp_list$treatment
+```
+### 4. Accessing a Specified Column of a Data Frame
+The "pre_bp" column is accessed directly from the placebo data frame stored within "bp_list".
+
+```{r}
+# Access the placebo pre-treatment blood pressure column
+bp_list$placebo$pre_bp
+```
+
+
 ## Task 4: Control Flow Practice
 
