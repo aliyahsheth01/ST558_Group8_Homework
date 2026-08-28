@@ -4,23 +4,67 @@ format: html
 editor: visual
 ---
 
-## Quarto
+## Task 1: Basic Vector Practice
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
-
-## Running Code
-
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+### 1. Creating the Blood Pressure Vectors
+Two vectors are created corresponding to the pre-treatment and post-treatment measurements for twenty subjects.
 
 ```{r}
-1 + 1
+# Create the pre-treatment blood pressure vector
+pretreatment <- c(130, 128, 116, 124, 133, 134, 118, 126, 114, 127, 141, 138, 128, 140, 137, 131, 120, 128, 139, 135)
+
+# Create the post-treatment blood pressure vector
+posttreatment <- c(114, 98, 113, 99, 107, 116, 113, 111, 119, 117, 101, 119, 130, 122, 106, 106, 124, 102, 117, 113)
 ```
 
-You can add options to executable code like this
+### 2. Assigning Names to the Vector Elements
+Subject numbers are assigned using the paste() function to the pre-treatment and post-treatment vectors.
 
 ```{r}
-#| echo: false
-2 * 2
+#Assign subject names to pre-treatment vector
+names(pretreatment) <- paste("Subject", 1:20, sep = "_")
+
+#Assign subject names to post-treatment vector
+names(posttreatment) <- paste("Subject", 1:20, sep = "_")
 ```
 
-The `echo: false` option disables the printing of code (only output is displayed).
+### 3. Calculating Change in Blood Pressure for Each Subject
+Calculated the change in blood pressure (pretreatment - posttreatment) and saved the calculation as a new vector.
+
+```{r}
+bp_diff <- pretreatment - posttreatment
+```
+
+### 4. Calculating Average Decrease For All Subjects
+Calculated the average decrease in blood pressure across all subjects.
+
+```{r}
+mean(bp_diff)
+```
+### 5. Determining which Subjects Experienced Decrease in BP with Treatment
+Determined a list of subjects that experienced a decrease in blood pressure (bp_diff>0) with treatment.
+
+```{r}
+which(bp_diff>0)
+```
+
+### 6. Subset Vectors
+Subset the vector of differences to only return those that have a positive change.
+
+```{r}
+positive_diff <- bp_diff[bp_diff>0]
+```
+### 7. Calculating Average Decrease for Subset of Subjects
+Calculated the average decrease in blood pressure for those subjects that had a positive change 
+
+```{r}
+mean(positive_diff)
+```
+
+
+## Task 2: Basic Data Frame Practice
+
+## Task 3: List Practice
+
+## Task 4: Control Flow Practice
+
