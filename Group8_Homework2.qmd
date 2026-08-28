@@ -177,6 +177,52 @@ The "pre_bp" column is accessed directly from the placebo data frame stored with
 bp_list$placebo$pre_bp
 ```
 
-
 ## Task 4: Control Flow Practice
 
+### 1. Creating Status Column
+A new character column called "status" is added to each data frame stored in "bp_list". These columns will later be filled using conditional logic based on post-treatment blood pressure.
+
+```{r}
+# Add an empty status column to the treatment data frame in the list
+bp_list$treatment$status <- character(20)
+
+# Add an empty status column to the placebo data frame in the list
+bp_list$placebo$status <- character(10)
+
+bp_list$treatment
+bp_list$placebo
+```
+### 2. Assigning Status for Treatment Group
+A "for loop" and conditional statements are used to assign blood pressure status to each treatment subject based on their post-treatment blood pressure.
+
+```{r}
+# Assign blood pressure status for each treatment subject
+for(i in 1:20) {
+  if (bp_list$treatment$post_bp[i] <= 120) {
+    bp_list$treatment$status[i] <- "optimal"
+  } else if (bp_list$treatment$post_bp[i] <= 130) {
+             bp_list$treatment$status[i] <- "borderline"
+  } else {
+    bp_list$treatment$status[i] <- "high"
+  }
+}
+
+bp_list$treatment
+```
+### 3. Assigning Status for Placebo Group
+A "for loop" and conditional statements are used to assign blood pressure status to each placebo subject based on their post-treatment blood pressure.
+
+```{r}
+# Assign blood pressure status for each placebo subject
+for(i in 1:10) {
+  if (bp_list$placebo$post_bp[i] <= 120) {
+    bp_list$placebo$status[i] <- "optimal"
+  } else if (bp_list$placebo$post_bp[i] <= 130) {
+             bp_list$placebo$status[i] <- "borderline"
+  } else {
+    bp_list$placebo$status[i] <- "high"
+  }
+}
+
+bp_list$placebo
+```

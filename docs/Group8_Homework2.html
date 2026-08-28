@@ -580,7 +580,7 @@ PlaceboSubject_10 PlaceboSubject_10    130     124       6             FALSE</co
 <h3 class="anchored" data-anchor-id="accessing-first-list-element">3. Accessing First List Element</h3>
 <p>The treatment data frame, which is the first element of “bp_list”, is accessed using three different list-indexing methods.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Access first element using single brackets, giving list containing first element</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Access first element using single brackets</span></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>bp_list[<span class="dv">1</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$treatment
@@ -606,7 +606,7 @@ Subject_18 Subject_18    128     102      26              TRUE
 Subject_19 Subject_19    139     117      22              TRUE
 Subject_20 Subject_20    135     113      22              TRUE</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Access first element using double brackets, giving actual first element</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Access first element using double brackets</span></span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>bp_list[[<span class="dv">1</span>]]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>              patient pre_bp post_bp diff_bp post_lessThan_120
@@ -631,7 +631,7 @@ Subject_18 Subject_18    128     102      26              TRUE
 Subject_19 Subject_19    139     117      22              TRUE
 Subject_20 Subject_20    135     113      22              TRUE</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Access first element using its name, giving data frame by its name</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Access first element using its name</span></span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>bp_list<span class="sc">$</span>treatment</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>              patient pre_bp post_bp diff_bp post_lessThan_120
@@ -658,11 +658,166 @@ Subject_20 Subject_20    135     113      22              TRUE</code></pre>
 </div>
 </div>
 </section>
+<section id="accessing-a-specified-column-of-a-data-frame" class="level3">
+<h3 class="anchored" data-anchor-id="accessing-a-specified-column-of-a-data-frame">4. Accessing a Specified Column of a Data Frame</h3>
+<p>The “pre_bp” column is accessed directly from the placebo data frame stored within “bp_list”.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Access the placebo pre-treatment blood pressure column</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>bp_list<span class="sc">$</span>placebo<span class="sc">$</span>pre_bp</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] 138 135 147 117 152 134 114 121 131 130</code></pre>
+</div>
+</div>
+</section>
 </section>
 <section id="task-4-control-flow-practice" class="level2">
 <h2 class="anchored" data-anchor-id="task-4-control-flow-practice">Task 4: Control Flow Practice</h2>
+<section id="creating-status-column" class="level3">
+<h3 class="anchored" data-anchor-id="creating-status-column">1. Creating Status Column</h3>
+<p>A new character column called “status” is added to each data frame stored in “bp_list”. These columns will later be filled using conditional logic based on post-treatment blood pressure.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Add an empty status column to the treatment data frame in the list</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>bp_list<span class="sc">$</span>treatment<span class="sc">$</span>status <span class="ot">&lt;-</span> <span class="fu">character</span>(<span class="dv">20</span>)</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Add an empty status column to the placebo data frame in the list</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>bp_list<span class="sc">$</span>placebo<span class="sc">$</span>status <span class="ot">&lt;-</span> <span class="fu">character</span>(<span class="dv">10</span>)</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>bp_list<span class="sc">$</span>treatment</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>              patient pre_bp post_bp diff_bp post_lessThan_120 status
+Subject_1   Subject_1    130     114      16              TRUE       
+Subject_2   Subject_2    128      98      30              TRUE       
+Subject_3   Subject_3    116     113       3              TRUE       
+Subject_4   Subject_4    124      99      25              TRUE       
+Subject_5   Subject_5    133     107      26              TRUE       
+Subject_6   Subject_6    134     116      18              TRUE       
+Subject_7   Subject_7    118     113       5              TRUE       
+Subject_8   Subject_8    126     111      15              TRUE       
+Subject_9   Subject_9    114     119      -5              TRUE       
+Subject_10 Subject_10    127     117      10              TRUE       
+Subject_11 Subject_11    141     101      40              TRUE       
+Subject_12 Subject_12    138     119      19              TRUE       
+Subject_13 Subject_13    128     130      -2             FALSE       
+Subject_14 Subject_14    140     122      18             FALSE       
+Subject_15 Subject_15    137     106      31              TRUE       
+Subject_16 Subject_16    131     106      25              TRUE       
+Subject_17 Subject_17    120     124      -4             FALSE       
+Subject_18 Subject_18    128     102      26              TRUE       
+Subject_19 Subject_19    139     117      22              TRUE       
+Subject_20 Subject_20    135     113      22              TRUE       </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>bp_list<span class="sc">$</span>placebo</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                            patient pre_bp post_bp diff_bp post_lessThan_120
+PlaceboSubject_1   PlaceboSubject_1    138     105      33              TRUE
+PlaceboSubject_2   PlaceboSubject_2    135     136      -1             FALSE
+PlaceboSubject_3   PlaceboSubject_3    147     123      24             FALSE
+PlaceboSubject_4   PlaceboSubject_4    117     130     -13             FALSE
+PlaceboSubject_5   PlaceboSubject_5    152     134      18             FALSE
+PlaceboSubject_6   PlaceboSubject_6    134     143      -9             FALSE
+PlaceboSubject_7   PlaceboSubject_7    114     135     -21             FALSE
+PlaceboSubject_8   PlaceboSubject_8    121     139     -18             FALSE
+PlaceboSubject_9   PlaceboSubject_9    131     120      11             FALSE
+PlaceboSubject_10 PlaceboSubject_10    130     124       6             FALSE
+                  status
+PlaceboSubject_1        
+PlaceboSubject_2        
+PlaceboSubject_3        
+PlaceboSubject_4        
+PlaceboSubject_5        
+PlaceboSubject_6        
+PlaceboSubject_7        
+PlaceboSubject_8        
+PlaceboSubject_9        
+PlaceboSubject_10       </code></pre>
+</div>
+</div>
+</section>
+<section id="assigning-status-for-treatment-group" class="level3">
+<h3 class="anchored" data-anchor-id="assigning-status-for-treatment-group">2. Assigning Status for Treatment Group</h3>
+<p>A “for loop” and conditional statements are used to assign blood pressure status to each treatment subject based on their post-treatment blood pressure.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Assign blood pressure status for each treatment subject</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>) {</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (bp_list<span class="sc">$</span>treatment<span class="sc">$</span>post_bp[i] <span class="sc">&lt;=</span> <span class="dv">120</span>) {</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>    bp_list<span class="sc">$</span>treatment<span class="sc">$</span>status[i] <span class="ot">&lt;-</span> <span class="st">"optimal"</span></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (bp_list<span class="sc">$</span>treatment<span class="sc">$</span>post_bp[i] <span class="sc">&lt;=</span> <span class="dv">130</span>) {</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>             bp_list<span class="sc">$</span>treatment<span class="sc">$</span>status[i] <span class="ot">&lt;-</span> <span class="st">"borderline"</span></span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>    bp_list<span class="sc">$</span>treatment<span class="sc">$</span>status[i] <span class="ot">&lt;-</span> <span class="st">"high"</span></span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>bp_list<span class="sc">$</span>treatment</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>              patient pre_bp post_bp diff_bp post_lessThan_120     status
+Subject_1   Subject_1    130     114      16              TRUE    optimal
+Subject_2   Subject_2    128      98      30              TRUE    optimal
+Subject_3   Subject_3    116     113       3              TRUE    optimal
+Subject_4   Subject_4    124      99      25              TRUE    optimal
+Subject_5   Subject_5    133     107      26              TRUE    optimal
+Subject_6   Subject_6    134     116      18              TRUE    optimal
+Subject_7   Subject_7    118     113       5              TRUE    optimal
+Subject_8   Subject_8    126     111      15              TRUE    optimal
+Subject_9   Subject_9    114     119      -5              TRUE    optimal
+Subject_10 Subject_10    127     117      10              TRUE    optimal
+Subject_11 Subject_11    141     101      40              TRUE    optimal
+Subject_12 Subject_12    138     119      19              TRUE    optimal
+Subject_13 Subject_13    128     130      -2             FALSE borderline
+Subject_14 Subject_14    140     122      18             FALSE borderline
+Subject_15 Subject_15    137     106      31              TRUE    optimal
+Subject_16 Subject_16    131     106      25              TRUE    optimal
+Subject_17 Subject_17    120     124      -4             FALSE borderline
+Subject_18 Subject_18    128     102      26              TRUE    optimal
+Subject_19 Subject_19    139     117      22              TRUE    optimal
+Subject_20 Subject_20    135     113      22              TRUE    optimal</code></pre>
+</div>
+</div>
+</section>
+<section id="assigning-status-for-placebo-group" class="level3">
+<h3 class="anchored" data-anchor-id="assigning-status-for-placebo-group">3. Assigning Status for Placebo Group</h3>
+<p>A “for loop” and conditional statements are used to assign blood pressure status to each placebo subject based on their post-treatment blood pressure.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Assign blood pressure status for each placebo subject</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>) {</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (bp_list<span class="sc">$</span>placebo<span class="sc">$</span>post_bp[i] <span class="sc">&lt;=</span> <span class="dv">120</span>) {</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>    bp_list<span class="sc">$</span>placebo<span class="sc">$</span>status[i] <span class="ot">&lt;-</span> <span class="st">"optimal"</span></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (bp_list<span class="sc">$</span>placebo<span class="sc">$</span>post_bp[i] <span class="sc">&lt;=</span> <span class="dv">130</span>) {</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>             bp_list<span class="sc">$</span>placebo<span class="sc">$</span>status[i] <span class="ot">&lt;-</span> <span class="st">"borderline"</span></span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>    bp_list<span class="sc">$</span>placebo<span class="sc">$</span>status[i] <span class="ot">&lt;-</span> <span class="st">"high"</span></span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a>bp_list<span class="sc">$</span>placebo</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                            patient pre_bp post_bp diff_bp post_lessThan_120
+PlaceboSubject_1   PlaceboSubject_1    138     105      33              TRUE
+PlaceboSubject_2   PlaceboSubject_2    135     136      -1             FALSE
+PlaceboSubject_3   PlaceboSubject_3    147     123      24             FALSE
+PlaceboSubject_4   PlaceboSubject_4    117     130     -13             FALSE
+PlaceboSubject_5   PlaceboSubject_5    152     134      18             FALSE
+PlaceboSubject_6   PlaceboSubject_6    134     143      -9             FALSE
+PlaceboSubject_7   PlaceboSubject_7    114     135     -21             FALSE
+PlaceboSubject_8   PlaceboSubject_8    121     139     -18             FALSE
+PlaceboSubject_9   PlaceboSubject_9    131     120      11             FALSE
+PlaceboSubject_10 PlaceboSubject_10    130     124       6             FALSE
+                      status
+PlaceboSubject_1     optimal
+PlaceboSubject_2        high
+PlaceboSubject_3  borderline
+PlaceboSubject_4  borderline
+PlaceboSubject_5        high
+PlaceboSubject_6        high
+PlaceboSubject_7        high
+PlaceboSubject_8        high
+PlaceboSubject_9     optimal
+PlaceboSubject_10 borderline</code></pre>
+</div>
+</div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
