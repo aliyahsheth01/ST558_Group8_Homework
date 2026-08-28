@@ -18,7 +18,7 @@ posttreatment <- c(114, 98, 113, 99, 107, 116, 113, 111, 119, 117, 101, 119, 130
 ```
 
 ### 2. Assigning Names to the Vector Elements
-Subject numbers are assigned using the paste() function to the pre-treatment and post-treatment vectors.
+Subject names are assigned using the paste() function to the pre-treatment and post-treatment vectors.
 
 ```{r}
 #Assign subject names to pre-treatment vector
@@ -32,27 +32,29 @@ names(posttreatment) <- paste("Subject", 1:20, sep = "_")
 Calculated the change in blood pressure (pretreatment - posttreatment) and saved the calculation as a new vector.
 
 ```{r}
-bp_diff <- pretreatment - posttreatment
+diff_bp <- pretreatment - posttreatment
 ```
 
 ### 4. Calculating Average Decrease For All Subjects
 Calculated the average decrease in blood pressure across all subjects.
 
 ```{r}
-mean(bp_diff)
+mean(diff_bp)
 ```
 ### 5. Determining which Subjects Experienced Decrease in BP with Treatment
-Determined a list of subjects that experienced a decrease in blood pressure (bp_diff>0) with treatment.
+Determined a list of subjects that experienced a decrease in blood pressure (diff_bp>0) with treatment.
 
 ```{r}
-which(bp_diff>0)
+which(diff_bp>0)
 ```
 
 ### 6. Subset Vectors
 Subset the vector of differences to only return those that have a positive change.
 
 ```{r}
-positive_diff <- bp_diff[bp_diff>0]
+positive_diff <- diff_bp[diff_bp>0]
+
+positive_diff
 ```
 ### 7. Calculating Average Decrease for Subset of Subjects
 Calculated the average decrease in blood pressure for those subjects that had a positive change 
@@ -61,8 +63,48 @@ Calculated the average decrease in blood pressure for those subjects that had a 
 mean(positive_diff)
 ```
 
-
 ## Task 2: Basic Data Frame Practice
+
+### 1. Creating a Data Frame
+Created a data frame object with four columns corresponding to data from Task 1. 
+
+```{r}
+# Create a vector containing subject names
+patient <- names(pretreatment)
+
+# Combine the blood pressure information into a data frame
+bp_dataframe <- data.frame(
+    patient = patient,
+    pre_bp = pretreatment,
+    post_bp = posttreatment,
+    diff_bp = diff_bp
+)
+
+bp_dataframe
+```
+### 2. Returning Rows with Select Column Values
+Returned only rows where diff_bp column is negative by accessing the column from data frame.
+
+```{r}
+bp_dataframe[bp_dataframe$diff_bp<0, ]
+```
+### 3. Adding a Column to Existing Data Frame
+Added a column to the data frame corresponding to "TRUE" if post_bp < 120
+
+```{r}
+# Add a TRUE/FALSE column based on post-treatment blood pressure
+bp_dataframe$post_lessThan_120 <- bp_dataframe$post_bp < 120
+
+bp_dataframe
+```
+
+### 4. Printing Data Frames
+Displayed completed blood pressure data frame in a formatted table. 
+
+```{r}
+# Display the completed data frame as a formatted table
+knitr::kable(bp_dataframe, row.names = FALSE)
+```
 
 ## Task 3: List Practice
 
