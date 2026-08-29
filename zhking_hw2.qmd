@@ -105,4 +105,46 @@ bp_data_list[[1]]
 ```{r}
 bp_data_list$treatment[,2]
 ```
+# Task 4: Control Flow Practice
+
+1. Add the status column to both dataframes
+
+
+```{r}
+data$status <- character(20)
+placebo_bp$status <- character(10)
+```
+
+2. Modify the values of the status columns using logic
+
+```{r}
+for (i in 1:20){
+  if (data$post_bp[i]<120){
+    data$status[i]="optimal"
+  }
+  else if (data$post_bp[i]<130){
+    data$status[i]="borderline"
+  }
+  else{
+    data$status[i]="high"
+  }
+}
+```
+
+3. Repeat for the placebo
+
+```{r}
+for (i in 1:10){
+  if (placebo_bp$post_placebo[i]<120){
+    placebo_bp$status[i]="optimal"
+  }
+  else if (placebo_bp$post_placebo[i]<130){
+    placebo_bp$status[i]="borderline"
+  }
+  else{
+    placebo_bp$status[i]="high"
+  }
+}
+```
+
 
