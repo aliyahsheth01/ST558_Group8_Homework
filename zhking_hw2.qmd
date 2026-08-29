@@ -50,3 +50,27 @@ mean(decreases)
 ```
 
 # Task 2: Basic Data Frame Practice
+
+1. Create a data frame with previous vectors
+
+```{r}
+data <- data.frame(patient=names(pre),pre_bp=pre,post_bp=post,diff_bp=change)
+```
+
+2. Return only rows where change in bp is negative
+
+```{r}
+data[which(data$diff_bp<0),]
+```
+
+3. Add a new column to the data frame that is TRUE when post_bp is < 120
+
+```{r}
+data$good_bp <- data$post_bp < 120
+```
+
+4. Print Nicely
+```{r}
+knitr::kable(data)
+```
+
