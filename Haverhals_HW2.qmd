@@ -1,0 +1,202 @@
+---
+title: "Homework2"
+author: "Haverhals"
+format: html
+editor: visual
+---
+
+## Task 1
+
+### 1.
+
+First, I am creating vectors with the subject's pre- and post-treatment blood pressure readings.
+
+```{r}
+pre<-c(130, 128, 116, 124, 133, 134, 118, 126, 114, 127, 141, 138, 128, 140, 137, 131, 120, 128, 139, 135)
+post<-c(114, 98, 113, 99, 107, 116, 113, 111, 119, 117, 101, 119, 130, 122, 106, 106, 124, 102, 117, 113)
+```
+
+### 2.
+
+Next, for each set of readings, I'm going to assign names to the values, so we can identify the subjects' measured values moving forward. To do this, I used the paste() function (as recommended) to create a vector of names. Once I had those, I applied these names using the names() function.
+
+```{r}
+nms<-paste("subject",1:20,sep="_")
+names(pre)<-nms
+names(post)<-nms
+pre
+post
+```
+
+### 3.
+
+Next, we were to calculate the differences observed, for each patient. Here, R is subtracting element-wise. It's maybe not worth mentioning, but negative values indicate a lowering of the subjects' blood pressures.
+
+```{r}
+delt<-post-pre
+delt
+```
+
+### 4.
+
+The average change in blood pressure is shown below. As you can see, I used the R function mean() to calculate that number.
+
+```{r}
+mean(delt)
+```
+
+### 5.
+
+Here, I'm using the which() function to find identify the subject who experienced a drop in blood pressure as a result of the treatment. The R function which() checks the vector an element at a time and finds for us which ones have negative values. Note that only identification is occurring; at this point R is only telling us where the values less than 0 show up (not what the negative vlaues actually are).
+
+```{r}
+which(delt<0)
+```
+
+### 6.
+
+Focusing on these subjects, here are the individual decreases observed. In other words, R has created a vector out of the subset of the blood pressures (and their associated names) from only those patients who experienced a decrease in blood pressure.
+
+```{r}
+drops<-delt[delt<0]
+drops
+```
+
+### 7.
+
+Finally, the last item in this task asked us to find the average decrease, but only from those subjects who experienced a decrease. Upon getting to this task, I realized I should have naved the vector from #5, so I went back and did that to make the code below a bit cleaner.
+
+```{r}
+mean(drops)
+```
+
+## Task 2
+
+### 1.
+
+For this problem, I'm going to take the vectors I've defined above and use them to create a data frame.I hope the fact that I have different names here is alright.
+
+```{r}
+subject_data<-data.frame(pre,post,delt)
+head(subject_data)
+```
+
+Note that when I checked this, as you can see, I am getting the line identifiers matching the names. It made things look redundant so I looked around online and found the unname function to clean things up a bit.
+
+```{r}
+subject_data<-data.frame(subject=nms,pre_bp=unname(pre),post_bp=unname(post),bp_change=unname(delt))
+head(subject_data)
+```
+
+Looks better to me.
+
+### 2.
+
+Next, we want to again look at the subset of subjects who experienced a decrease in blood pressure. This time, I used the subset function to get experience with it.
+
+```{r}
+drop_frame<-subset(subject_data,delt<0,1:4)
+drop_frame
+```
+
+### 3.
+
+Here, we're to add a column to the data frame that shows TRUE if the post-treatment blood pressure is less than 120. Using the problem statement as I guide, I'm just going to define that as a vector and hope it gets added to the data frame. Wish me luck!
+
+```{r}
+subject_data$post_below_120<-c(subject_data$post_bp<120)
+head(subject_data)
+```
+
+It worked!
+
+### 4.
+
+Finally, here's a table featuring what we've done so far.
+
+```{r}
+knitr::kable(subject_data)
+```
+
+## Task 3
+
+### 1.
+
+For this task, we're to create another data frame with patients who recieved a placebo. To do so, I'm going to borrow heavily from the code above but (hopefully) be smarted about how I name things.
+
+```{r}
+pl_pre<-c(138, 135, 147, 117, 152, 134, 114, 121, 131, 130)
+pl_post<-c(105, 136, 123, 130, 134, 143, 135, 139, 120, 124)
+pl_diff<-pl_post-pl_pre
+pl_names<-paste("pl subject",1:10,sep="_")
+pl_post_below_120<-pl_post<120
+pl_data<-data.frame(pl_names,pl_pre,pl_post,pl_diff,pl_post_below_120)
+```
+
+### 2.
+
+Next, I'll create a list with two elements which are the data frames from Task 2 and Task 3, respectively.
+
+```{r}
+bp_list<-list(treatment=subject_data,placebo=pl_data)
+```
+
+### 3.
+
+For this, we need to access the first list element using three different methods. For the first, I'll use the single square bracket option:
+
+```{r}
+bp_list[1]
+```
+
+Note that this returned the entire data frame, but as a list with a single element.
+
+The next type of syntax uses the double bracket:
+
+```{r}
+bp_list[[1]]
+```
+
+Here, the element I get back is the data frame itself.
+
+For my ~~final trick~~ type of syntax, I'll refer to the original data frame, but remove the second list element.
+
+```{r}
+bp_list[[-2]]
+```
+
+### 4.
+
+```{r}
+bp_list[[2]]$pl_pre
+```
+
+## Task 4
+
+### 1.
+
+Next, I'll add columns to data frames the subjects' post-treatment blood pressures.
+
+```{r}
+bp_list[[1]]$status<-character(20)
+bp_list[[2]]$status<-character(10)
+for (i in 1:20){
+  if (bp_list[[1]]$post_bp[i]<=120){
+    bp_list[[1]]$status[i]<-"optimal"
+  } else if (bp_list[[1]]$post_bp[i]<=130){
+    bp_list[[1]]$status[i]<-"borderline"
+  } else {
+    bp_list[[1]]$status[i]<-"high"
+  }
+}
+for (i in 1:10){
+  if (bp_list[[2]]$pl_post[i]<=120){
+    bp_list[[2]]$status[i]<-"optimal"
+  } else if (bp_list[[2]]$pl_post[i]<=130){
+    bp_list[[2]]$status[i]<-"borderline"
+  } else {
+    bp_list[[2]]$status[i]<-"high"
+  }
+}
+bp_list
+```
