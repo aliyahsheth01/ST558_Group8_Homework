@@ -40,6 +40,13 @@ which(change>0)
 6. Subset vector of only decreases
 
 ```{r}
-
+decreases <- change[which(change>0)]
 ```
 
+7. Average decrease in those who decreased
+
+```{r}
+mean(decreases)
+```
+
+# Task 2: Basic Data Frame Practice
