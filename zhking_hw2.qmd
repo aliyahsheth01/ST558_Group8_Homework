@@ -74,3 +74,35 @@ data$good_bp <- data$post_bp < 120
 knitr::kable(data)
 ```
 
+# Task 3: List Practice
+
+1. 
+
+```{r}
+pre_placebo <- c(138, 135, 147, 117, 152, 134, 114, 121, 131, 130)
+post_placebo <- c(105, 136, 123, 130, 134, 143, 135, 139, 120, 124)
+names(pre_placebo) <- paste("Subject", 1:10, sep = "_")
+placebo_bp <- data.frame(pre_placebo,post_placebo,diff_placebo=(pre_placebo-post_placebo),good_bp=post_placebo<120)
+```
+
+
+2. Creating a List of the Dataframes
+
+```{r}
+bp_data_list <- list(treatment=data,placebo=placebo_bp)
+```
+
+3. Accessing First List Element
+
+```{r}
+bp_data_list$treatment
+bp_data_list[1]
+bp_data_list[[1]]
+```
+
+4. Accessing the Second Column of the First Element of the List
+
+```{r}
+bp_data_list$treatment[,2]
+```
+
