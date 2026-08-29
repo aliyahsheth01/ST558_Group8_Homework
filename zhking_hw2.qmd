@@ -3,3 +3,43 @@ title: "zhking_hw2"
 format: html
 ---
 
+Note: I haven't looked at Aliyah's version, but I don't think there's anything wrong with it. I just want to show that I have also done the homework.
+
+# Task One: Basic Vector Practice
+
+1. Establishing pre- and post- treatment vectors.
+
+```{r}
+pre <- c(130, 128, 116, 124, 133, 134, 118, 126, 114, 127, 141, 138, 128, 140, 137, 131, 120, 128, 139, 135)
+post <- c(114, 98, 113, 99, 107, 116, 113, 111, 119, 117, 101, 119, 130, 122, 106, 106, 124, 102, 117, 113)
+```
+
+2. Assign names to the vector elements
+
+```{r}
+names(pre) <- paste("Subject", 1:20, sep = "_")
+names(post) <- paste("Subject", 1:20, sep = "_")
+```
+
+3. Calculate the change in blood pressure
+
+```{r}
+change <- pre-post
+```
+
+4. Calculate average decrease
+
+```{r}
+mean(change)
+```
+5. Find subjects with a decrease in blood pressure
+
+```{r}
+which(change>0)
+```
+6. Subset vector of only decreases
+
+```{r}
+
+```
+
