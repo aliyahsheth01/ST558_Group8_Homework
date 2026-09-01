@@ -73,15 +73,48 @@ white_wine
 ### 4. Replacing the White Wine Variable Names
 The second sheet of the Excel workbook contains alternative variable names without spaces. These names are read into R and used to replace the current names in the white wine tibble. 
 
-#Major issues - second sheet doesn't exist; left a slack message for Dr. Post to comment on this#
-
 ```{r}
 # Read in the second sheet containing alternative variable names
 wine_names <- read_excel("data/white-wine.xlsx",
                          sheet = 2
                          )
 wine_names
+
+# Replace the current white wine column names
+colnames(white_wine) <- wine_names [[1]]
+
+# Print the updated tibble
+white_wine
+```
+### 5. Adding the Wine Type
+A new variable named "type" is added to the white wine tibble to identify each observation as white wine. The value "white" is assigned to each row. 
+
+```{r}
+# Add a column identifying the wine type
+white_wine$type <- "white"
+
+# Print the updated tibble
+white_wine
 ```
 
+### 6. Reading the Red Wine CSV Data
+The red wine data are stored in a semicolon delimited file. The data are read directly from the provided URL using the readr function. The variable names are then replaced using the alternative names from the Excel file for white wine. Additionally, a variable is added to identify each observation as red wine. 
+
+```{r}
+# Read in semicolon delimited data
+red_wine <- read_delim("https://www4.stat.ncsu.edu/~online/datasets/red-wine.csv",
+                       delim = ";"
+                       )
+
+# Replace the red wine column names
+colnames(red_wine) <- wine_names[[1]]
+
+# Add a column identifying the wine type
+red_wine$type <- "red"
+
+# Print the tibble
+red_wine
+```
+### 7. Combining Data Sets
 
 ## Task 4: Writing a Function
