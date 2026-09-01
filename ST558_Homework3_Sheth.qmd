@@ -55,4 +55,33 @@ yeast_data
 
 ## Task 3: Combining Excel and Delimited Data
 
+### 3. Reading the White Wine Excel Data
+The white wine data are stored in an Excel workbook with column names. The first sheet is imported using the "readxl" package and a relative path to the file stored in the project's "data" folder.
+
+```{r}
+# Load readxl
+library(readxl)
+
+# Read the first sheet of the white wine Excel file
+white_wine <- read_excel("data/white-wine.xlsx",
+                         sheet = 1
+                         )
+
+# Print the tibble
+white_wine
+```
+### 4. Replacing the White Wine Variable Names
+The second sheet of the Excel workbook contains alternative variable names without spaces. These names are read into R and used to replace the current names in the white wine tibble. 
+
+#Major issues - second sheet doesn't exist; left a slack message for Dr. Post to comment on this#
+
+```{r}
+# Read in the second sheet containing alternative variable names
+wine_names <- read_excel("data/white-wine.xlsx",
+                         sheet = 2
+                         )
+wine_names
+```
+
+
 ## Task 4: Writing a Function
