@@ -1,0 +1,21 @@
+---
+title: "ST558_Homework3_Sheth"
+format: html
+editor: visual
+---
+
+## Task 1: Conceptual Questions
+
+1.  **If your working directory is myfolder/homework/, what relative path would you specify to get the file located at myfolder/MyData.csv?** The relative path for this file is "../MyData.csv", where the ".." indicates moving up one directory from the current "homework" folder before accessing "MyData.csv".
+
+2.  **What are the major benefits of using R projects?** R projects help keep analyses organized by giving each project its own working directory, workspace, history, folder structure, and source documents. They also make it easier to use relative file paths, which improves reproducibility and facilitates collaboration by enabling running the same code on different computers/by different users.
+
+3.  **What is Git and what is GitHub?** Git is a version control system that tracks changes made to files over time. It allows users to save versions of their work, review changes, and collaborate without losing previous versions. GitHub is an online platform that hosts Git repositories. It allows users to store their projects remotely, share them with others, collaborate on the same files, and manage changes through tools such as commits, branches, and pull requests.
+
+4.  **What are the two main differences between a tibble and a data.frame?** A tibble is a special type of data frame. It has additional classes (eg, tbl_df and tbl) while still inheriting from data.frame, so it can generally be used anywhere a regular data frame can be used. Additionally, tibble has a different default printing behavior, where when printed it shows the dimensions, variable types, and only rows/columns that fit reasonably on the screen rather than flooding the console with the entire output.
+
+## Task 2: Reading Delimited Data
+
+## Task 3: Combining Excel and Delimited Data
+
+## Task 4: Writing a Function
