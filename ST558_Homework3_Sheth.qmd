@@ -16,6 +16,43 @@ editor: visual
 
 ## Task 2: Reading Delimited Data
 
+Loading "tidyverse" to support reading in data using readr function. 
+
+```{r}
+# Load tidyverse
+library(tidyverse)
+```
+
+### 1. Reading the Glass Data
+The glass data are comma delimited data and do not contain column names. The data are read directly from the provided URL using the readr function in the tidyverse library, and column names are assigned at the time of importing the data set. The tibble is printed out by calling the object name (i.e., "glass_data"). 
+
+```{r}
+# Assign column names for data set
+glass_names <- c("Id", "RI", "Na", "Mg", "Al", "Si", "K", "Ca", "Ba", "Fe", "Type")
+
+# Read in comma delimited data from URL
+glass_data <- read_csv("https://www4.stat.ncsu.edu/~online/datasets/glass.data", 
+                       col_names = glass_names
+                      )
+# Print the tibble
+glass_data
+```
+
+### 2. Reading the Yeast Data
+The yeast data are space (or whitespace) delimited data and do not contain column names. The data are read directly from the provided URL using the readr function in the tidyverse library, and column names are assigned at the time of importing the data set. The tibble is printed out by calling the object name (i.e., "yeast_data").
+
+```{r}
+# Assign column names for the data set
+yeast_names <- c("seq_name", "mcg", "gvh", "alm", "mit", "erl", "pox", "vac", "nuc", "class")
+
+# Read in space (whitespace) delimited data from URL
+yeast_data <- read_table("https://www4.stat.ncsu.edu/~online/datasets/yeast.data",
+                         col_names = yeast_names
+                         )
+#Print the tibble
+yeast_data
+```
+
 ## Task 3: Combining Excel and Delimited Data
 
 ## Task 4: Writing a Function
