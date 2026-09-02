@@ -20,22 +20,26 @@ post <- c(114, 98, 113, 99, 107, 116, 113, 111, 119, 117, 101, 119, 130, 122, 10
 
 ```
 
-## 1.2) Assign names to the vector elements using the paste() function. Note that names() can be overwritten by a character vector. To quickly create the names, try running the code
+### 2. Assigning Names to the Vector Elements
+Subject names are assigned using the paste() function to the pre-treatment and post-treatment vectors.
+
 
 ```{r Task 1 Question 2}
 
 #Assigning names to the vector elements (1st element becomes Subject_1_Pre, and so on)
-names(pre) <- paste("Subject", 1:20, "Pre", sep = "_")
+names(pre) <- paste("Subject", 1:20, sep = "_")
 
 #Assigning names to the vector elements (1st element becomes Subject_1_Post, and so on)
-names(post) <- paste("Subject", 1:20, "Post", sep = "_")
+names(post) <- paste("Subject", 1:20, sep = "_")
 
 #Print names
 names(pre)
 names(post)
 ```
 
-## 1.3) Calculate the change in blood pressure for each patient by subtracting post-treatment measurements from pre-treatment measurements. Recall that R does math element-wise! Save this calculation as a new object (also a vector).
+### 3. Calculating Change in Blood Pressure for Each Subject
+
+Calculated the change in blood pressure (pretreatment - posttreatment) and saved the calculation as a new vector.
 
 ```{r Task 1 Question 3}
 
@@ -45,7 +49,9 @@ bp_diff
 
 ```
 
-## 1.4) Calculate the average decrease in blood pressure across all patients.
+### 4. Calculating Average Decrease For All Subjects
+
+Calculated the average decrease in blood pressure across all subjects.
 
 ```{r Task 1 Question 4}
 
@@ -53,7 +59,9 @@ mean(bp_diff)
 
 ```
 
-## 1.5) Determine which patients experienced a decrease in blood pressure after treatment (a positive change). Use the which() function to just return the indices (and names) associated with this type of change.
+### 5. Determining which Subjects Experienced Decrease in BP with Treatment
+
+Determined a list of subjects that experienced a decrease in blood pressure (diff_bp\>0) with treatment.
 
 ```{r Task 1 Question 5}
 
@@ -61,17 +69,21 @@ which(bp_diff > 0)
 
 ```
 
-## 1.6) Subset the vector of differences to only return those that have a positive change.
+### 6. Subset Vectors
+
+Subset the vector of differences to only return those that have a positive change.
 
 ```{r Task 1 Question 6}
 
-bp_diff_subset <- which(bp_diff > 0)
+bp_diff_subset <- bp_diff[bp_diff > 0]
 
 bp_diff_subset
 
 ```
 
-## 1.7) Calculate the average decrease in blood pressure for those where the blood pressure decreased (positive change).
+### 7. Calculating Average Decrease for Subset of Subjects
+
+Calculated the average decrease in blood pressure for those subjects that had a positive change
 
 ```{r Task 1 Question 7}
 
@@ -80,9 +92,11 @@ mean(bp_diff_subset)
 ```
 
 
-# Task 2)
+## Task 2: Basic Data Frame Practice
 
-## 2.1) Create a data frame object with four columns corresponding to your data above: patient, pre_bp, post_bp, and diff_bp
+### 1. Creating a Data Frame
+
+Created a data frame object with four columns corresponding to data from Task 1.
 
 ```{r Task 2 Question 1}
 
@@ -92,7 +106,9 @@ bp_df
 
 ```
 
-## 2.2) Return only rows where the diff_bp column is negative. (Use [ or learn about the subset() function if you’d like. If you use [, don’t reference the original vector from the first part, access the column of the data frame when looking at making a comparison.)
+### 2. Returning Rows with Select Column Values
+
+Returned only rows where diff_bp column is negative by accessing the column from data frame.
 
 
 ```{r Task 2 Question 2}
@@ -102,11 +118,15 @@ bp_df[bp_df$diff_bp < 0, ]
 
 ```
 
-## 3) Add a new column to the data frame corresponding to TRUE if the post_bp is less than 120. Recall you can use $ to reference a column. If you reference a column that doesn’t exist, and save a vector (of appropriate length in it), that vector becomes a column of your data frame! Similar to the previous question, don’t reference the original vector from the first part, access the column of the data frame when looking at making a comparison.
+### 3. Adding a Column to Existing Data Frame
+
+Added a column to the data frame corresponding to "TRUE" if post_bp \< 120
 
 ```{r Task 2 Question 3}
 
 bp_df$bp_lt_120 <- bp_df$post_bp < 120
+
+bp_df
 
 ```
 
