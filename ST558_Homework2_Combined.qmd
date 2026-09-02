@@ -178,7 +178,9 @@ new_list
 
 ```
 
-## 3) Access the first list element using three different types of syntax
+### 3. Accessing First List Element
+
+The treatment data frame, which is the first element of "new_list", is accessed using three different list-indexing methods.
 
 ```{r Task 3 Question 3}
 
@@ -193,7 +195,9 @@ new_list[1]
 
 ```
 
-## 4) In one line, access the placebo data frame, pre_bp column.
+### 4. Accessing a Specified Column of a Data Frame
+
+The "pre_bp" column is accessed directly from the placebo data frame stored within "new_list".
 
 ```{r Task 3 Question 4}
 
@@ -203,9 +207,11 @@ new_list[[2]]$pre_bp
 ```
 
 
-# Task 4
+## Task 4: Control Flow Practice
 
-## 1) Suppose we want to characterize the post-treatment (or placebo) blood pressure measurement as optimal (≤ 120), borderline (120 < bp ≤ 130), and high (> 130). First, create a new column in each data frame from above called status. 
+### 1. Creating Status Column
+
+A new character column called "status" is added to each data frame stored in "new_list". These columns will later be filled using conditional logic based on post-treatment blood pressure. 
 
 ```{r Task 4 Question 1}
 
@@ -215,53 +221,61 @@ new_list[[2]]$status <- character(10)
 
 ```
 
-## 2) For the non-placebo data frame (within the list), create a for loop and use if/then/else logic to create the status column’s values
+### 2. Assigning Status for Treatment Group
+
+A "for loop" and conditional statements are used to assign blood pressure status to each treatment subject based on their post-treatment blood pressure.
 
 ```{r Task 4 Question 2}
 
 #looping through the full length of the status variable from the first element of the new_list list, which is the non-placebo data frame
-for (i in length(new_list[[1]]$status)) {
+for (i in 1:20) {
   
   if (new_list[[1]]$post_bp[i] <= 120) {
     
-    new_list[[1]]$status[i] = "Optimal"
+    new_list[[1]]$status[i] <- "Optimal"
     
   } else if (new_list[[1]]$post_bp[i] > 120 & new_list[[1]]$post_bp[i] <= 130) {
     
-    new_list[[1]]$status[i] = "Borderline"
+    new_list[[1]]$status[i] <- "Borderline"
     
-  } else if (new_list[[1]]$post_bp[i] > 130) {
+  } else {
     
-    new_list[[1]]$status[i] = "High"
+    new_list[[1]]$status[i] <- "High"
     
   }
   
 }
 
+new_list$treatment
+
 ```
 
-## 3)  Repeat for the placebo data frame (within the list).
+### 3. Assigning Status for Placebo Group
+
+A "for loop" and conditional statements are used to assign blood pressure status to each placebo subject based on their post-treatment blood pressure.
 
 ```{r Task 4 Question 3}
 
 #looping through the full length of the status variable from the second element of the new_list list, which is the placebo data frame
-for (i in length(new_list[[2]]$status)) {
+for (i in 1:10) {
   
-  if (new_list[[1]]$post_bp[i] <= 120) {
+  if (new_list[[2]]$post_bp[i] <= 120) {
     
-    new_list[[1]]$status[i] = "Optimal"
+    new_list[[2]]$status[i] <- "Optimal"
     
-  } else if (new_list[[1]]$post_bp[i] > 120 & new_list[[1]]$post_bp[i] <= 130) {
+  } else if (new_list[[2]]$post_bp[i] > 120 & new_list[[2]]$post_bp[i] <= 130) {
     
-    new_list[[1]]$status[i] = "Borderline"
+    new_list[[2]]$status[i] <- "Borderline"
     
-  } else if (new_list[[1]]$post_bp[i] > 130) {
+  } else {
     
-    new_list[[1]]$status[i] = "High"
+    new_list[[2]]$status[i] <- "High"
     
   }
   
 }
+
+new_list$placebo
 
 ```
 
