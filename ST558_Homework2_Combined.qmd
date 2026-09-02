@@ -130,7 +130,9 @@ bp_df
 
 ```
 
-## 4) Finally, print the data frame out nicely in your final document by modifying the code below appropriately
+### 4. Printing Data Frames
+
+Displayed completed blood pressure data frame in a formatted table.
 
 ```{r Task 2 Question 4}
 
@@ -139,37 +141,40 @@ knitr::kable(bp_df)
 ```
 
 
-# Task 3 - Continue the previous example. Suppose we now also have data from another experiment where the ‘treatment’ was actually a placebo. We have the following pre-treatment values for subjects 1 through 10 (different set of subjects):
+## Task 3: List Practice
 
-- 138, 135, 147, 117, 152, 134, 114, 121, 131, 130
+### 1. Creating Placebo Data Frame
 
-# After treatment, the subjects were measured again (subjects 1 through 10 match):
-
-- 105, 136, 123, 130, 134, 143, 135, 139, 120, 124
-
-## 3.1) Create a new data frame with this data in it that is similar to the data frame from task 2 (including the new column)
+Pre-treatment and post-treatment blood pressure measurements from the placebo experiment are used to create a second data frame similar to the treatment data frame.
 
 ```{r Task 3 Question 1}
 
+#creating new data frame called new_df
 new_df <- data.frame(
   patient = 1:10,
-  pre_bp = c(138, 135, 147, 117, 152, 134, 114, 121, 131, 130),
-  post_bp = c(105, 136, 123, 130, 134, 143, 135, 139, 120, 124)
+  pre_bp = c(138, 135, 147, 117, 152, 134, 114, 121, 131, 130), # Create placebo pre-treatment blood pressure vector
+  post_bp = c(105, 136, 123, 130, 134, 143, 135, 139, 120, 124) # Create placebo post-treatment blood pressure vector
 )
 
+# Calculate change in blood pressure for placebo
 new_df$diff_bp <- new_df$pre_bp - new_df$post_bp
 
+# Add a TRUE/FALSE column based on post-placebo blood pressure
 new_df$bp_lt_120 <- new_df$post_bp < 120
+
+new_df
 ```
 
-## 3.2) Now create and store a list with two elements:
+### 2. Create and Store Lists
 
-- 1st element named treatment and contains the first data frame you created
-- 2nd element named placebo and contains the second data frame you created.
+A list is created to store the treatment and placebo data frames as separate named elements.
 
 ```{r Task 3 Question 2}
 
+#creating a new list called new_list which contains our treatment and placebo datasets
 new_list <- list(treatment = bp_df, placebo = new_df)
+
+new_list
 
 ```
 
@@ -177,10 +182,13 @@ new_list <- list(treatment = bp_df, placebo = new_df)
 
 ```{r Task 3 Question 3}
 
+# Access first element using double brackets
 new_list[[1]]
 
+# Access first element using its name
 new_list$treatment
 
+# Access first element using single brackets
 new_list[1]
 
 ```
@@ -189,6 +197,7 @@ new_list[1]
 
 ```{r Task 3 Question 4}
 
+# Access the placebo pre-treatment blood pressure column
 new_list[[2]]$pre_bp
 
 ```
