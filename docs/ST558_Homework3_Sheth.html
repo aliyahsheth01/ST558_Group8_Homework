@@ -451,8 +451,138 @@ dbl (12): fixed acidity, volatile acidity, citric acid, residual sugar, chlo...
 </section>
 <section id="task-4-writing-a-function" class="level2">
 <h2 class="anchored" data-anchor-id="task-4-writing-a-function">Task 4: Writing a Function</h2>
+<section id="writing-the-getiqr-function" class="level3">
+<h3 class="anchored" data-anchor-id="writing-the-getiqr-function">8. Writing the getIQR() Function</h3>
+<p>The “getIQR()” function calculates the interquartile range as a difference between the 75th and 25th percentile. Additional arguments can be used to pass unnamed arguments into the quantile function.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a function, calculate the 25th and 75th percentiles, and return difference without a name</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>getIQR <span class="ot">&lt;-</span> <span class="cf">function</span> (x, ...) {</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  quartiles <span class="ot">&lt;-</span> <span class="fu">quantile</span>(x, <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.25</span>, <span class="fl">0.75</span>), ...)</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unname</span>(quartiles[<span class="dv">2</span>] <span class="sc">-</span> quartiles[<span class="dv">1</span>])</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="applying-getiqr-function" class="level3">
+<h3 class="anchored" data-anchor-id="applying-getiqr-function">9. Applying getIQR() Function</h3>
+<p>The getIQR function written in part 8 of this task is applied separately to “fixed_acidity” and “citric_acid” variables in the combined wine data.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the IQR for fixed acidity</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">getIQR</span>(wine_data<span class="sc">$</span>fixed_acidity)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.3</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the IQR for citric acid</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">getIQR</span>(wine_data<span class="sc">$</span>citric_acid)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.14</code></pre>
+</div>
+</div>
+</section>
+<section id="writing-the-getcoefvar-function" class="level3">
+<h3 class="anchored" data-anchor-id="writing-the-getcoefvar-function">10. Writing the getCoefVar() function</h3>
+<p>The “getCoefVar()” function calculates the coefficient of variation, defined as the sample standard deviation divided by the absolute value of the sample mean. Additional arguments can be used to pass unnamed arguments into the coefficient of variation function.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a function, calculate sample standard deviation divided by absolute sample mean</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>getCoefVar <span class="ot">&lt;-</span> <span class="cf">function</span> (x, ...) {</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sd</span>(x, ...) <span class="sc">/</span> <span class="fu">abs</span>(<span class="fu">mean</span>(x, ...))</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="applying-getcoefvar-function" class="level3">
+<h3 class="anchored" data-anchor-id="applying-getcoefvar-function">11. Applying getCoefVar() Function</h3>
+<p>The getCoefVar function written in part 10 of this task is applied separately to “fixed_acidity” and “citric_acid” variables in the combined wine data.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the coefficient of variation for fixed acidity</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">getCoefVar</span>(wine_data<span class="sc">$</span>fixed_acidity)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1796783</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the coefficient of variation for citric acid</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">getCoefVar</span>(wine_data<span class="sc">$</span>citric_acid)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.4560663</code></pre>
+</div>
+</div>
+</section>
+<section id="writing-the-getsummaries-function" class="level3">
+<h3 class="anchored" data-anchor-id="writing-the-getsummaries-function">12. Writing the getSummaries() Function</h3>
+<p>The “getSummaries()” function returns both the interquartile range and coefficient of variation for a numeric vector. The function uses the previously defined functions from part 8 and 10 of this task, and returns named values for each summary.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a function to return both IQR and coefficient of variation</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>getSummaries <span class="ot">&lt;-</span> <span class="cf">function</span>(x, ...) {</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">IQR =</span> <span class="fu">getIQR</span>(x, ...),</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">CoefVar =</span> <span class="fu">getCoefVar</span>(x, ...)</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="applying-getsummaries-function" class="level3">
+<h3 class="anchored" data-anchor-id="applying-getsummaries-function">13. Applying getSummaries() Function</h3>
+<p>The getSummaries function written in part 12 of this task is applied separately to “fixed_acidity” and “citric_acid” variables in the combined wine data.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the coefficient of variation for fixed acidity</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">getSummaries</span>(wine_data<span class="sc">$</span>fixed_acidity)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      IQR   CoefVar 
+1.3000000 0.1796783 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the coefficient of variation for citric acid</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="fu">getSummaries</span>(wine_data<span class="sc">$</span>citric_acid)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      IQR   CoefVar 
+0.1400000 0.4560663 </code></pre>
+</div>
+</div>
+</section>
+<section id="creating-an-infix-function" class="level3">
+<h3 class="anchored" data-anchor-id="creating-an-infix-function">14. Creating an infix Function</h3>
+<p>A custom infix function named “%mycbind%” is created to combine objects by columns. The function uses “cbind()” internally and allows the two objects to be placed on either side of the custom operator.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define an infix function to combine objects by columns</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="st">`</span><span class="at">%mycbind%</span><span class="st">`</span> <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y) {</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cbind</span>(x , y)</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Create three data frames to test the infix function</span></span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>df1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">unif =</span> <span class="fu">runif</span>(<span class="dv">10</span>), <span class="at">norm =</span> <span class="fu">rnorm</span>(<span class="dv">10</span>))</span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>df2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">gamma =</span> <span class="fu">rgamma</span>(<span class="dv">10</span>, <span class="at">shape =</span> <span class="dv">1</span>), <span class="at">beta =</span> <span class="fu">rbeta</span>(<span class="dv">10</span>, <span class="at">shape1 =</span> <span class="dv">5</span>, <span class="at">shape2 =</span> <span class="dv">1</span>))</span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>vec1 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">10</span>, <span class="at">mean =</span> <span class="dv">10</span>)</span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Test the infix function with two data frames</span></span>
+<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a>df1 <span class="sc">%mycbind%</span> df2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         unif        norm     gamma      beta
+1  0.70451211 -1.34263643 0.2024057 0.5415135
+2  0.03567566 -0.08771401 0.4858628 0.9967489
+3  0.65629765 -0.06121886 4.7188373 0.9811070
+4  0.30815680  0.87317608 0.3614098 0.8999855
+5  0.85496731  0.78376671 3.7147432 0.9260664
+6  0.83847597  1.81257543 2.5125684 0.6397837
+7  0.35102585 -1.20420502 1.7660996 0.9544008
+8  0.82237245 -1.15368417 0.2484631 0.8951799
+9  0.04976303 -1.61661312 0.8223306 0.6882085
+10 0.73327688  0.79684579 1.1642310 0.8710758</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test the infix function with two data frames and a vector</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>(df1 <span class="sc">%mycbind%</span> df2) <span class="sc">%mycbind%</span> vec1</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         unif        norm     gamma      beta         y
+1  0.70451211 -1.34263643 0.2024057 0.5415135  9.699137
+2  0.03567566 -0.08771401 0.4858628 0.9967489 10.989856
+3  0.65629765 -0.06121886 4.7188373 0.9811070  9.914941
+4  0.30815680  0.87317608 0.3614098 0.8999855  8.788046
+5  0.85496731  0.78376671 3.7147432 0.9260664 10.990031
+6  0.83847597  1.81257543 2.5125684 0.6397837 10.515062
+7  0.35102585 -1.20420502 1.7660996 0.9544008  9.387963
+8  0.82237245 -1.15368417 0.2484631 0.8951799  8.461389
+9  0.04976303 -1.61661312 0.8223306 0.6882085  9.777675
+10 0.73327688  0.79684579 1.1642310 0.8710758  9.862581</code></pre>
+</div>
+</div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

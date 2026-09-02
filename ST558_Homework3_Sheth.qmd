@@ -126,5 +126,90 @@ wine_data <- bind_rows(white_wine, red_wine)
 wine_data
 ```
 
-
 ## Task 4: Writing a Function
+
+### 8. Writing the getIQR() Function
+The "getIQR()" function calculates the interquartile range as a difference between the 75th and 25th percentile. Additional arguments can be used to pass unnamed arguments into the quantile function.
+
+```{r}
+# Define a function, calculate the 25th and 75th percentiles, and return difference without a name
+getIQR <- function (x, ...) {
+  quartiles <- quantile(x, probs = c(0.25, 0.75), ...)
+  unname(quartiles[2] - quartiles[1])
+}
+```
+
+### 9. Applying getIQR() Function
+The getIQR function written in part 8 of this task is applied separately to "fixed_acidity" and "citric_acid" variables in the combined wine data. 
+
+```{r}
+# Calculate the IQR for fixed acidity
+getIQR(wine_data$fixed_acidity)
+
+# Calculate the IQR for citric acid
+getIQR(wine_data$citric_acid)
+```
+### 10. Writing the getCoefVar() function
+The "getCoefVar()" function calculates the coefficient of variation, defined as the sample standard deviation divided by the absolute value of the sample mean.  Additional arguments can be used to pass unnamed arguments into the coefficient of variation function.
+
+```{r}
+# Define a function, calculate sample standard deviation divided by absolute sample mean
+getCoefVar <- function (x, ...) {
+  sd(x, ...) / abs(mean(x, ...))
+}
+```
+
+### 11. Applying getCoefVar() Function
+The getCoefVar function written in part 10 of this task is applied separately to "fixed_acidity" and "citric_acid" variables in the combined wine data. 
+
+```{r}
+# Calculate the coefficient of variation for fixed acidity
+getCoefVar(wine_data$fixed_acidity)
+
+# Calculate the coefficient of variation for citric acid
+getCoefVar(wine_data$citric_acid)
+```
+### 12. Writing the getSummaries() Function
+The "getSummaries()" function returns both the interquartile range and coefficient of variation for a numeric vector. The function uses the previously defined functions from part 8 and 10 of this task, and returns named values for each summary.
+
+```{r}
+# Define a function to return both IQR and coefficient of variation
+getSummaries <- function(x, ...) {
+  c(
+    IQR = getIQR(x, ...),
+    CoefVar = getCoefVar(x, ...)
+  )
+}
+```
+
+### 13. Applying getSummaries() Function
+The getSummaries function written in part 12 of this task is applied separately to "fixed_acidity" and "citric_acid" variables in the combined wine data. 
+
+```{r}
+# Calculate summaries for fixed acidity
+getSummaries(wine_data$fixed_acidity)
+
+# Calculate summaries for citric acid
+getSummaries(wine_data$citric_acid)
+```
+### 14. Creating an infix Function
+A custom infix function named "%mycbind%" is created to combine objects by columns. The function uses "cbind()" internally and allows the two objects to be placed on either side of the custom operator.
+
+```{r}
+# Define an infix function to combine objects by columns
+`%mycbind%` <- function(x, y) {
+  cbind(x , y)
+}
+
+# Create two data frames and one vector to test the infix function
+df1 <- data.frame(unif = runif(10), norm = rnorm(10))
+df2 <- data.frame(gamma = rgamma(10, shape = 1), beta = rbeta(10, shape1 = 5, shape2 = 1))
+vec1 <- rnorm(10, mean = 10)
+
+# Test the infix function with two data frames
+df1 %mycbind% df2
+
+# Test the infix function with two data frames and a vector
+(df1 %mycbind% df2) %mycbind% vec1
+```
+
