@@ -233,7 +233,7 @@ cols(
   class = col_character()
 )</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Print the tibble</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the tibble</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>yeast_data</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1,484 × 10
@@ -274,16 +274,16 @@ cols(
 <pre><code># A tibble: 4,898 × 12
    `fixed acidity` `volatile acidity` `citric acid` `residual sugar` chlorides
              &lt;dbl&gt;              &lt;dbl&gt;         &lt;dbl&gt;            &lt;dbl&gt;     &lt;dbl&gt;
- 1               7               0.27          0.36             20.7     0.045
- 2              63               0.3           0.34              1.6     0.049
- 3              81               0.28          0.4               6.9     0.05 
- 4              72               0.23          0.32              8.5     0.058
- 5              72               0.23          0.32              8.5     0.058
- 6              81               0.28          0.4               6.9     0.05 
- 7              62               0.32          0.16              7       0.045
- 8               7               0.27          0.36             20.7     0.045
- 9              63               0.3           0.34              1.6     0.049
-10              81               0.22          0.43              1.5     0.044
+ 1             7                 0.27          0.36             20.7     0.045
+ 2             6.3               0.3           0.34              1.6     0.049
+ 3             8.1               0.28          0.4               6.9     0.05 
+ 4             7.2               0.23          0.32              8.5     0.058
+ 5             7.2               0.23          0.32              8.5     0.058
+ 6             8.1               0.28          0.4               6.9     0.05 
+ 7             6.2               0.32          0.16              7       0.045
+ 8             7                 0.27          0.36             20.7     0.045
+ 9             6.3               0.3           0.34              1.6     0.049
+10             8.1               0.22          0.43              1.5     0.044
 # ℹ 4,888 more rows
 # ℹ 7 more variables: `free sulfur dioxide` &lt;dbl&gt;,
 #   `total sulfur dioxide` &lt;dbl&gt;, density &lt;dbl&gt;, pH &lt;dbl&gt;, sulphates &lt;dbl&gt;,
@@ -318,7 +318,7 @@ cols(
 12 quality             </code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Replace the current white wine column names</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(white_wine) <span class="ot">&lt;-</span> wine_names [[<span class="dv">1</span>]]</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(white_wine) <span class="ot">&lt;-</span> wine_names[[<span class="dv">1</span>]]</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the updated tibble</span></span>
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>white_wine</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -326,16 +326,16 @@ cols(
 <pre><code># A tibble: 4,898 × 12
    fixed_acidity volatile_acidity citric_acid residual_sugar chlorides
            &lt;dbl&gt;            &lt;dbl&gt;       &lt;dbl&gt;          &lt;dbl&gt;     &lt;dbl&gt;
- 1             7             0.27        0.36           20.7     0.045
- 2            63             0.3         0.34            1.6     0.049
- 3            81             0.28        0.4             6.9     0.05 
- 4            72             0.23        0.32            8.5     0.058
- 5            72             0.23        0.32            8.5     0.058
- 6            81             0.28        0.4             6.9     0.05 
- 7            62             0.32        0.16            7       0.045
- 8             7             0.27        0.36           20.7     0.045
- 9            63             0.3         0.34            1.6     0.049
-10            81             0.22        0.43            1.5     0.044
+ 1           7               0.27        0.36           20.7     0.045
+ 2           6.3             0.3         0.34            1.6     0.049
+ 3           8.1             0.28        0.4             6.9     0.05 
+ 4           7.2             0.23        0.32            8.5     0.058
+ 5           7.2             0.23        0.32            8.5     0.058
+ 6           8.1             0.28        0.4             6.9     0.05 
+ 7           6.2             0.32        0.16            7       0.045
+ 8           7               0.27        0.36           20.7     0.045
+ 9           6.3             0.3         0.34            1.6     0.049
+10           8.1             0.22        0.43            1.5     0.044
 # ℹ 4,888 more rows
 # ℹ 7 more variables: free_sulfur_dioxide &lt;dbl&gt;, total_sulfur_dioxide &lt;dbl&gt;,
 #   density &lt;dbl&gt;, pH &lt;dbl&gt;, sulphates &lt;dbl&gt;, alcohol &lt;dbl&gt;, quality &lt;dbl&gt;</code></pre>
@@ -355,16 +355,16 @@ cols(
 <pre><code># A tibble: 4,898 × 13
    fixed_acidity volatile_acidity citric_acid residual_sugar chlorides
            &lt;dbl&gt;            &lt;dbl&gt;       &lt;dbl&gt;          &lt;dbl&gt;     &lt;dbl&gt;
- 1             7             0.27        0.36           20.7     0.045
- 2            63             0.3         0.34            1.6     0.049
- 3            81             0.28        0.4             6.9     0.05 
- 4            72             0.23        0.32            8.5     0.058
- 5            72             0.23        0.32            8.5     0.058
- 6            81             0.28        0.4             6.9     0.05 
- 7            62             0.32        0.16            7       0.045
- 8             7             0.27        0.36           20.7     0.045
- 9            63             0.3         0.34            1.6     0.049
-10            81             0.22        0.43            1.5     0.044
+ 1           7               0.27        0.36           20.7     0.045
+ 2           6.3             0.3         0.34            1.6     0.049
+ 3           8.1             0.28        0.4             6.9     0.05 
+ 4           7.2             0.23        0.32            8.5     0.058
+ 5           7.2             0.23        0.32            8.5     0.058
+ 6           8.1             0.28        0.4             6.9     0.05 
+ 7           6.2             0.32        0.16            7       0.045
+ 8           7               0.27        0.36           20.7     0.045
+ 9           6.3             0.3         0.34            1.6     0.049
+10           8.1             0.22        0.43            1.5     0.044
 # ℹ 4,888 more rows
 # ℹ 8 more variables: free_sulfur_dioxide &lt;dbl&gt;, total_sulfur_dioxide &lt;dbl&gt;,
 #   density &lt;dbl&gt;, pH &lt;dbl&gt;, sulphates &lt;dbl&gt;, alcohol &lt;dbl&gt;, quality &lt;dbl&gt;,
@@ -374,7 +374,7 @@ cols(
 </section>
 <section id="reading-the-red-wine-csv-data" class="level3">
 <h3 class="anchored" data-anchor-id="reading-the-red-wine-csv-data">6. Reading the Red Wine CSV Data</h3>
-<p>The red wine data are stored in a semicolon delimited file. The data are read directly from the provided URL using the readr function. The variable names are then replaced using the alternative names from the Excel file for white wine. Addtionally, a variable is added to identify each observation as red wine.</p>
+<p>The red wine data are stored in a semicolon delimited file. The data are read directly from the provided URL using the readr function. The variable names are then replaced using the alternative names from the Excel file for white wine. Additionally, a variable is added to identify each observation as red wine.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Read in semicolon delimited data</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>red_wine <span class="ot">&lt;-</span> <span class="fu">read_delim</span>(<span class="st">"https://www4.stat.ncsu.edu/~online/datasets/red-wine.csv"</span>,</span>
@@ -420,6 +420,33 @@ dbl (12): fixed acidity, volatile acidity, citric acid, residual sugar, chlo...
 </section>
 <section id="combining-data-sets" class="level3">
 <h3 class="anchored" data-anchor-id="combining-data-sets">7. Combining Data Sets</h3>
+<p>The white wine and red wine tibbles have the same variables, so they are combined by rows using “dplyr::bind_rows()”.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine the white and red wine data sets</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>wine_data <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(white_wine, red_wine)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the combined tibble</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>wine_data</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6,497 × 13
+   fixed_acidity volatile_acidity citric_acid residual_sugar chlorides
+           &lt;dbl&gt;            &lt;dbl&gt;       &lt;dbl&gt;          &lt;dbl&gt;     &lt;dbl&gt;
+ 1           7               0.27        0.36           20.7     0.045
+ 2           6.3             0.3         0.34            1.6     0.049
+ 3           8.1             0.28        0.4             6.9     0.05 
+ 4           7.2             0.23        0.32            8.5     0.058
+ 5           7.2             0.23        0.32            8.5     0.058
+ 6           8.1             0.28        0.4             6.9     0.05 
+ 7           6.2             0.32        0.16            7       0.045
+ 8           7               0.27        0.36           20.7     0.045
+ 9           6.3             0.3         0.34            1.6     0.049
+10           8.1             0.22        0.43            1.5     0.044
+# ℹ 6,487 more rows
+# ℹ 8 more variables: free_sulfur_dioxide &lt;dbl&gt;, total_sulfur_dioxide &lt;dbl&gt;,
+#   density &lt;dbl&gt;, pH &lt;dbl&gt;, sulphates &lt;dbl&gt;, alcohol &lt;dbl&gt;, quality &lt;dbl&gt;,
+#   type &lt;chr&gt;</code></pre>
+</div>
+</div>
 </section>
 </section>
 <section id="task-4-writing-a-function" class="level2">
