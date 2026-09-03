@@ -4,7 +4,7 @@ author: "Group 8"
 format: html
 ---
 
-## Task 1: Basic Vector Practice
+## Task 1: Basic Vector Practice 
 
 ### 1. Creating the Blood Pressure Vectors
 
