@@ -66,6 +66,11 @@ redData$type <- "red"
 ```
 
 ## Combining White and Red
+```{r}
+wineData <- bind_rows(whiteData,redData)
+wineData
+```
+
 
 
 
