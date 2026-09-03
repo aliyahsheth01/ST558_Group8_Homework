@@ -23,6 +23,9 @@ glassData
 ## Yeast Data
 
 ```{r}
-yeastData <- read_delim("https://www4.stat.ncsu.edu/online/datasets/yeast.data",delim = "  ")
+yeastData <- read_table("https://www4.stat.ncsu.edu/online/datasets/yeast.data",col_names = c("seq_name","mcg","gvh","alm","mit","erl","pox","vac","nuc","class"))
+yeastData
 ```
+
+# Task 3: Combinging Excel and Delimited Data
 
