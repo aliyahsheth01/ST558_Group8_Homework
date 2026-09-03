@@ -7,4 +7,6 @@ format: html
 
 1.  The working path for this file would be "../MyData.csv"
 2.  The major benefits of using R Projects are the ability to manage multiple files associated with a project, and the integration with GitHub.
-3.
+3. Git is version control software, and GitHub is an online hosting service for Git projects.
+4. Tibbles differ from data frames in that they print more nicely, and when you subset one column of a tibble, it doesn't turn into a vector, it stays a tibble.
+
