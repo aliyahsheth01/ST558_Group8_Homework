@@ -77,7 +77,7 @@ wineData
 ## Writing getIQR Function
 
 ```{r}
-getIQR <- function(x){
+getIQR <- function(x,...){
   as.numeric(quantile(x,.75)-quantile(x,.25))
 }
 ```
@@ -91,17 +91,11 @@ getIQR(wineData$citric_acid)
 ## Writing getCoefVar Function
 
 ```{r}
-test<-1:10
-sd(test)/abs(mean(test))
-
-getCoefVar(test)
-
-getCoefVar <- function(x){
+getCoefVar <- function(x,...){
   sd(x)/abs(mean(x))
 }
-
-
 ```
+
 
 
 
