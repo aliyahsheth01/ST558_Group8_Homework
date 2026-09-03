@@ -7,6 +7,22 @@ format: html
 
 1.  The working path for this file would be "../MyData.csv"
 2.  The major benefits of using R Projects are the ability to manage multiple files associated with a project, and the integration with GitHub.
-3. Git is version control software, and GitHub is an online hosting service for Git projects.
-4. Tibbles differ from data frames in that they print more nicely, and when you subset one column of a tibble, it doesn't turn into a vector, it stays a tibble.
+3.  Git is version control software, and GitHub is an online hosting service for Git projects.
+4.  Tibbles differ from data frames in that they print more nicely, and when you subset one column of a tibble, it doesn't turn into a vector, it stays a tibble.
+
+# Task 2: Reading Delimited Data
+
+## Glass Data
+
+```{r}
+library(tidyverse)
+glassData <- read_csv("https://www4.stat.ncsu.edu/online/datasets/glass.data",col_names = c("ID","RI","NA","MG","AL","SI","K","CA","BA","FE","Type"), col_types = "idddddddddf" )
+glassData
+```
+
+## Yeast Data
+
+```{r}
+yeastData <- read_delim("https://www4.stat.ncsu.edu/online/datasets/yeast.data",delim = "  ")
+```
 
