@@ -60,8 +60,11 @@ whiteData
 ## Reading in Red Wine
 
 ```{r}
+# repeating the process of reading delimited data, but with semicolons this time
 redData <- read_delim("https://www4.stat.ncsu.edu/~online/datasets/red-wine.csv",col_types = "nnnnnnnnnnnn",delim = ";")
+# changing variable names
 colnames(redData) <- whiteVars$Variables
+# adding the type column
 redData$type <- "red"
 ```
 
@@ -71,15 +74,20 @@ wineData <- bind_rows(whiteData,redData)
 wineData
 ```
 
+# Task 4: Writing a Function
+
+## getIQR Function
+
+```{r}
+test=seq(6,20)
+j=quantile(test,0.75)
+k=quantile(test,0.25)
+as.numeric(quantile(test,.75)-quantile(test,.25))
+getIQR <- function(x){
+  as.numeric(quantile(x,.75)-quantile(x,.25))
+}
+getIQR(test)
+```
 
 
-
-
-
-
-
-
-
-
-
-
+```{r}
