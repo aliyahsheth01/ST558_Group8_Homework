@@ -34,13 +34,38 @@ yeastData
 
 # Task 3: Combining Excel and Delimited Data
 
+## Initially Reading the Sheet
+
 ```{r}
 # loading in readxl
 library(readxl)
-#
-wineData <- read_excel("")
+# read in data from the first sheet using read_excel
+whiteData <- read_excel("data/white-wine.xlsx",col_types = "numeric")
+whiteData
 ```
 
+## Changing the Column Names
+```{r}
+whiteVars <-read_excel("data/white-wine.xlsx", sheet = excel_sheets("data/white-wine.xlsx")[2])
+colnames(whiteData) <- whiteVars$Variables
+whiteData
+```
+
+## Adding the White Wine Column
+```{r}
+whiteData$type <- "white"
+whiteData
+```
+
+## Reading in Red Wine
+
+```{r}
+redData <- read_delim("https://www4.stat.ncsu.edu/~online/datasets/red-wine.csv",col_types = "nnnnnnnnnnnn",delim = ";")
+colnames(redData) <- whiteVars$Variables
+redData$type <- "red"
+```
+
+## Combining White and Red
 
 
 
