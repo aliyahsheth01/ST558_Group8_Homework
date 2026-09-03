@@ -5,3 +5,6 @@ format: html
 
 # Task 1: Conceptual Questions
 
+1.  The working path for this file would be "../MyData.csv"
+2.  The major benefits of using R Projects are the ability to manage multiple files associated with a project, and the integration with GitHub.
+3.
