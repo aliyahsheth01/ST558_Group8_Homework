@@ -1,0 +1,215 @@
+---
+title: "ST558_Homework3_Sheth"
+format: html
+editor: visual
+---
+
+## Task 1: Conceptual Questions
+
+1.  **If your working directory is myfolder/homework/, what relative path would you specify to get the file located at myfolder/MyData.csv?** The relative path for this file is "../MyData.csv", where the ".." indicates moving up one directory from the current "homework" folder before accessing "MyData.csv".
+
+2.  **What are the major benefits of using R projects?** R projects help keep analyses organized by giving each project its own working directory, workspace, history, folder structure, and source documents. They also make it easier to use relative file paths, which improves reproducibility and facilitates collaboration by enabling running the same code on different computers/by different users.
+
+3.  **What is Git and what is GitHub?** Git is a version control system that tracks changes made to files over time. It allows users to save versions of their work, review changes, and collaborate without losing previous versions. GitHub is an online platform that hosts Git repositories. It allows users to store their projects remotely, share them with others, collaborate on the same files, and manage changes through tools such as commits, branches, and pull requests.
+
+4.  **What are the two main differences between a tibble and a data.frame?** A tibble is a special type of data frame. It has additional classes (eg, tbl_df and tbl) while still inheriting from data.frame, so it can generally be used anywhere a regular data frame can be used. Additionally, tibble has a different default printing behavior, where when printed it shows the dimensions, variable types, and only rows/columns that fit reasonably on the screen rather than flooding the console with the entire output.
+
+## Task 2: Reading Delimited Data
+
+Loading "tidyverse" to support reading in data using readr function. 
+
+```{r}
+# Load tidyverse
+library(tidyverse)
+```
+
+### 1. Reading the Glass Data
+The glass data are comma delimited data and do not contain column names. The data are read directly from the provided URL using the readr function in the tidyverse library, and column names are assigned at the time of importing the data set. The tibble is printed out by calling the object name (i.e., "glass_data"). 
+
+```{r}
+# Assign column names for data set
+glass_names <- c("Id", "RI", "Na", "Mg", "Al", "Si", "K", "Ca", "Ba", "Fe", "Type")
+
+# Read in comma delimited data from URL
+glass_data <- read_csv("https://www4.stat.ncsu.edu/~online/datasets/glass.data", 
+                       col_names = glass_names
+                      )
+# Print the tibble
+glass_data
+```
+
+### 2. Reading the Yeast Data
+The yeast data are space (or whitespace) delimited data and do not contain column names. The data are read directly from the provided URL using the readr function in the tidyverse library, and column names are assigned at the time of importing the data set. The tibble is printed out by calling the object name (i.e., "yeast_data").
+
+```{r}
+# Assign column names for the data set
+yeast_names <- c("seq_name", "mcg", "gvh", "alm", "mit", "erl", "pox", "vac", "nuc", "class")
+
+# Read in space (whitespace) delimited data from URL
+yeast_data <- read_table("https://www4.stat.ncsu.edu/~online/datasets/yeast.data",
+                         col_names = yeast_names
+                         )
+# Print the tibble
+yeast_data
+```
+
+## Task 3: Combining Excel and Delimited Data
+
+### 3. Reading the White Wine Excel Data
+The white wine data are stored in an Excel workbook with column names. The first sheet is imported using the "readxl" package and a relative path to the file stored in the project's "data" folder.
+
+```{r}
+# Load readxl
+library(readxl)
+
+# Read the first sheet of the white wine Excel file
+white_wine <- read_excel("data/white-wine.xlsx",
+                         sheet = 1
+                         )
+
+# Print the tibble
+white_wine
+```
+### 4. Replacing the White Wine Variable Names
+The second sheet of the Excel workbook contains alternative variable names without spaces. These names are read into R and used to replace the current names in the white wine tibble. 
+
+```{r}
+# Read in the second sheet containing alternative variable names
+wine_names <- read_excel("data/white-wine.xlsx",
+                         sheet = 2
+                         )
+wine_names
+
+# Replace the current white wine column names
+colnames(white_wine) <- wine_names[[1]]
+
+# Print the updated tibble
+white_wine
+```
+### 5. Adding the Wine Type
+A new variable named "type" is added to the white wine tibble to identify each observation as white wine. The value "white" is assigned to each row. 
+
+```{r}
+# Add a column identifying the wine type
+white_wine$type <- "white"
+
+# Print the updated tibble
+white_wine
+```
+
+### 6. Reading the Red Wine CSV Data
+The red wine data are stored in a semicolon delimited file. The data are read directly from the provided URL using the readr function. The variable names are then replaced using the alternative names from the Excel file for white wine. Additionally, a variable is added to identify each observation as red wine. 
+
+```{r}
+# Read in semicolon delimited data
+red_wine <- read_delim("https://www4.stat.ncsu.edu/~online/datasets/red-wine.csv",
+                       delim = ";"
+                       )
+
+# Replace the red wine column names
+colnames(red_wine) <- wine_names[[1]]
+
+# Add a column identifying the wine type
+red_wine$type <- "red"
+
+# Print the tibble
+red_wine
+```
+### 7. Combining Data Sets
+The white wine and red wine tibbles have the same variables, so they are combined by rows using "dplyr::bind_rows()".
+
+```{r}
+# Combine the white and red wine data sets
+wine_data <- bind_rows(white_wine, red_wine)
+
+# Print the combined tibble
+wine_data
+```
+
+## Task 4: Writing a Function
+
+### 8. Writing the getIQR() Function
+The "getIQR()" function calculates the interquartile range as a difference between the 75th and 25th percentile. Additional arguments can be used to pass unnamed arguments into the quantile function.
+
+```{r}
+# Define a function, calculate the 25th and 75th percentiles, and return difference without a name
+getIQR <- function (x, ...) {
+  quartiles <- quantile(x, probs = c(0.25, 0.75), ...)
+  unname(quartiles[2] - quartiles[1])
+}
+```
+
+### 9. Applying getIQR() Function
+The getIQR function written in part 8 of this task is applied separately to "fixed_acidity" and "citric_acid" variables in the combined wine data. 
+
+```{r}
+# Calculate the IQR for fixed acidity
+getIQR(wine_data$fixed_acidity)
+
+# Calculate the IQR for citric acid
+getIQR(wine_data$citric_acid)
+```
+### 10. Writing the getCoefVar() function
+The "getCoefVar()" function calculates the coefficient of variation, defined as the sample standard deviation divided by the absolute value of the sample mean.  Additional arguments can be used to pass unnamed arguments into the coefficient of variation function.
+
+```{r}
+# Define a function, calculate sample standard deviation divided by absolute sample mean
+getCoefVar <- function (x, ...) {
+  sd(x, ...) / abs(mean(x, ...))
+}
+```
+
+### 11. Applying getCoefVar() Function
+The getCoefVar function written in part 10 of this task is applied separately to "fixed_acidity" and "citric_acid" variables in the combined wine data. 
+
+```{r}
+# Calculate the coefficient of variation for fixed acidity
+getCoefVar(wine_data$fixed_acidity)
+
+# Calculate the coefficient of variation for citric acid
+getCoefVar(wine_data$citric_acid)
+```
+### 12. Writing the getSummaries() Function
+The "getSummaries()" function returns both the interquartile range and coefficient of variation for a numeric vector. The function uses the previously defined functions from part 8 and 10 of this task, and returns named values for each summary.
+
+```{r}
+# Define a function to return both IQR and coefficient of variation
+getSummaries <- function(x, ...) {
+  c(
+    IQR = getIQR(x, ...),
+    CoefVar = getCoefVar(x, ...)
+  )
+}
+```
+
+### 13. Applying getSummaries() Function
+The getSummaries function written in part 12 of this task is applied separately to "fixed_acidity" and "citric_acid" variables in the combined wine data. 
+
+```{r}
+# Calculate summaries for fixed acidity
+getSummaries(wine_data$fixed_acidity)
+
+# Calculate summaries for citric acid
+getSummaries(wine_data$citric_acid)
+```
+### 14. Creating an infix Function
+A custom infix function named "%mycbind%" is created to combine objects by columns. The function uses "cbind()" internally and allows the two objects to be placed on either side of the custom operator.
+
+```{r}
+# Define an infix function to combine objects by columns
+`%mycbind%` <- function(x, y) {
+  cbind(x , y)
+}
+
+# Create two data frames and one vector to test the infix function
+df1 <- data.frame(unif = runif(10), norm = rnorm(10))
+df2 <- data.frame(gamma = rgamma(10, shape = 1), beta = rbeta(10, shape1 = 5, shape2 = 1))
+vec1 <- rnorm(10, mean = 10)
+
+# Test the infix function with two data frames
+df1 %mycbind% df2
+
+# Test the infix function with two data frames and a vector
+(df1 %mycbind% df2) %mycbind% vec1
+```
+

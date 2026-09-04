@@ -1,0 +1,243 @@
+---
+title: "Homework 2"
+author: "Carlos Petzold"
+format: html
+---
+
+# Task 1 - Suppose we have data from a medical experiment on blood pressure. We have the following pre-treatment values for subjects 1 through 20:
+
+- 130, 128, 116, 124, 133, 134, 118, 126, 114, 127, 141, 138, 128, 140, 137, 131, 120, 128, 139, 135
+
+# After treatment, the subjects were measured again (subjects 1 through 20 match):
+
+- 114, 98, 113, 99, 107, 116, 113, 111, 119, 117, 101, 119, 130, 122, 106, 106, 124, 102, 117, 113
+
+## 1.1) Create two vectors. One vector corresponding to the pre measurements and one to the post measurements.
+
+```{r Task 1 Question 1}
+
+#Pre Measurements
+pre <- c(130, 128, 116, 124, 133, 134, 118, 126, 114, 127, 141, 138, 128, 140, 137, 131, 120, 128, 139, 135)
+
+#Post Measurements
+post <- c(114, 98, 113, 99, 107, 116, 113, 111, 119, 117, 101, 119, 130, 122, 106, 106, 124, 102, 117, 113)
+
+```
+
+## 1.2) Assign names to the vector elements using the paste() function. Note that names() can be overwritten by a character vector. To quickly create the names, try running the code
+
+```{r Task 1 Question 2}
+
+#Assigning names to the vector elements (1st element becomes Subject_1_Pre, and so on)
+names(pre) <- paste("Subject", 1:20, "Pre", sep = "_")
+
+#Assigning names to the vector elements (1st element becomes Subject_1_Post, and so on)
+names(post) <- paste("Subject", 1:20, "Post", sep = "_")
+
+#Print names
+names(pre)
+names(post)
+```
+
+## 1.3) Calculate the change in blood pressure for each patient by subtracting post-treatment measurements from pre-treatment measurements. Recall that R does math element-wise! Save this calculation as a new object (also a vector).
+
+```{r Task 1 Question 3}
+
+bp_diff = pre - post
+
+bp_diff
+
+```
+
+## 1.4) Calculate the average decrease in blood pressure across all patients.
+
+```{r Task 1 Question 4}
+
+mean(bp_diff)
+
+```
+
+## 1.5) Determine which patients experienced a decrease in blood pressure after treatment (a positive change). Use the which() function to just return the indices (and names) associated with this type of change.
+
+```{r Task 1 Question 5}
+
+which(bp_diff > 0)
+
+```
+
+## 1.6) Subset the vector of differences to only return those that have a positive change.
+
+```{r Task 1 Question 6}
+
+bp_diff_subset <- which(bp_diff > 0)
+
+bp_diff_subset
+
+```
+
+## 1.7) Calculate the average decrease in blood pressure for those where the blood pressure decreased (positive change).
+
+```{r Task 1 Question 7}
+
+mean(bp_diff_subset)
+
+```
+
+
+# Task 2)
+
+## 2.1) Create a data frame object with four columns corresponding to your data above: patient, pre_bp, post_bp, and diff_bp
+
+```{r Task 2 Question 1}
+
+bp_df <- data.frame(patient = 1:20, pre_bp = pre, post_bp = post, diff_bp = bp_diff)
+
+bp_df
+
+```
+
+## 2.2) Return only rows where the diff_bp column is negative. (Use [ or learn about the subset() function if you’d like. If you use [, don’t reference the original vector from the first part, access the column of the data frame when looking at making a comparison.)
+
+
+```{r Task 2 Question 2}
+
+#referencing the diff_bp column of the bp_df data frame
+bp_df[bp_df$diff_bp < 0, ]
+
+```
+
+## 3) Add a new column to the data frame corresponding to TRUE if the post_bp is less than 120. Recall you can use $ to reference a column. If you reference a column that doesn’t exist, and save a vector (of appropriate length in it), that vector becomes a column of your data frame! Similar to the previous question, don’t reference the original vector from the first part, access the column of the data frame when looking at making a comparison.
+
+```{r Task 2 Question 3}
+
+bp_df$bp_lt_120 <- bp_df$post_bp < 120
+
+```
+
+## 4) Finally, print the data frame out nicely in your final document by modifying the code below appropriately
+
+```{r Task 2 Question 4}
+
+knitr::kable(bp_df)
+
+```
+
+
+# Task 3 - Continue the previous example. Suppose we now also have data from another experiment where the ‘treatment’ was actually a placebo. We have the following pre-treatment values for subjects 1 through 10 (different set of subjects):
+
+- 138, 135, 147, 117, 152, 134, 114, 121, 131, 130
+
+# After treatment, the subjects were measured again (subjects 1 through 10 match):
+
+- 105, 136, 123, 130, 134, 143, 135, 139, 120, 124
+
+## 3.1) Create a new data frame with this data in it that is similar to the data frame from task 2 (including the new column)
+
+```{r Task 3 Question 1}
+
+new_df <- data.frame(
+  patient = 1:10,
+  pre_bp = c(138, 135, 147, 117, 152, 134, 114, 121, 131, 130),
+  post_bp = c(105, 136, 123, 130, 134, 143, 135, 139, 120, 124)
+)
+
+new_df$diff_bp <- new_df$pre_bp - new_df$post_bp
+
+new_df$bp_lt_120 <- new_df$post_bp < 120
+```
+
+## 3.2) Now create and store a list with two elements:
+
+- 1st element named treatment and contains the first data frame you created
+- 2nd element named placebo and contains the second data frame you created.
+
+```{r Task 3 Question 2}
+
+new_list <- list(treatment = bp_df, placebo = new_df)
+
+```
+
+## 3) Access the first list element using three different types of syntax
+
+```{r Task 3 Question 3}
+
+new_list[[1]]
+
+new_list$treatment
+
+new_list[1]
+
+```
+
+## 4) In one line, access the placebo data frame, pre_bp column.
+
+```{r Task 3 Question 4}
+
+new_list[[2]]$pre_bp
+
+```
+
+
+# Task 4
+
+## 1) Suppose we want to characterize the post-treatment (or placebo) blood pressure measurement as optimal (≤ 120), borderline (120 < bp ≤ 130), and high (> 130). First, create a new column in each data frame from above called status. 
+
+```{r Task 4 Question 1}
+
+new_list[[1]]$status <- character(20)
+
+new_list[[2]]$status <- character(10)
+
+```
+
+## 2) For the non-placebo data frame (within the list), create a for loop and use if/then/else logic to create the status column’s values
+
+```{r Task 4 Question 2}
+
+#looping through the full length of the status variable from the first element of the new_list list, which is the non-placebo data frame
+for (i in length(new_list[[1]]$status)) {
+  
+  if (new_list[[1]]$post_bp[i] <= 120) {
+    
+    new_list[[1]]$status[i] = "Optimal"
+    
+  } else if (new_list[[1]]$post_bp[i] > 120 & new_list[[1]]$post_bp[i] <= 130) {
+    
+    new_list[[1]]$status[i] = "Borderline"
+    
+  } else if (new_list[[1]]$post_bp[i] > 130) {
+    
+    new_list[[1]]$status[i] = "High"
+    
+  }
+  
+}
+
+```
+
+## 3)  Repeat for the placebo data frame (within the list).
+
+```{r Task 4 Question 3}
+
+#looping through the full length of the status variable from the second element of the new_list list, which is the placebo data frame
+for (i in length(new_list[[2]]$status)) {
+  
+  if (new_list[[1]]$post_bp[i] <= 120) {
+    
+    new_list[[1]]$status[i] = "Optimal"
+    
+  } else if (new_list[[1]]$post_bp[i] > 120 & new_list[[1]]$post_bp[i] <= 130) {
+    
+    new_list[[1]]$status[i] = "Borderline"
+    
+  } else if (new_list[[1]]$post_bp[i] > 130) {
+    
+    new_list[[1]]$status[i] = "High"
+    
+  }
+  
+}
+
+```
+
+

@@ -1,0 +1,156 @@
+---
+title: "ST558_Homework3_King"
+format: html
+---
+
+# Task 1: Conceptual Questions
+
+1.  The working path for this file would be "../MyData.csv"
+2.  The major benefits of using R Projects are the ability to manage multiple files associated with a project, and the integration with GitHub.
+3.  Git is version control software, and GitHub is an online hosting service for Git projects.
+4.  Tibbles differ from data frames in that they print more nicely, and when you subset one column of a tibble, it doesn't turn into a vector, it stays a tibble.
+
+# Task 2: Reading Delimited Data
+
+## Glass Data
+
+```{r}
+# loading in tidyverse
+library(tidyverse)
+# the raw data is comma delimited, so we use read_csv. the columns names are set to a vector of the names.
+glassData <- read_csv("https://www4.stat.ncsu.edu/online/datasets/glass.data",col_names = c("ID","RI","NA","MG","AL","SI","K","CA","BA","FE","Type"))
+# print the tibble
+glassData
+```
+
+## Yeast Data
+
+```{r}
+# the raw data is space delimited, so we use read_table.
+yeastData <- read_table("https://www4.stat.ncsu.edu/online/datasets/yeast.data",col_names = c("seq_name","mcg","gvh","alm","mit","erl","pox","vac","nuc","class"))
+# print the tibble
+yeastData
+```
+
+# Task 3: Combining Excel and Delimited Data
+
+## Initially Reading the Sheet
+
+```{r}
+# loading in readxl
+library(readxl)
+# read in data from the first sheet using read_excel
+whiteData <- read_excel("data/white-wine.xlsx",col_types = "numeric")
+whiteData
+```
+
+## Changing the Column Names
+```{r}
+whiteVars <-read_excel("data/white-wine.xlsx", sheet = excel_sheets("data/white-wine.xlsx")[2])
+colnames(whiteData) <- whiteVars$Variables
+```
+
+## Adding the White Wine Column
+```{r}
+whiteData$type <- "white"
+```
+
+## Reading in Red Wine
+
+```{r}
+# repeating the process of reading delimited data, but with semicolons this time
+redData <- read_delim("https://www4.stat.ncsu.edu/~online/datasets/red-wine.csv",col_types = "nnnnnnnnnnnn",delim = ";")
+# changing variable names
+colnames(redData) <- whiteVars$Variables
+# adding the type column
+redData$type <- "red"
+```
+
+## Combining White and Red
+```{r}
+wineData <- bind_rows(whiteData,redData)
+wineData
+```
+
+# Task 4: Writing a Function
+
+## Writing getIQR Function
+
+```{r}
+getIQR <- function(x,...){
+  as.numeric(quantile(x,.75)-quantile(x,.25))
+}
+```
+
+## Applying getIQR to fixed_acidity and citric_acid
+
+```{r}
+getIQR(wineData$fixed_acidity)
+getIQR(wineData$citric_acid)
+```
+## Writing getCoefVar Function
+
+```{r}
+getCoefVar <- function(x,...){
+  sd(x)/abs(mean(x))
+}
+```
+
+
+## Applying getCoefVar to fixed_acidity and citric_acid
+
+```{r}
+getCoefVar(wineData$fixed_acidity)
+getCoefVar(wineData$citric_acid)
+```
+
+## Writing getSummaries Function
+
+```{r}
+getSummaries <- function(x){
+  IQR <- getIQR(x)
+  CV <- getCoefVar(x)
+  return(list(IQR = IQR,CoefVar = CV))
+}
+```
+## Applying getSummaries to fixed_acidity and citric_acid
+
+```{r}
+getSummaries(wineData$fixed_acidity)
+getSummaries(wineData$citric_acid)
+```
+## Infix Function Version of cbind
+
+```{r}
+`%++%` <- function(a,b){
+  cbind(a,b)
+}
+```
+
+## Testing Infix Function on Example Data Frames
+
+```{r}
+# given code:
+df1 <- data.frame(unif = runif(10), norm = rnorm(10))
+df2 <- data.frame(gamma = rgamma(10, shape = 1), beta = rbeta(10, shape1 = 5, shape2 = 1))
+vec1 <- rnorm(10, mean = 10)
+
+# testing:
+
+# two data frames?
+a<-df1%++%df2
+b<-cbind(df1,df2)
+a==b
+
+#
+c<-df1%++%df2%++%vec1
+d<-cbind(df1,df2,vec1)
+c==d
+```
+
+
+
+
+
+
+

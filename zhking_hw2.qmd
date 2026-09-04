@@ -1,0 +1,150 @@
+---
+title: "zhking_hw2"
+format: html
+---
+
+Note: I haven't looked at Aliyah's version, but I don't think there's anything wrong with it. I just want to show that I have also done the homework.
+
+# Task One: Basic Vector Practice
+
+1. Establishing pre- and post- treatment vectors.
+
+```{r}
+pre <- c(130, 128, 116, 124, 133, 134, 118, 126, 114, 127, 141, 138, 128, 140, 137, 131, 120, 128, 139, 135)
+post <- c(114, 98, 113, 99, 107, 116, 113, 111, 119, 117, 101, 119, 130, 122, 106, 106, 124, 102, 117, 113)
+```
+
+2. Assign names to the vector elements
+
+```{r}
+names(pre) <- paste("Subject", 1:20, sep = "_")
+names(post) <- paste("Subject", 1:20, sep = "_")
+```
+
+3. Calculate the change in blood pressure
+
+```{r}
+change <- pre-post
+```
+
+4. Calculate average decrease
+
+```{r}
+mean(change)
+```
+5. Find subjects with a decrease in blood pressure
+
+```{r}
+which(change>0)
+```
+6. Subset vector of only decreases
+
+```{r}
+decreases <- change[which(change>0)]
+```
+
+7. Average decrease in those who decreased
+
+```{r}
+mean(decreases)
+```
+
+# Task 2: Basic Data Frame Practice
+
+1. Create a data frame with previous vectors
+
+```{r}
+data <- data.frame(patient=names(pre),pre_bp=pre,post_bp=post,diff_bp=change)
+```
+
+2. Return only rows where change in bp is negative
+
+```{r}
+data[which(data$diff_bp<0),]
+```
+
+3. Add a new column to the data frame that is TRUE when post_bp is < 120
+
+```{r}
+data$good_bp <- data$post_bp < 120
+```
+
+4. Print Nicely
+```{r}
+knitr::kable(data)
+```
+
+# Task 3: List Practice
+
+1. 
+
+```{r}
+pre_placebo <- c(138, 135, 147, 117, 152, 134, 114, 121, 131, 130)
+post_placebo <- c(105, 136, 123, 130, 134, 143, 135, 139, 120, 124)
+names(pre_placebo) <- paste("Subject", 1:10, sep = "_")
+placebo_bp <- data.frame(pre_placebo,post_placebo,diff_placebo=(pre_placebo-post_placebo),good_bp=post_placebo<120)
+```
+
+
+2. Creating a List of the Dataframes
+
+```{r}
+bp_data_list <- list(treatment=data,placebo=placebo_bp)
+```
+
+3. Accessing First List Element
+
+```{r}
+bp_data_list$treatment
+bp_data_list[1]
+bp_data_list[[1]]
+```
+
+4. Accessing the Second Column of the First Element of the List
+
+```{r}
+bp_data_list$treatment[,2]
+```
+# Task 4: Control Flow Practice
+
+1. Add the status column to both dataframes
+
+
+```{r}
+data$status <- character(20)
+placebo_bp$status <- character(10)
+```
+
+2. Modify the values of the status columns using logic
+
+```{r}
+for (i in 1:20){
+  if (data$post_bp[i]<120){
+    data$status[i]="optimal"
+  }
+  else if (data$post_bp[i]<130){
+    data$status[i]="borderline"
+  }
+  else{
+    data$status[i]="high"
+  }
+}
+```
+
+3. Repeat for the placebo
+
+```{r}
+for (i in 1:10){
+  if (placebo_bp$post_placebo[i]<120){
+    placebo_bp$status[i]="optimal"
+  }
+  else if (placebo_bp$post_placebo[i]<130){
+    placebo_bp$status[i]="borderline"
+  }
+  else{
+    placebo_bp$status[i]="high"
+  }
+}
+```
+
+

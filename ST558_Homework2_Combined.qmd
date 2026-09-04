@@ -1,0 +1,282 @@
+---
+title: "Homework 2"
+author: "Group 8"
+format: html
+---
+
+## Task 1: Basic Vector Practice 
+
+### 1. Creating the Blood Pressure Vectors
+
+Two vectors are created corresponding to the pre-treatment and post-treatment measurements for twenty subjects.
+
+```{r Task 1 Question 1}
+
+#Pre Measurements
+pre <- c(130, 128, 116, 124, 133, 134, 118, 126, 114, 127, 141, 138, 128, 140, 137, 131, 120, 128, 139, 135)
+
+#Post Measurements
+post <- c(114, 98, 113, 99, 107, 116, 113, 111, 119, 117, 101, 119, 130, 122, 106, 106, 124, 102, 117, 113)
+
+```
+
+### 2. Assigning Names to the Vector Elements
+Subject names are assigned using the paste() function to the pre-treatment and post-treatment vectors.
+
+
+```{r Task 1 Question 2}
+
+#Assigning names to the vector elements (1st element becomes Subject_1_Pre, and so on)
+names(pre) <- paste("Subject", 1:20, sep = "_")
+
+#Assigning names to the vector elements (1st element becomes Subject_1_Post, and so on)
+names(post) <- paste("Subject", 1:20, sep = "_")
+
+#Print names
+names(pre)
+names(post)
+```
+
+### 3. Calculating Change in Blood Pressure for Each Subject
+
+Calculated the change in blood pressure (pretreatment - posttreatment) and saved the calculation as a new vector.
+
+```{r Task 1 Question 3}
+
+bp_diff = pre - post
+
+bp_diff
+
+```
+
+### 4. Calculating Average Decrease For All Subjects
+
+Calculated the average decrease in blood pressure across all subjects.
+
+```{r Task 1 Question 4}
+
+mean(bp_diff)
+
+```
+
+### 5. Determining which Subjects Experienced Decrease in BP with Treatment
+
+Determined a list of subjects that experienced a decrease in blood pressure (diff_bp\>0) with treatment.
+
+```{r Task 1 Question 5}
+
+which(bp_diff > 0)
+
+```
+
+### 6. Subset Vectors
+
+Subset the vector of differences to only return those that have a positive change.
+
+```{r Task 1 Question 6}
+
+bp_diff_subset <- bp_diff[bp_diff > 0]
+
+bp_diff_subset
+
+```
+
+### 7. Calculating Average Decrease for Subset of Subjects
+
+Calculated the average decrease in blood pressure for those subjects that had a positive change
+
+```{r Task 1 Question 7}
+
+mean(bp_diff_subset)
+
+```
+
+
+## Task 2: Basic Data Frame Practice
+
+### 1. Creating a Data Frame
+
+Created a data frame object with four columns corresponding to data from Task 1.
+
+```{r Task 2 Question 1}
+
+bp_df <- data.frame(patient = 1:20, pre_bp = pre, post_bp = post, diff_bp = bp_diff)
+
+bp_df
+
+```
+
+### 2. Returning Rows with Select Column Values
+
+Returned only rows where diff_bp column is negative by accessing the column from data frame.
+
+
+```{r Task 2 Question 2}
+
+#referencing the diff_bp column of the bp_df data frame
+bp_df[bp_df$diff_bp < 0, ]
+
+```
+
+### 3. Adding a Column to Existing Data Frame
+
+Added a column to the data frame corresponding to "TRUE" if post_bp \< 120
+
+```{r Task 2 Question 3}
+
+bp_df$bp_lt_120 <- bp_df$post_bp < 120
+
+bp_df
+
+```
+
+### 4. Printing Data Frames
+
+Displayed completed blood pressure data frame in a formatted table.
+
+```{r Task 2 Question 4}
+
+knitr::kable(bp_df)
+
+```
+
+
+## Task 3: List Practice
+
+### 1. Creating Placebo Data Frame
+
+Pre-treatment and post-treatment blood pressure measurements from the placebo experiment are used to create a second data frame similar to the treatment data frame.
+
+```{r Task 3 Question 1}
+
+#creating new data frame called new_df
+new_df <- data.frame(
+  patient = 1:10,
+  pre_bp = c(138, 135, 147, 117, 152, 134, 114, 121, 131, 130), # Create placebo pre-treatment blood pressure vector
+  post_bp = c(105, 136, 123, 130, 134, 143, 135, 139, 120, 124) # Create placebo post-treatment blood pressure vector
+)
+
+# Calculate change in blood pressure for placebo
+new_df$diff_bp <- new_df$pre_bp - new_df$post_bp
+
+# Add a TRUE/FALSE column based on post-placebo blood pressure
+new_df$bp_lt_120 <- new_df$post_bp < 120
+
+new_df
+```
+
+### 2. Create and Store Lists
+
+A list is created to store the treatment and placebo data frames as separate named elements.
+
+```{r Task 3 Question 2}
+
+#creating a new list called new_list which contains our treatment and placebo datasets
+new_list <- list(treatment = bp_df, placebo = new_df)
+
+new_list
+
+```
+
+### 3. Accessing First List Element
+
+The treatment data frame, which is the first element of "new_list", is accessed using three different list-indexing methods.
+
+```{r Task 3 Question 3}
+
+# Access first element using double brackets
+new_list[[1]]
+
+# Access first element using its name
+new_list$treatment
+
+# Access first element using single brackets
+new_list[1]
+
+```
+
+### 4. Accessing a Specified Column of a Data Frame
+
+The "pre_bp" column is accessed directly from the placebo data frame stored within "new_list".
+
+```{r Task 3 Question 4}
+
+# Access the placebo pre-treatment blood pressure column
+new_list[[2]]$pre_bp
+
+```
+
+
+## Task 4: Control Flow Practice
+
+### 1. Creating Status Column
+
+A new character column called "status" is added to each data frame stored in "new_list". These columns will later be filled using conditional logic based on post-treatment blood pressure. 
+
+```{r Task 4 Question 1}
+
+new_list[[1]]$status <- character(20)
+
+new_list[[2]]$status <- character(10)
+
+```
+
+### 2. Assigning Status for Treatment Group
+
+A "for loop" and conditional statements are used to assign blood pressure status to each treatment subject based on their post-treatment blood pressure.
+
+```{r Task 4 Question 2}
+
+#looping through the full length of the status variable from the first element of the new_list list, which is the non-placebo data frame
+for (i in 1:20) {
+  
+  if (new_list[[1]]$post_bp[i] <= 120) {
+    
+    new_list[[1]]$status[i] <- "Optimal"
+    
+  } else if (new_list[[1]]$post_bp[i] > 120 & new_list[[1]]$post_bp[i] <= 130) {
+    
+    new_list[[1]]$status[i] <- "Borderline"
+    
+  } else {
+    
+    new_list[[1]]$status[i] <- "High"
+    
+  }
+  
+}
+
+new_list$treatment
+
+```
+
+### 3. Assigning Status for Placebo Group
+
+A "for loop" and conditional statements are used to assign blood pressure status to each placebo subject based on their post-treatment blood pressure.
+
+```{r Task 4 Question 3}
+
+#looping through the full length of the status variable from the second element of the new_list list, which is the placebo data frame
+for (i in 1:10) {
+  
+  if (new_list[[2]]$post_bp[i] <= 120) {
+    
+    new_list[[2]]$status[i] <- "Optimal"
+    
+  } else if (new_list[[2]]$post_bp[i] > 120 & new_list[[2]]$post_bp[i] <= 130) {
+    
+    new_list[[2]]$status[i] <- "Borderline"
+    
+  } else {
+    
+    new_list[[2]]$status[i] <- "High"
+    
+  }
+  
+}
+
+new_list$placebo
+
+```
+
+
