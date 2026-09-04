@@ -3,3 +3,14 @@ title: "ST558_Homework3_Haverhals"
 format: html
 editor: visual
 ---
+
+##Task 1
+
+#1.
+
+
+
+```{r}
+
+```
+
