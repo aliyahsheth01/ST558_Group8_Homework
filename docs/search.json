@@ -362,5 +362,12 @@
     "title": "ST558_Homework3_King",
     "section": "Testing Infix Function on Example Data Frames",
     "text": "Testing Infix Function on Example Data Frames\n\n# given code:\ndf1 &lt;- data.frame(unif = runif(10), norm = rnorm(10))\ndf2 &lt;- data.frame(gamma = rgamma(10, shape = 1), beta = rbeta(10, shape1 = 5, shape2 = 1))\nvec1 &lt;- rnorm(10, mean = 10)\n\n# testing:\n\n# two data frames?\na&lt;-df1%++%df2\nb&lt;-cbind(df1,df2)\na==b\n\n      unif norm gamma beta\n [1,] TRUE TRUE  TRUE TRUE\n [2,] TRUE TRUE  TRUE TRUE\n [3,] TRUE TRUE  TRUE TRUE\n [4,] TRUE TRUE  TRUE TRUE\n [5,] TRUE TRUE  TRUE TRUE\n [6,] TRUE TRUE  TRUE TRUE\n [7,] TRUE TRUE  TRUE TRUE\n [8,] TRUE TRUE  TRUE TRUE\n [9,] TRUE TRUE  TRUE TRUE\n[10,] TRUE TRUE  TRUE TRUE\n\n#\nc&lt;-df1%++%df2%++%vec1\nd&lt;-cbind(df1,df2,vec1)\nc==d\n\n      unif norm gamma beta    b\n [1,] TRUE TRUE  TRUE TRUE TRUE\n [2,] TRUE TRUE  TRUE TRUE TRUE\n [3,] TRUE TRUE  TRUE TRUE TRUE\n [4,] TRUE TRUE  TRUE TRUE TRUE\n [5,] TRUE TRUE  TRUE TRUE TRUE\n [6,] TRUE TRUE  TRUE TRUE TRUE\n [7,] TRUE TRUE  TRUE TRUE TRUE\n [8,] TRUE TRUE  TRUE TRUE TRUE\n [9,] TRUE TRUE  TRUE TRUE TRUE\n[10,] TRUE TRUE  TRUE TRUE TRUE"
+  },
+  {
+    "objectID": "ST558_Homework3_Haverhals.html#task-2",
+    "href": "ST558_Homework3_Haverhals.html#task-2",
+    "title": "ST558_Homework3_Haverhals",
+    "section": "Task 2",
+    "text": "Task 2\n\n\n# A tibble: 214 × 11\n      Id    RI    Na    Mg    Al    Si     K    Ca    Ba    Fe   X11\n   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;\n 1     1  1.52  13.6  4.49  1.1   71.8  0.06  8.75     0  0        1\n 2     2  1.52  13.9  3.6   1.36  72.7  0.48  7.83     0  0        1\n 3     3  1.52  13.5  3.55  1.54  73.0  0.39  7.78     0  0        1\n 4     4  1.52  13.2  3.69  1.29  72.6  0.57  8.22     0  0        1\n 5     5  1.52  13.3  3.62  1.24  73.1  0.55  8.07     0  0        1\n 6     6  1.52  12.8  3.61  1.62  73.0  0.64  8.07     0  0.26     1\n 7     7  1.52  13.3  3.6   1.14  73.1  0.58  8.17     0  0        1\n 8     8  1.52  13.2  3.61  1.05  73.2  0.57  8.24     0  0        1\n 9     9  1.52  14.0  3.58  1.37  72.1  0.56  8.3      0  0        1\n10    10  1.52  13    3.6   1.36  73.0  0.57  8.4      0  0.11     1\n# ℹ 204 more rows"
   }
 ]

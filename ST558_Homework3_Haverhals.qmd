@@ -20,9 +20,16 @@ Git is version control software that allows you to save and track changes to fil
 
 # 4. 
 
-A tibble is a special, updated version of a data frame which is used within the set of tidyverse packages. One difference between the two is that tibbles print more neatly and show information regarding the number of rows and columns. I can't find it back in the notes, but if I remember correctly, data frames convert columns you pull from it to a vector, whereas tibbles continue to treat these as tibbles, which is good because, within the tidyverse, functions are written to take in and output tibbles.
+A tibble is a special, updated version of a data frame which is used within the set of tidyverse packages. One difference between the two is that tibbles print more neatly and show information regarding the number of rows and columns. Another important difference is that data frames convert columns you pull from it to a vector, whereas tibbles continue to treat these as tibbles, which is good because, within the tidyverse, functions are written to take in and output tibbles.
+
+## Task 2
 
 ```{r}
-
+#| message: false
+#| warning: false
+#| echo: false
+library(tidyverse)
+glass_data<-read_csv("https://www4.stat.ncsu.edu/~online/datasets/glass.data",col_names=c("Id","RI","Na","Mg","Al","Si","K","Ca","Ba","Fe"))
+glass_data
 ```
 
