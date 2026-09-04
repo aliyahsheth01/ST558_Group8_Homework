@@ -4,11 +4,23 @@ format: html
 editor: visual
 ---
 
-##Task 1
+## Task 1: Conceptual Questions
 
-#1.
+# 1.
 
+I read this as asking how to move up one directory level from the working directory to get a file stored in the same folder as the working directory. To do this, the _relative path_ you'd use is __../MyData.csv__  . (I'm trying to get a little fancier with the text in my rendered documents.)
 
+# 2. 
+
+R projects give you a way to organize all the things you're doing in R. I don't have a ton of experience using them yet, but it seems like they enable you to create an all-inclusive environment for whatever you're working on at the time. This, in turn, leaves anything else you might be working on in parallel alone. It also lets you tell R where to look when calling files (handy) and helps R communicate with GitHub. Having R projects also lets you switch between broader tasks you might be working on easily in that when you which R projects, everything you need comes with it.
+
+# 3. 
+
+Git is version control software that allows you to save and track changes to files you might be working on, keeping everything in a repository. GitHub is the online service tracks these changes and makes it possible to share your repository so others can colloborate with you and see the changes you're making. 
+
+# 4. 
+
+A tibble is a special, updated version of a data frame which is used within the set of tidyverse packages. One difference between the two is that tibbles print more neatly and show information regarding the number of rows and columns. I can't find it back in the notes, but if I remember correctly, data frames convert columns you pull from it to a vector, whereas tibbles continue to treat these as tibbles, which is good because, within the tidyverse, functions are written to take in and output tibbles.
 
 ```{r}
 
