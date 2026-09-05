@@ -29,7 +29,7 @@ A tibble is a special, updated version of a data frame which is used within the 
 #| warning: false
 #| echo: false
 library(tidyverse)
-glass_data<-read_csv("https://www4.stat.ncsu.edu/~online/datasets/glass.data",col_names=c("Id","RI","Na","Mg","Al","Si","K","Ca","Ba","Fe"))
+glass_data<-read_csv("https://www4.stat.ncsu.edu/~online/datasets/glass.data",col_names=c("Id","RI","Na","Mg","Al","Si","K","Ca","Ba","Fe","Type of glass"))
 glass_data
 ```
 
