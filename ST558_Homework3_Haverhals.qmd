@@ -4,25 +4,27 @@ format: html
 editor: visual
 ---
 
-## Task 1: Conceptual Questions
+# Task 1: Conceptual Questions
 
-# 1.
+## 1.
 
 I read this as asking how to move up one directory level from the working directory to get a file stored in the same folder as the working directory. To do this, the _relative path_ you'd use is __../MyData.csv__  . (I'm trying to get a little fancier with the text in my rendered documents.)
 
-# 2. 
+## 2. 
 
 R projects give you a way to organize all the things you're doing in R. I don't have a ton of experience using them yet, but it seems like they enable you to create an all-inclusive environment for whatever you're working on at the time. This, in turn, leaves anything else you might be working on in parallel alone. It also lets you tell R where to look when calling files (handy) and helps R communicate with GitHub. Having R projects also lets you switch between broader tasks you might be working on easily in that when you which R projects, everything you need comes with it.
 
-# 3. 
+## 3. 
 
 Git is version control software that allows you to save and track changes to files you might be working on, keeping everything in a repository. GitHub is the online service tracks these changes and makes it possible to share your repository so others can colloborate with you and see the changes you're making. 
 
-# 4. 
+## 4. 
 
 A tibble is a special, updated version of a data frame which is used within the set of tidyverse packages. One difference between the two is that tibbles print more neatly and show information regarding the number of rows and columns. Another important difference is that data frames convert columns you pull from it to a vector, whereas tibbles continue to treat these as tibbles, which is good because, within the tidyverse, functions are written to take in and output tibbles.
 
-## Task 2
+# Task 2: Reading Delimited Data
+
+## 1 
 
 ```{r}
 #| message: false
@@ -31,5 +33,252 @@ A tibble is a special, updated version of a data frame which is used within the 
 library(tidyverse)
 glass_data<-read_csv("https://www4.stat.ncsu.edu/~online/datasets/glass.data",col_names=c("Id","RI","Na","Mg","Al","Si","K","Ca","Ba","Fe","Type of glass"))
 glass_data
+```
+
+## 2. 
+
+To find out what's being used to delimit the data in this file, we'll look at the first couple of lines:
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+readLines("https://www4.stat.ncsu.edu/~online/datasets/yeast.data", n=2)
+#yeast_data<-read_csv("https://www4.stat.ncsu.edu/~online/datasets/yeast.data")
+```
+
+It looks like there are 10 columns here, with some number of spaces separating them. So, we changed the display options to see the white space characters and pasted it into the coding area so we could see that the delimiter is actually two spaces. With that in hand, we"re able to read the file into R. 
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+
+yeast_data<-read_delim("https://www4.stat.ncsu.edu/~online/datasets/yeast.data",delim = "  ",col_names=c("seq_name","mcg","gvh","alm","mit","erl","pox","vac","nuc","class"))
+yeast_data
+```
+
+# Task 3: Combining Excel and Delimited Data
+
+## 3. 
+
+```{r}
+library(readxl)
+white_wine<-read_excel("data/white-wine.xlsx")
+white_wine
+```
+
+## 4.
+
+Next, we're to pull the column names from the second sheet of the xlsx file, so as to remove the spaces in the column names (by renaming them).
+
+First, we'll need to know what the sheet names are: 
+
+```{r}
+excel_sheets("data/white-wine.xlsx")
+```
+
+Now, we can read in the data from that second sheet.
+
+```{r}
+white_wine_names<-read_excel("data/white-wine.xlsx", sheet=excel_sheets("data/white-wine.xlsx")[2])
+white_wine_names
+```
+
+Success! Now we can overwrite the names column of the tibble with the column names we just pulled from the second sheet. This might be overkill, but we can just re-read in the file and name the variables as we want. First, since my names are still a tibble, we'll need to pull it and turn it into a character vector
+
+```{r}
+ch_names<-white_wine_names |> pull(Variables) |> as.character()
+white_wine<-white_wine |> rename_with(~ ch_names)
+white_wine
+```
+
+## 5. 
+
+Now, we'll add a column at the end indicating that all these are white wines.
+
+```{r}
+white_wine<-white_wine|>mutate(wine_type = "white")
+white_wine
+```
+
+## 6. 
+
+Next, we're to do something similar with a red wine data set and the readr package. 
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+red_wine<-read_csv("https://www4.stat.ncsu.edu/~online/datasets/red-wine.csv")
+red_wine
+
+```
+
+After reading the file in and looking at it, I can see a few things. One is that it looks like the delimiter is actually a semicolon, not a a comma. So...
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+ 
+red_wine<-read_delim("https://www4.stat.ncsu.edu/~online/datasets/red-wine.csv", delim=";")
+red_wine
+```
+
+Much better. Now, we need to rename columns again (fingers crossed that variable names are in the second sheet again).
+
+```{r}
+#excel_sheets("https://www4.stat.ncsu.edu/~online/datasets/red-wine.csv")
+```
+
+Alright, so this doesn't work since it's not an Excel file. Instead, we'll use colnames directly on the tibble: 
+
+```{r}
+red_wine_names<-colnames(red_wine)
+red_wine_names
+```
+Since there are only 12 names here, it's easy enough to manually replace the spaces with underscores via copy and paste. There's likely a better way that wouldn't require doing it the hard way. Once that's done, we can replace the column names.
+
+```{r}
+red_wine_names<-c("fixed_acidity","volatile_acidity","citric_acid","residual_sugar","chlorides","free_sulfur_dioxide","total_sulfur_dioxide","density","pH","sulphates","alcohol","quality")
+red_wine<-red_wine |> rename_with(~ red_wine_names)
+red_wine
+```
+
+Finally, we need to add a column that indicates all the wines listed are red ones.
+
+```{r}
+red_wine<-red_wine|>mutate(wine_type = "red")
+red_wine
+```
+
+## 7.
+
+Lastly, we need to combine the white and red wine data sets into a single tibble. 
+
+```{r}
+total_wines<-bind_rows(white_wine,red_wine)
+```
+
+If we want to see if it worked, and, since there are 4.898 white wines, we can look at a few lines around there to make sure things are looking good. 
+
+```{r}
+total_wines[4897:5001,]
+```
+
+Looking good!
+
+# Task 4: Writing a <u>Fun</u>ction
+
+## 8. 
+
+For this task, we'll start creating functions. To begin, we'll take in a vector and find the IQR. 
+
+```{r}
+getIQR<-function(x){
+  quantile(x,0.75,names=0)-quantile(x,0.25,names=0)
+}
+```
+
+Note the changing of the names default within the quantiles function so that only the answer is returned. Let's try it!
+
+```{r}
+getIQR(c(1:20))
+trial_vector<-c(1:100)
+getIQR(trial_vector)
+```
+
+## 9. 
+
+Next, we'll get the interquartile range of the numbers in the fixed_acidity and citric_acid columns of the total_wine tibble above. 
+
+```{r}
+print("fixed_acidity IQR")
+getIQR(total_wines$fixed_acidity)
+print("citric_acid IQR")
+getIQR(total_wines$citric_acid)
+```
+
+## 10. 
+
+Next, we'll write a function to get the sample coefficient of variation (defined as the sample standard deviation divided by the absolute value of the sample mean).
+
+```{r}
+getCoefVar<-function(x){
+  sd(x)/abs(mean(x))
+}
+```
+
+And now to test: 
+
+```{r}
+getCoefVar(trial_vector)
+getCoefVar(c(1:100))
+```
+Much success!
+
+## 11. 
+
+Now, to apply this function to columns of our tibble.
+
+```{r}
+print("fixed_acidity coefficient of variation")
+getCoefVar(total_wines$fixed_acidity)
+print("citric_acid coefficient of variation")
+getCoefVar(total_wines$citric_acid)
+```
+
+## 12. 
+
+Now, we create a new function to apply the two previous ones. 
+
+```{r}
+getSummaries<- function(x){
+  c("IQR"=getIQR(x),"Coef_of_Var"=getCoefVar(x))
+}
+```
+
+Giving it a shot: 
+
+```{r}
+getSummaries(trial_vector)
+getSummaries(c(1:100))
+```
+
+## 13.
+
+Now, to apply this new function to the columns we've been referring to. 
+```{r}
+print("Summary of fixed_acidity")
+getSummaries(total_wines$fixed_acidity)
+print("Summary of citric_acid")
+getSummaries(total_wines$citric_acid)
+```
+## 14. 
+
+Finally, we'll create a function to replace the cbind function. First, we'll write the function: 
+
+```{r}
+infix<-function(...){
+  cbind(...)
+}
+```
+
+
+Now, we'll create the data frames and vector we'll be working on: 
+
+```{r}
+set.seed(6.28)
+df1 <- data.frame(unif = runif(10), norm = rnorm(10))
+df2 <- data.frame(gamma = rgamma(10, shape = 1), beta = rbeta(10, shape1 = 5, shape2 = 1))
+vec1 <- rnorm(10, mean = 10)
+```
+
+Now, to test!
+
+```{r}
+infix(df1,df2)
+infix(df1,df2,vec1)
 ```
 
