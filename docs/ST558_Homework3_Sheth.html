@@ -2,16 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.8.25">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>ST558_Homework3_Sheth</title>
 <style>
-/* Default styles provided by pandoc.
-** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
-*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -69,14 +66,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <meta name="quarto:offset" content="./">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-45431c2918bd31147ddb3fa7038bb99f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-1d4f84655f446305ac42a8f1abcf7405.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -157,7 +155,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
 ✔ dplyr     1.2.1     ✔ readr     2.2.0
 ✔ forcats   1.0.1     ✔ stringr   1.6.0
-✔ ggplot2   4.0.3     ✔ tibble    3.3.1
+✔ ggplot2   4.0.2     ✔ tibble    3.3.1
 ✔ lubridate 1.9.5     ✔ tidyr     1.3.2
 ✔ purrr     1.2.2     
 ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
@@ -521,13 +519,13 @@ dbl (12): fixed acidity, volatile acidity, citric acid, residual sugar, chlo...
 <h3 class="anchored" data-anchor-id="applying-getsummaries-function">13. Applying getSummaries() Function</h3>
 <p>The getSummaries function written in part 12 of this task is applied separately to “fixed_acidity” and “citric_acid” variables in the combined wine data.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the coefficient of variation for fixed acidity</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate summaries for fixed acidity</span></span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">getSummaries</span>(wine_data<span class="sc">$</span>fixed_acidity)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      IQR   CoefVar 
 1.3000000 0.1796783 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the coefficient of variation for citric acid</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate summaries for citric acid</span></span>
 <span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="fu">getSummaries</span>(wine_data<span class="sc">$</span>citric_acid)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      IQR   CoefVar 
@@ -544,7 +542,7 @@ dbl (12): fixed acidity, volatile acidity, citric acid, residual sugar, chlo...
 <span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cbind</span>(x , y)</span>
 <span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Create three data frames to test the infix function</span></span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Create two data frames and one vector to test the infix function</span></span>
 <span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>df1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">unif =</span> <span class="fu">runif</span>(<span class="dv">10</span>), <span class="at">norm =</span> <span class="fu">rnorm</span>(<span class="dv">10</span>))</span>
 <span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>df2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">gamma =</span> <span class="fu">rgamma</span>(<span class="dv">10</span>, <span class="at">shape =</span> <span class="dv">1</span>), <span class="at">beta =</span> <span class="fu">rbeta</span>(<span class="dv">10</span>, <span class="at">shape1 =</span> <span class="dv">5</span>, <span class="at">shape2 =</span> <span class="dv">1</span>))</span>
 <span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>vec1 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">10</span>, <span class="at">mean =</span> <span class="dv">10</span>)</span>
@@ -552,32 +550,32 @@ dbl (12): fixed acidity, volatile acidity, citric acid, residual sugar, chlo...
 <span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Test the infix function with two data frames</span></span>
 <span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a>df1 <span class="sc">%mycbind%</span> df2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>         unif        norm     gamma      beta
-1  0.70451211 -1.34263643 0.2024057 0.5415135
-2  0.03567566 -0.08771401 0.4858628 0.9967489
-3  0.65629765 -0.06121886 4.7188373 0.9811070
-4  0.30815680  0.87317608 0.3614098 0.8999855
-5  0.85496731  0.78376671 3.7147432 0.9260664
-6  0.83847597  1.81257543 2.5125684 0.6397837
-7  0.35102585 -1.20420502 1.7660996 0.9544008
-8  0.82237245 -1.15368417 0.2484631 0.8951799
-9  0.04976303 -1.61661312 0.8223306 0.6882085
-10 0.73327688  0.79684579 1.1642310 0.8710758</code></pre>
+<pre><code>        unif         norm      gamma      beta
+1  0.9347407  1.146302482 0.44217247 0.9992324
+2  0.2277061  0.006999019 0.35424884 0.8518357
+3  0.8028522  0.420734727 1.71371412 0.7015792
+4  0.5508405 -0.514202861 1.64253341 0.9881387
+5  0.3143635 -0.611044987 0.20499887 0.9666079
+6  0.6381555 -0.555636677 0.55569695 0.9323234
+7  0.1690580  1.113525650 1.27116571 0.8961918
+8  0.6324192  0.657416058 1.54397549 0.8973238
+9  0.2483664  1.985541610 0.06388541 0.4752062
+10 0.5099567  0.080982539 0.16770545 0.8485056</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test the infix function with two data frames and a vector</span></span>
 <span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>(df1 <span class="sc">%mycbind%</span> df2) <span class="sc">%mycbind%</span> vec1</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>         unif        norm     gamma      beta         y
-1  0.70451211 -1.34263643 0.2024057 0.5415135  9.699137
-2  0.03567566 -0.08771401 0.4858628 0.9967489 10.989856
-3  0.65629765 -0.06121886 4.7188373 0.9811070  9.914941
-4  0.30815680  0.87317608 0.3614098 0.8999855  8.788046
-5  0.85496731  0.78376671 3.7147432 0.9260664 10.990031
-6  0.83847597  1.81257543 2.5125684 0.6397837 10.515062
-7  0.35102585 -1.20420502 1.7660996 0.9544008  9.387963
-8  0.82237245 -1.15368417 0.2484631 0.8951799  8.461389
-9  0.04976303 -1.61661312 0.8223306 0.6882085  9.777675
-10 0.73327688  0.79684579 1.1642310 0.8710758  9.862581</code></pre>
+<pre><code>        unif         norm      gamma      beta         y
+1  0.9347407  1.146302482 0.44217247 0.9992324 11.017983
+2  0.2277061  0.006999019 0.35424884 0.8518357  9.998710
+3  0.8028522  0.420734727 1.71371412 0.7015792  8.959617
+4  0.5508405 -0.514202861 1.64253341 0.9881387 10.438516
+5  0.3143635 -0.611044987 0.20499887 0.9666079  9.114650
+6  0.6381555 -0.555636677 0.55569695 0.9323234  8.498770
+7  0.1690580  1.113525650 1.27116571 0.8961918 11.998290
+8  0.6324192  0.657416058 1.54397549 0.8973238  9.263749
+9  0.2483664  1.985541610 0.06388541 0.4752062 10.268693
+10 0.5099567  0.080982539 0.16770545 0.8485056 10.264334</code></pre>
 </div>
 </div>
 
