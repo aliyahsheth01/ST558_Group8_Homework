@@ -1,0 +1,25 @@
+---
+title: "Homework 3"
+author: "Carlos Petzold"
+format: html
+---
+
+# Task 1: Conceptual Questions
+
+* 1) If your working directory is myfolder/homework/, what relative path would you specify to get the file located at myfolder/MyData.csv?
+
+  * If my working directory is myfolder/homework/, the relative path that I specify to get the file located at myfolder/Mydata.csv is ../MyData.csv
+
+* 2) What are the major benefits of using R projects?
+
+  * The major benefits of using R Projects are reproducibility and the ability to easily work with others on the same set of files. Each R project has its own working directory, workspace, history, and folder structure, so by sharing an R project with another person, thet will be able to pick it up and use the paths without any headache. 
+  
+* 3) What is Git and what is GitHub?
+
+  * Git is a version control software that tracks changes made to files that are being used my multiple people, and GitHub is a web platform where programmers can share and manage their programs/code. 
+  
+* 4) What are the two main differences between a tibble and a data.frame?
+
+  * A tibble does not print completely in the console when called, but a data frame does. Also, tibbles do not coerce down to a vector when you subset to only 1 column using [].
+  
+  
