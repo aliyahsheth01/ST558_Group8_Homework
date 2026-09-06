@@ -25,7 +25,7 @@ format: html
   
 # Task 2: Reading Delimited Data
 
-## First, we are reading in the glass.data dataset from the UCI machine learning repository
+## 1. First, we are reading in the glass.data dataset from the UCI machine learning repository
 
 ```{r Task 2, Glass Data}
 
@@ -42,24 +42,24 @@ glass_data
 ```
 
 
-## Next, we are reading in the yeast.data dataset from the UCI machine learning repository
+## 2. Next, we are reading in the yeast.data dataset from the UCI machine learning repository
 
-```{r Task 2, Glass Data}
+```{r Task 2, Yeast Data}
 
 #We'll use read_tsv from the readr package to read in the tab-seperated file from the URL:
 
-glass_data <- readr::read_table("https://www4.stat.ncsu.edu/~online/datasets/yeast.data",
+yeast_data <- readr::read_table("https://www4.stat.ncsu.edu/~online/datasets/yeast.data",
                          col_names = c("seq_name", "mcg", "gvh", "alm", "mit", "erl",
                                        "pox", "vac", "nuc", "class"))
 
-glass_data
+yeast_data
 
 ```
 
 
 # Task 3: Combining Excel and Delimited Data
 
-## First we will read in the first sheet of the white wine excel file
+## 3. First we will read in the first sheet of the white wine excel file
 
 ```{r Task 3, read Wine data first sheet}
 
@@ -70,7 +70,7 @@ wine_data
 
 ```
 
-## Next we will read in the second sheet of the white wine excel file, and assign
+## 4. Next we will read in the second sheet of the white wine excel file, and assign
 
 ```{r Task 3, read Wine data second sheet}
 
@@ -84,7 +84,7 @@ colnames(wine_data) <- wine_data_colnames[[1]]
 
 ```
 
-## Next we will add a column to indicate if the wines are white (in this case, all are)
+## 5. Next we will add a column to indicate if the wines are white (in this case, all are)
 
 ```{r Task 3, Wine data white indicator}
 
@@ -94,9 +94,9 @@ wine_data <- wine_data |>
 
 ```
 
-## Next we will read in a red wine dataset (semi-colon delimited)
+## 6. Next we will read in a red wine dataset (semi-colon delimited)
 
-```{r Task 3, Wine data white indicator}
+```{r Task 3, read red wine}
 
 #Using dplyr::mutate to add a white indicator
 red_wine_data <- readr::read_delim("https://www4.stat.ncsu.edu/~online/datasets/red-wine.csv",
@@ -111,12 +111,121 @@ red_wine_data <- red_wine_data |>
 
 ```
 
-## Lastly, we will combine the 2 wine data sets
+## 7. Lastly, we will combine the 2 wine data sets
 
-```{r Task 3, Wine data white indicator}
+```{r Task 3, combine wine data}
 
 #combining the 2 datasets using dplyr::bind_rows
 wine_data_combined <- dplyr::bind_rows(wine_data, red_wine_data)
 
 ```
 
+
+# Task 4: Writing a Function
+
+## 8. Write a basic function (call it getIQR) that takes in a vector of numbers and returns the interquartile range (75th percentile - 25th percentile). You can use the quantile function. Remove the name on the returned vector (i.e. make sure the returned item doesn’t have a name like 75% or something like that). Allow your function to pass unnamed arguments to the quantile function.
+
+```{r Task 4, IQR function}
+
+#this function takes in a vector and returns the interquartile range of the vector
+getIQR <- function(vec = c(1,2,3)) {
+  
+  if (is.numeric(vec)) {
+    
+    iqr <- quantile(vec)[[4]] - quantile(vec)[[2]]
+    return(unname(iqr))
+    
+  } else {
+    
+    return(cat("ERROR: Input vector must be numeric"))
+    
+  }
+  
+}
+
+```
+
+## 9. Take the object from question 7 and apply the getIRQ() function to the fixed_acidity and citric_acid columns (two function calls).
+
+```{r Task 4, IQR function calls}
+
+#find IQR of fixed_acidity variable
+getIQR(wine_data_combined$fixed_acidity)
+
+#find IQR of citric_acid variable
+getIQR(wine_data_combined$citric_acid)
+
+```
+
+## 10. Write another function (call it getCoefVar) that returns the sample coefficient of variation, defined as the sample standard deviation divided by the absolute value of the sample mean. Allow the function to pass unnamed arguments to sd and mean
+
+```{r Task 4, getCoefVar function}
+
+#this function returns the sample coefficient of variation, defined as the sample standard deviation divided by the absolute value of the sample mean
+getCoefVar <- function(x, ...) {
+  
+  samp_coef <- sd(x, ...) / abs(mean(x, ...))
+  
+  return(samp_coef)
+  
+}
+
+```
+
+## 11. Repeat question 9 using the getCoefVar() function.
+
+```{r Task 4, getCoefVar function calls}
+
+#find sample coefficient of variation of fixed_acidity variable
+getCoefVar(wine_data_combined$fixed_acidity)
+
+#find sample coefficient of variation of citric_acid variable
+getCoefVar(wine_data_combined$citric_acid)
+
+```
+
+## 12. Create a function (call it getSummaries) that takes in a vector and returns both the IQR and the coefficient of variation. Do not rewrite your above two functions, call them. When returning your values, give them appropriate names. (This would be called a wrapper function.)
+
+```{r Task 4, getSummaries function}
+
+#this function returns both the IQR and the coefficient of variation
+getSummaries <- function(vec) {
+  
+  output <- c("IQR" = getIQR(vec), "Coef" = getCoefVar(vec))
+  
+  return(output)
+  
+}
+
+```
+
+## 13. Repeat question 9 with the getSummaries() function.
+
+```{r Task 4, getSummaries function calls}
+
+#find summary of fixed_acidity variable
+getSummaries(wine_data_combined$fixed_acidity)
+
+#find summary of citric_acid variable
+getSummaries(wine_data_combined$citric_acid)
+
+```
+
+## 14. Write your own infix function that can be used in replace of the cbind function (feel free to call the cbind function in your function :) Check that the function works on the two data frames below (df1 & df2) and then all three objects (df1, df2, vec1)!
+
+```{r Task 4, infix function and calls}
+
+#this function binds columns
+infix <- function(...) {
+  cbind(...)
+}
+
+#objects for testing
+df1 <- data.frame(unif = runif(10), norm = rnorm(10))
+df2 <- data.frame(gamma = rgamma(10, shape = 1), beta = rbeta(10, shape1 = 5, shape2 = 1))
+vec1 <- rnorm(10, mean = 10)
+
+#function calls
+infix(df1,df2)
+infix(df1,df2,vec1)
+```
