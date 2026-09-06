@@ -31,9 +31,7 @@ format: html
 
 #We'll use read_csv from the readr package to read in the csv file from the URL:
 
-library(readr)
-
-glass_data <- read_csv("https://www4.stat.ncsu.edu/~online/datasets/glass.data",
+glass_data <- readr::read_csv("https://www4.stat.ncsu.edu/~online/datasets/glass.data",
                        col_names = c("ID", "refractive_index", "sodium",
                                      "magnesium", "aluminum", "silicon",
                                      "potassium", "calcium", "barium",
@@ -50,11 +48,75 @@ glass_data
 
 #We'll use read_tsv from the readr package to read in the tab-seperated file from the URL:
 
-glass_data <- read_table("https://www4.stat.ncsu.edu/~online/datasets/yeast.data",
+glass_data <- readr::read_table("https://www4.stat.ncsu.edu/~online/datasets/yeast.data",
                          col_names = c("seq_name", "mcg", "gvh", "alm", "mit", "erl",
                                        "pox", "vac", "nuc", "class"))
 
 glass_data
+
+```
+
+
+# Task 3: Combining Excel and Delimited Data
+
+## First we will read in the first sheet of the white wine excel file
+
+```{r Task 3, read Wine data first sheet}
+
+#Reading in first sheet of the file
+wine_data <- readxl::read_excel("data/white-wine.xlsx", sheet = 1)
+
+wine_data
+
+```
+
+## Next we will read in the second sheet of the white wine excel file, and assign
+
+```{r Task 3, read Wine data second sheet}
+
+#Reading in second sheet of the file
+wine_data_colnames <- readxl::read_excel("data/white-wine.xlsx", sheet = 2)
+
+wine_data_colnames
+
+#Assigning the vector of names from the second sheet to be the column names of the first sheet
+colnames(wine_data) <- wine_data_colnames[[1]]
+
+```
+
+## Next we will add a column to indicate if the wines are white (in this case, all are)
+
+```{r Task 3, Wine data white indicator}
+
+#Using dplyr::mutate to add a white wine indicator
+wine_data <- wine_data |>
+  dplyr::mutate(wine_type = "white")
+
+```
+
+## Next we will read in a red wine dataset (semi-colon delimited)
+
+```{r Task 3, Wine data white indicator}
+
+#Using dplyr::mutate to add a white indicator
+red_wine_data <- readr::read_delim("https://www4.stat.ncsu.edu/~online/datasets/red-wine.csv",
+                                  delim = ";")
+
+#replacing column names
+colnames(red_wine_data) <- wine_data_colnames[[1]]
+
+#Using dplyr::mutate to add a red wine indicator
+red_wine_data <- red_wine_data |>
+  dplyr::mutate(wine_type = "red")
+
+```
+
+## Lastly, we will combine the 2 wine data sets
+
+```{r Task 3, Wine data white indicator}
+
+#combining the 2 datasets using dplyr::bind_rows
+wine_data_combined <- dplyr::bind_rows(wine_data, red_wine_data)
 
 ```
 
