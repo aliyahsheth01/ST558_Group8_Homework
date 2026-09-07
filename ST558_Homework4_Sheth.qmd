@@ -1,0 +1,183 @@
+---
+title: "ST558_Homework4_Sheth"
+format: html
+editor: visual
+---
+
+## Task 1: Conceptual Questions 
+
+#### 1. BaseR's Chaining Operator
+
+The following nested function call is rewritten using baseR's chaining operator ("|>"). The 'iris' data are first converted to a tibble, variables beginning with "Petal" and the "Species" variable are selected, observations with "Petal.Length < 1.55" are retained, and the resulting data are sorted by "Species".
+  library(tidyverse)
+  arrange(filter(select(as_tibble(iris), starts_with("Petal"), Species), Petal.Length < 1.55), Species)
+  
+```{r}
+# Load tidyverse library
+library(tidyverse)
+
+# Convert iris to tibble, select variables, filter observations, and sort by "Species"
+as_tibble(iris) |>
+    select(starts_with("Petal"), Species) |>
+    filter(Petal.Length < 1.55) |>
+    arrange(Species)
+```
+
+#### 2. Long versus Wide Format Data
+
+Long format data have one observation per row and one variable per column. Wide format data may contain more than one observation in a given row, with repeated measurements often spread across multiple columns.
+
+For statistical analysis, long format data are generally preferred because most plotting, summarizing, and modeling methods expect data to be in long form.
+
+## Task 2: Data Manipulation
+
+### Glass Data
+
+#### 3. Creating a Factor for Type of Glass
+
+The glass data are read directly from the provided URL and the columns are named. A chain is started on the glass data, and "mutate()" is used to overwrite the numeric "Type_of_glass" variable with a factor containing descriptive labels for each glass type. Code for questions 3 and 4 is presented in the same chunk below. 
+
+#### 4. Filtering the Glass Data
+
+The chain is continued to retain only observations with "Fe" values less than 0.2 and glass types of either "tableware" or "headlamps". Code for questions 3 and 4 is presented in the same chunk below. 
+
+```{r}
+# Assign column names for data set
+glass_names <- c("Id", "RI", "Na", "Mg", "Al", "Si", "K", "Ca", "Ba", "Fe", "Type_of_glass")
+
+# Read in comma delimited data from URL
+glass_data <- read_csv("https://www4.stat.ncsu.edu/~online/datasets/glass.data", 
+                       col_names = glass_names
+                      )
+
+# Replace numeric glass type values with descriptive factor labels
+glass_data_filtered <- glass_data |>
+  mutate(
+    Type_of_glass = factor(
+      Type_of_glass,
+      levels = c (1, 2, 3, 4, 5, 6, 7),
+      labels = c (
+        "building_windows_float_processed", 
+        "building_windows_non_float_processed",
+        "vehicle_windows_float_processed",
+        "vehicle_windows_non_float_processed",
+        "containers",
+        "tableware",
+        "headlamps"
+      )
+    )
+  ) |>
+  filter(
+    Fe < 0.2,
+    Type_of_glass %in% c("tableware", "headlamps")
+  )
+
+# Print the resulting tibble
+glass_data_filtered
+```
+### Yeast Data
+
+#### 5. Removing Variables from Data Set
+
+The yeast data are read directly from the provided URL and column names are assigned. A chain is started on the yeast data, and "select()" is used to remove the "seq_name" and "nuc" variables. The code for questions 5 and 6 is presented in the same chunk below.
+
+#### 6. Adding Class-Specific Means and Medians
+
+The chain is continued by grouping the observations by "class". The "across()" function within "mutate()" is then used to add the mean and median of each numeric variable ("mcg", "gvh", "alm", "mit", "erl", "pox", and "vac") for each class group. The code for questions 5 and 6 is presented in the same chunk below.
+
+```{r}
+# Assign column names for the data set
+yeast_names <- c("seq_name", "mcg", "gvh", "alm", "mit", "erl", "pox", "vac", "nuc", "class")
+
+# Read in space (whitespace) delimited data from URL
+yeast_data <- read_table("https://www4.stat.ncsu.edu/~online/datasets/yeast.data",
+                         col_names = yeast_names
+                         )
+
+# Remove variables("seq_name" and "nuc") and calculate class-specific means and medians
+yeast_data_summary <- yeast_data |>
+  select(-seq_name, -nuc) |>
+  group_by(class) |>
+  mutate (
+    across (
+      c (mcg, gvh, alm, mit, erl, pox, vac),
+      list (mean = mean, median = median)
+    )
+  )
+
+# Print the resulting tibble
+yeast_data_summary
+```
+
+### Wine Data
+
+#### 7. Filtering the Wine Data
+
+The white and red wine data are read and combined as in Homework 3. A chain is started on the combined wine data, and "filter()" is used to retain only high-quality wines with "quality > 6.5" and wines with "alcohol < 132". Code for questions 7 through 10 is presented together in the chunk below. 
+
+#### 8. Sorting the Wine Data
+
+The chain is continued using "arrange()" with "desc(quality)" to sort the filtered wine data from highest quality to lowest quality. Code for questions 7 through 10 is presented together in the chunk below. 
+
+#### 9. Selecting Wine Variables
+
+The chain is continued using "select()" to retain variables containing "acid", along with the "alcohol", "type", and "quality" variables. Code for questions 7 through 10 is presented together in the chunk below. 
+
+#### 10. Adding Alcohol Summary Statistics by Quality
+
+The chain is continued by grouping the wine data by "quality". The mean and standard deviation of "alcohol" are then calculated for each quality group and added as new variables using "mutate()". Code for questions 7 through 10 is presented together in the chunk below. 
+
+```{r}
+# Load readxl
+library(readxl)
+
+# Read the first sheet of the white wine Excel file
+white_wine <- read_excel("data/white-wine.xlsx",
+                         sheet = 1
+                         )
+
+# Read in the second sheet containing alternative variable names
+wine_names <- read_excel("data/white-wine.xlsx",
+                         sheet = 2
+                         )
+
+# Replace the current white wine column names
+colnames(white_wine) <- wine_names[[1]]
+
+# Add a column identifying the wine type
+white_wine$type <- "white"
+
+# Read in semicolon delimited data
+red_wine <- read_delim("https://www4.stat.ncsu.edu/~online/datasets/red-wine.csv",
+                       delim = ";"
+                       )
+
+# Replace the red wine column names
+colnames(red_wine) <- wine_names[[1]]
+
+# Add a column identifying the wine type
+red_wine$type <- "red"
+
+# Combine the white and red wine data sets
+wine_data <- bind_rows(white_wine, red_wine)
+
+# Filter high-quality wines, sort from highest to lowest quality, select variables, and calculate alcohol summary statistics by quality
+wine_data_filtered <- wine_data |>
+  filter (
+    quality > 6.5,
+    alcohol < 132
+  ) |>
+  arrange (desc(quality)) |>
+  select (contains ("acid"), alcohol, type, quality) |>
+  group_by (quality) |>
+  mutate (
+    alcohol_mean = mean(alcohol),
+    alcohol_sd = sd(alcohol)
+  )
+
+# Print the resulting tibble
+wine_data_filtered
+```
+
+
+## Task 3: Database Practice
