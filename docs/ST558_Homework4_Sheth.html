@@ -534,7 +534,7 @@ dbl (12): fixed acidity, volatile acidity, citric acid, residual sugar, chlo...
 <p>The “HallOfFame” table is used to identify players who were inducted into the Hall of Fame. The resulting data retain the player identifier, the year the player was voted in, and the category.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Return Hall of Fame inductees, induction year, and category</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>hall_of_fame <span class="ot">&lt;-</span> <span class="fu">tbl</span> (con, <span class="st">"HallofFame"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>hall_of_fame <span class="ot">&lt;-</span> <span class="fu">tbl</span> (con, <span class="st">"HallOfFame"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(inducted <span class="sc">==</span> <span class="st">"Y"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(playerID, yearID, category)</span>
 <span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a></span>
@@ -563,7 +563,7 @@ dbl (12): fixed acidity, volatile acidity, citric acid, residual sugar, chlo...
 <h4 class="anchored" data-anchor-id="adding-player-names-to-the-hall-of-fame-data">15. Adding Player Names to the Hall of Fame Data</h4>
 <p>The Hall of Fame results from Question 14 are combined with the “People” table to add each inducted player’s first and last name.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Select player names from the Player table</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Select player names from the People table</span></span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>people_names <span class="ot">&lt;-</span> <span class="fu">tbl</span>(con, <span class="st">"People"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(playerID, nameFirst, nameLast)</span>
 <span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -598,10 +598,72 @@ dbl (12): fixed acidity, volatile acidity, citric acid, residual sugar, chlo...
 <section id="summarizing-manager-career-records" class="level4">
 <h4 class="anchored" data-anchor-id="summarizing-manager-career-records">16. Summarizing Manager Career Records</h4>
 <p>The “Managers” table is used to obtain each manager’s player identifier, games managed, wins, and losses. The data are grouped by manager and summarized to calculate career totals for games managed, wins, and losses. After collecting the results into R, a career win/loss percentage is calculated as “Total_W/G_managed”, and the managers are sorted from highest to lowest percentage.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Summarize career games, wins, and losses for each manager</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>manager_summary <span class="ot">&lt;-</span> <span class="fu">tbl</span>(con, <span class="st">"Managers"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(playerID, G, W, L) <span class="sc">|&gt;</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(playerID) <span class="sc">|&gt;</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">G_managed =</span> <span class="fu">sum</span>(G, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">Total_W =</span> <span class="fu">sum</span>(W, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">Total_L =</span> <span class="fu">sum</span>(L, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>() <span class="sc">|&gt;</span></span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Win_Loss_Percentage =</span> Total_W <span class="sc">/</span> G_managed) <span class="sc">|&gt;</span></span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(Win_Loss_Percentage))</span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the resulting table</span></span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>manager_summary</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 749 × 5
+   playerID  G_managed Total_W Total_L Win_Loss_Percentage
+   &lt;chr&gt;         &lt;int&gt;   &lt;int&gt;   &lt;int&gt;               &lt;dbl&gt;
+ 1 bensove01         1       1       0                   1
+ 2 burwebi01         1       1       0                   1
+ 3 cohenan01         1       1       0                   1
+ 4 ebeldi99          3       3       0                   1
+ 5 falkbi01          1       1       0                   1
+ 6 hardeme01         3       3       0                   1
+ 7 simmote01         1       1       0                   1
+ 8 steinte01         2       2       0                   1
+ 9 sukefcl01         2       2       0                   1
+10 tamarjo01         1       1       0                   1
+# ℹ 739 more rows</code></pre>
+</div>
+</div>
 </section>
 <section id="combining-hall-of-fame-and-manager-information" class="level4">
 <h4 class="anchored" data-anchor-id="combining-hall-of-fame-and-manager-information">17. Combining Hall of Fame and Manager Information</h4>
 <p>The Hall of Fame results from Question 15 are combined with the manager career results from Question 16. Only individuals who both managed and were inducted into the Hall of Fame are retained, regardless of Hall of Fame category. All variables from the two results are retained, producing a final data set with nine columns.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine Hall of Fame inductees with manager career records</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>hall_of_fame_managers <span class="ot">&lt;-</span> hall_of_fame_names <span class="sc">|&gt;</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>() <span class="sc">|&gt;</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>    manager_summary,</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">by =</span> <span class="st">"playerID"</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the resulting table</span></span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>hall_of_fame_managers</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 97 × 9
+   playerID  yearID category        nameFirst nameLast G_managed Total_W Total_L
+   &lt;chr&gt;      &lt;int&gt; &lt;chr&gt;           &lt;chr&gt;     &lt;chr&gt;        &lt;int&gt;   &lt;int&gt;   &lt;int&gt;
+ 1 cobbty01    1936 Player          Ty        Cobb           933     479     444
+ 2 wagneho01   1936 Player          Honus     Wagner           5       1       4
+ 3 mathech01   1936 Player          Christy   Mathews…       346     164     176
+ 4 johnswa01   1936 Player          Walter    Johnson        966     529     432
+ 5 lajoina01   1937 Player          Nap       Lajoie         700     377     309
+ 6 speaktr01   1937 Player          Tris      Speaker       1139     617     520
+ 7 youngcy01   1937 Player          Cy        Young            6       3       3
+ 8 mackco01    1937 Manager         Connie    Mack          7755    3731    3948
+ 9 mcgrajo01   1937 Manager         John      McGraw        4769    2763    1948
+10 wrighge01   1937 Pioneer/Execut… George    Wright          85      59      25
+# ℹ 87 more rows
+# ℹ 1 more variable: Win_Loss_Percentage &lt;dbl&gt;</code></pre>
+</div>
+</div>
 
 
 </section>
