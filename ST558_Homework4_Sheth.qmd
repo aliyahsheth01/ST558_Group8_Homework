@@ -179,5 +179,100 @@ wine_data_filtered <- wine_data |>
 wine_data_filtered
 ```
 
-
 ## Task 3: Database Practice
+
+#### 11. Connecting to the Lahman Database
+
+A connection is established to the "Lahman.db" database. The available tables in the database are then displayed to identify the data available for the remaining questions. (Note, "RSQLite" package installed via Console using "install.packages("RSQLite").)
+
+```{r}
+# Load packages needed to connect to SQLite database
+library (DBI)
+library (RSQLite)
+
+# Connect to the Lahman SQLite database
+con <- dbConnect (
+  SQLite(),
+  "data/Lahman.db"
+)
+
+# Display all tables in the database
+dbListTables (con)
+```
+#### 12. Retrieving the 2015 Teams Data Using dplyr
+
+The "Teams" table is accessed using "tbl()", and "dplyr" functions are used to return the team data for the year 2015. 
+
+```{r}
+# Accessing "Teams" table and return data for specific year using dplyr
+teams_2015_dplyr <- tbl(con, "Teams") |>
+  filter(yearID == 2015)
+
+# Display resulting table
+teams_2015_dplyr
+```
+
+#### 13. Retrieving the 2015 Teams Data Using SQL
+
+The 2015 "Teams" data are retrieved again, this time by using an SQL statement within "sql()" and "tbl()". This provides the same requested data using SQL rather than the "dplyr" filtering approach. 
+
+```{r}
+# Return teams data for the year 2015 using SQL
+teams_2015_sql <- tbl(
+  con,
+  sql("select * from teams where yearID = 2015")
+)
+
+# Display the resulting table
+teams_2015_sql
+```
+
+#### 14. Identifying Hall of Fame Players
+
+The "HallOfFame" table is used to identify players who were inducted into the Hall of Fame. The resulting data retain the player identifier, the year the player was voted in, and the category. 
+
+```{r}
+# Return Hall of Fame inductees, induction year, and category
+hall_of_fame <- tbl (con, "HallOfFame") |>
+  filter(inducted == "Y") |>
+  select(playerID, yearID, category)
+
+# Display the resulting table
+hall_of_fame
+```
+
+#### 15. Adding Player Names to the Hall of Fame Data
+
+The Hall of Fame results from Question 14 are combined with the "People" table to add each inducted player's first and last name.
+
+```{r}
+# Select player names from the People table
+people_names <- tbl(con, "People") |>
+  select(playerID, nameFirst, nameLast)
+
+# Add first and last names to the Hall of Fame data
+hall_of_fame_names <- hall_of_fame |>
+  left_join(
+    people_names,
+    by = "playerID"
+  )
+
+# Display the resulting table
+hall_of_fame_names
+```
+
+#### 16. Summarizing Manager Career Records
+
+The "Managers" table is used to obtain each manager's player identifier, games managed, wins, and losses. The data are grouped by manager and summarized to calculate career totals for games managed, wins, and losses. After collecting the results into R, a career win/loss percentage is calculated as "Total_W/G_managed", and the managers are sorted from highest to lowest percentage.
+
+```{r}
+
+```
+
+#### 17. Combining Hall of Fame and Manager Information
+
+The Hall of Fame results from Question 15 are combined with the manager career results from Question 16. Only individuals who both managed and were inducted into the Hall of Fame are retained, regardless of Hall of Fame category. All variables from the two results are retained, producing a final data set with nine columns.
+
+```{r}
+
+```
