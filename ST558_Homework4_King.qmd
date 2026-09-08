@@ -1,0 +1,13 @@
+---
+title: "ST558_Homework4_King"
+format: html
+---
+
+# Task 1: Conceptual Questions
+
+1. Rewritten nesting call:
+
+```{r}
+
+```
+
