@@ -5,4 +5,9 @@ format: html
 
 This page acts as a directory for our homework assignments.
 
-* 
+- Homework 1\*
+- [Homework 2](docs/ST558_Homework2_Combined.html)
+- [Homework 3](docs/ST558_Homework3_Combined.html)
+- [Homework 4](docs/ST558_Homework4_Combined.html)
+
+\* Homework 1 was completed individually
