@@ -74,14 +74,24 @@ All of the reading in from previous assignment:
 
 ```{r}
 library(readxl)
-whiteData <- read_excel("data/white-wine.xlsx",col_types = "numeric")
-whiteVars <-read_excel("data/white-wine.xlsx", sheet = excel_sheets("data/white-wine.xlsx")[2])
-colnames(whiteData) <- whiteVars$Variables
-whiteData$type <- "white"
-redData <- read_delim("https://www4.stat.ncsu.edu/~online/datasets/red-wine.csv",col_types = "nnnnnnnnnnnn",delim = ";")
-colnames(redData) <- whiteVars$Variables
-redData$type <- "red"
-wineData <- bind_rows(whiteData,redData)
+white_wine <- read_excel("data/white-wine.xlsx",col_types = "numeric")
+wine_names <-read_excel("data/white-wine.xlsx", sheet = excel_sheets("data/white-wine.xlsx")[2])
+colnames(white_wine) <- wine_names$Variables
+white_wine$type <- "white"
+red_wine <- read_delim("https://www4.stat.ncsu.edu/~online/datasets/red-wine.csv",delim = ";")
+colnames(red_wine) <- wine_names$Variables
+red_wine$type <- "red"
+wine_data <- bind_rows(white_wine,red_wine)
+```
+Filtering the wine data:
+
+```{r}
+wine_data_filtered <- wine_data |>
+  filter(quality > 6.5, alcohol < 132) |>
+  arrange(desc(quality))|>
+  select(contains("acid"),alcohol,type,quality)|>
+  group_by(quality)|>
+  mutate(across(-5,list(mean=mean,median=median),.names="{.col}_{.fn}"))
 ```
 
 
