@@ -8,6 +8,91 @@ format: html
 1. Rewritten nesting call:
 
 ```{r}
+library(tidyverse)
+iris |>
+  as_tibble() |>
+  select(starts_with("Petal"), Species) |>
+  filter(Petal.Length < 1.55) |>
+  arrange(Species)
+```
+
+2. Long format data has each row as one observation, and each column as a variable/measurement of that observation. Wide format data has more than one observation per row. Long format is preferred.
+
+# Task 2: ???
+
+## Glass Data
+
+Reading in the data from the previous homework:
+
+```{r}
+glass_names = c("ID","RI","NA","MG","AL","SI","K","CA","BA","FE","Type_of_glass")
+glass_Data <- read_csv("https://www4.stat.ncsu.edu/online/datasets/glass.data",col_names = glass_names)
+```
+Creating the factor variable and filtering output:
+
+```{r}
+glass_data_filtered <- glass_Data |>
+  mutate(Type_Of_Glass = factor(
+    Type_of_glass,
+    levels = 1:7,
+    labels = c(
+      "building_windows_float_processed",
+      "building_windows_non_float_processed",
+      "vehicle_windows_float_processed",
+      "vehicle_windows_non_float_processed",
+      "containers",
+      "tableware",
+      "headlamps"
+    )
+  )) |>
+  filter(FE<0.2,Type_Of_Glass %in% c("tableware","headlamps"))
 
 ```
+
+
+## Yeast Data
+
+Reading in data: 
+
+```{r}
+yeast_names <- c("seq_name","mcg","gvh","alm","mit","erl","pox","vac","nuc","class")
+yeast_data <- read_table("https://www4.stat.ncsu.edu/online/datasets/yeast.data",col_names = yeast_names)
+```
+
+Removing columns and adding mean/median columns:
+
+```{r}
+yeast_data_summary <- yeast_data |>
+  select(-1,-9) |>
+  group_by(class)|>
+  mutate(across(1:7,list(mean=mean,median=median),.names="{.col}_{.fn}"))
+```
+
+## Wine Data
+
+All of the reading in from previous assignment:
+
+```{r}
+library(readxl)
+whiteData <- read_excel("data/white-wine.xlsx",col_types = "numeric")
+whiteVars <-read_excel("data/white-wine.xlsx", sheet = excel_sheets("data/white-wine.xlsx")[2])
+colnames(whiteData) <- whiteVars$Variables
+whiteData$type <- "white"
+redData <- read_delim("https://www4.stat.ncsu.edu/~online/datasets/red-wine.csv",col_types = "nnnnnnnnnnnn",delim = ";")
+colnames(redData) <- whiteVars$Variables
+redData$type <- "red"
+wineData <- bind_rows(whiteData,redData)
+```
+
+
+
+
+
+
+
+
+
+
+
+
 
