@@ -8,4 +8,140 @@ editor: visual
 
 ## 1. 
   
-  For this question, we're to 
+  For this question, we're to rewrite the given nested function using R's chaining operator. Note that it felt weird to not give the result a name, so I gave the output of the piping a name. I read the given code as performing the following: 
+  1. Taken in the iris data as a tibble.
+  2. Pull out only the Species column and those that start with the string "Petal". 
+  3. Filter "in" those observations with petal length less than 1.55.
+  4. Rearrange the tibble so that the entries are grouped by the Species column.
+  Here's the code I'd use: 
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+library(tidyverse)
+task_1 <- as_tibble(iris) |>
+  select(starts_with("Petal"), Species) |>
+  filter(Petal.Length< 1.55) |>
+  arrange(Species)
+task_1
+```
+  
+## 2. 
+  
+  When data is in "long" format, that means that every row represents an individual observation. "Wide" format allows for multiple observations to be in the same row. This seems like it'd be useful (or, at least, used) when collecting data longitudinally. It's also good for displaying data. 
+  
+  It seems to me that we'd like to use long format data because it'd make it easier to pull call that data for the sake of manipulations. For example, if you have the same observation made over time, it'd be nice to have all those data in a single column when, say, finding the mean of them. 
+  
+# Task 2
+  First, we'll read in the data: 
+  
+```{r}
+#Code from HW 3
+#| message: false
+#| warning: false
+#| echo: false
+glass_data<-read_csv("https://www4.stat.ncsu.edu/~online/datasets/glass.data",col_names=c("Id","RI","Na","Mg","Al","Si","K","Ca","Ba","Fe","Type_of_glass"))
+glass_data
+```
+
+## Glass Data
+### 3.
+
+For this problem, we're to replace the integers in the Type_of_glass column of our tibble with the corresponding labels that were given in the problem
+
+```{r}
+glass_names<-c("building_windows_float_processed","building_windows_non_float_processed","vehicle_windows_float_processed","vehicle_windows_non_float_processed","containers","tableware","headlamps")
+
+glass_data<-glass_data |>
+  mutate(Type_of_glass=factor(glass_names[Type_of_glass],levels=glass_names))
+glass_data
+```
+
+### 4. 
+
+Now, we're to take what we had and filter it down to those rows where FE<0.2 and the type of glass is either "tableware" or "headlamps."
+
+```{r}
+glass_data_filtered<-glass_data |>
+  mutate(Type_of_glass=factor(glass_names[Type_of_glass],levels=glass_names)) |> filter(Fe<0.2, Type_of_glass %in% c("tableware","headlamps"))
+glass_data_filtered
+```
+
+## Yeast Data
+### 5.
+
+To get started here, we'll read in the yeast data from before: 
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+
+yeast_data<-read_delim("https://www4.stat.ncsu.edu/~online/datasets/yeast.data",delim = "  ",col_names=c("seq_name","mcg","gvh","alm","mit","erl","pox","vac","nuc","class"))
+```
+
+Next, we'll remove the columns seq_name and nuc. 
+
+```{r}
+yeast_data_summary<-yeast_data|>
+  select(-"seq_name", -"nuc")
+yeast_data_summary
+```
+
+
+### 6.
+Continuing the previous chain...
+
+```{r}
+yeast_data_summary<-yeast_data|>
+  select(-"seq_name", -"nuc")|>
+  group_by(class)|>
+  mutate(across(where(is.numeric),mean, .names = "mean_{.col}")) |>
+  mutate(across(where(is.numeric),median, .names = "median_{.col}"))
+yeast_data_summary
+```
+
+## Wine Data. 
+
+Here, we'll read in and combine the wine data from HW 3 and combine it as we did there: 
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+library(readxl)
+white_wine<-read_excel("data/white-wine.xlsx")
+wine_names<-read_excel("data/white-wine.xlsx", sheet=excel_sheets("data/white-wine.xlsx")[2])
+ch_names<-wine_names |> pull(Variables) |> as.character()
+white_wine<-white_wine |> rename_with(~ ch_names)
+white_wine<-white_wine|>mutate(wine_type = "white")
+red_wine<-read_delim("https://www4.stat.ncsu.edu/~online/datasets/red-wine.csv", delim=";")
+red_wine_names<-c("fixed_acidity","volatile_acidity","citric_acid","residual_sugar","chlorides","free_sulfur_dioxide","total_sulfur_dioxide","density","pH","sulphates","alcohol","quality")
+red_wine<-red_wine |> rename_with(~ red_wine_names)
+red_wine<-red_wine|>mutate(wine_type = "red")
+wine_data<-bind_rows(white_wine,red_wine)
+```
+
+
+### 7. 
+Next, we'll start filtering the data to only include those observations where the quality rating is over 6.5  and the alcohol content is less than 132:
+
+```{r}
+wine_data_filtered<-wine_data|>filter(quality>6.5,alcohol<132)
+wine_data_filtered
+```
+
+### 8. 
+
+Next, we'll arrange the observations by quality, from low to high: 
+```{r}
+wine_data_filtered<-wine_data|>filter(quality>6.5,alcohol<132)|>
+  arrange(desc(quality))
+```
+
+
+### 9. 
+
+wine_data_filtered<-wine_data|>filter(quality>6.5,alcohol<132)|>
+  arrange(desc(quality))
