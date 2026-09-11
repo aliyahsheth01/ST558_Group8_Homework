@@ -238,8 +238,9 @@ dbl (11): Id, RI, Na, Mg, Al, Si, K, Ca, Ba, Fe, Type_of_glass
 <p>Now, we’re to take what we had and filter it down to those rows where FE&lt;0.2 and the type of glass is either “tableware” or “headlamps.”</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>glass_data_filtered<span class="ot">&lt;-</span>glass_data <span class="sc">|&gt;</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Type_of_glass=</span><span class="fu">factor</span>(glass_names[Type_of_glass],<span class="at">levels=</span>glass_names)) <span class="sc">|&gt;</span> <span class="fu">filter</span>(Fe<span class="sc">&lt;</span><span class="fl">0.2</span>, Type_of_glass <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"tableware"</span>,<span class="st">"headlamps"</span>))</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>glass_data_filtered</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Type_of_glass=</span><span class="fu">factor</span>(glass_names[Type_of_glass],<span class="at">levels=</span>glass_names)) <span class="sc">|&gt;</span> </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Fe<span class="sc">&lt;</span><span class="fl">0.2</span>, Type_of_glass <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"tableware"</span>,<span class="st">"headlamps"</span>))</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>glass_data_filtered</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 38 × 11
       Id    RI    Na    Mg    Al    Si     K    Ca    Ba    Fe Type_of_glass
@@ -294,8 +295,8 @@ dbl (11): Id, RI, Na, Mg, Al, Si, K, Ca, Ba, Fe, Type_of_glass
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>yeast_data_summary<span class="ot">&lt;-</span>yeast_data<span class="sc">|&gt;</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="st">"seq_name"</span>, <span class="sc">-</span><span class="st">"nuc"</span>)<span class="sc">|&gt;</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(class)<span class="sc">|&gt;</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric),mean, <span class="at">.names =</span> <span class="st">"mean_{.col}"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric),median, <span class="at">.names =</span> <span class="st">"median_{.col}"</span>))</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric),mean, <span class="at">.names =</span> <span class="st">"mean_{.col}"</span>),</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>        <span class="fu">across</span>(<span class="fu">where</span>(is.numeric),median, <span class="at">.names =</span> <span class="st">"median_{.col}"</span>))</span>
 <span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>yeast_data_summary</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1,484 × 29
@@ -363,10 +364,387 @@ dbl (11): Id, RI, Na, Mg, Al, Si, K, Ca, Ba, Fe, Type_of_glass
 </section>
 <section id="section-8" class="level3">
 <h3 class="anchored" data-anchor-id="section-8">9.</h3>
-<p>wine_data_filtered&lt;-wine_data|&gt;filter(quality&gt;6.5,alcohol&lt;132)|&gt; arrange(desc(quality))</p>
-
-
+<p>Next, we’re going to pare down the data set by only keeping the variables that contain the string ‘acid’ and the ‘alcohol’, ‘type’, and ‘quality’ variables.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>wine_data_filtered<span class="ot">&lt;-</span>wine_data<span class="sc">|&gt;</span><span class="fu">filter</span>(quality<span class="sc">&gt;</span><span class="fl">6.5</span>,alcohol<span class="sc">&lt;</span><span class="dv">132</span>)<span class="sc">|&gt;</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(quality)) <span class="sc">|&gt;</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">contains</span>(<span class="st">"acid"</span>),alcohol,wine_type,quality)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>wine_data_filtered</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1,277 × 6
+   fixed_acidity volatile_acidity citric_acid alcohol wine_type quality
+           &lt;dbl&gt;            &lt;dbl&gt;       &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;       &lt;dbl&gt;
+ 1           9.1             0.27        0.45    10.4 white           9
+ 2           6.6             0.36        0.29    12.4 white           9
+ 3           7.4             0.24        0.36    12.5 white           9
+ 4           6.9             0.36        0.34    12.7 white           9
+ 5           7.1             0.26        0.49    12.9 white           9
+ 6           6.2             0.66        0.48    12.8 white           8
+ 7           6.2             0.66        0.48    12.8 white           8
+ 8           6.8             0.26        0.42    10.5 white           8
+ 9           6.7             0.23        0.31    10.7 white           8
+10           6.7             0.23        0.31    10.7 white           8
+# ℹ 1,267 more rows</code></pre>
+</div>
+</div>
 </section>
+<section id="section-9" class="level3">
+<h3 class="anchored" data-anchor-id="section-9">10.</h3>
+<p>Finally, we finish off our manipulation of the wine data by adding columns for mean and standard deviation for each value of the quality setting.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>wine_data_filtered<span class="ot">&lt;-</span>wine_data<span class="sc">|&gt;</span><span class="fu">filter</span>(quality<span class="sc">&gt;</span><span class="fl">6.5</span>,alcohol<span class="sc">&lt;</span><span class="dv">132</span>)<span class="sc">|&gt;</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(quality)) <span class="sc">|&gt;</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">contains</span>(<span class="st">"acid"</span>),alcohol,wine_type,quality) <span class="sc">|&gt;</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(quality) <span class="sc">|&gt;</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">alcohol_mean=</span><span class="fu">mean</span>(alcohol),<span class="at">alcohol_median=</span><span class="fu">median</span>(alcohol))</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>wine_data_filtered</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1,277 × 8
+# Groups:   quality [3]
+   fixed_acidity volatile_acidity citric_acid alcohol wine_type quality
+           &lt;dbl&gt;            &lt;dbl&gt;       &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;       &lt;dbl&gt;
+ 1           9.1             0.27        0.45    10.4 white           9
+ 2           6.6             0.36        0.29    12.4 white           9
+ 3           7.4             0.24        0.36    12.5 white           9
+ 4           6.9             0.36        0.34    12.7 white           9
+ 5           7.1             0.26        0.49    12.9 white           9
+ 6           6.2             0.66        0.48    12.8 white           8
+ 7           6.2             0.66        0.48    12.8 white           8
+ 8           6.8             0.26        0.42    10.5 white           8
+ 9           6.7             0.23        0.31    10.7 white           8
+10           6.7             0.23        0.31    10.7 white           8
+# ℹ 1,267 more rows
+# ℹ 2 more variables: alcohol_mean &lt;dbl&gt;, alcohol_median &lt;dbl&gt;</code></pre>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="task-3-database-practice" class="level1">
+<h1>Task 3: Database Practice</h1>
+<p>In this task, we’re going to be using the Lahman.db data so I need to get that first (note that it’s already in my data directoy but I’m practicing here):</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DBI)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'DBI' was built under R version 4.5.3</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>con <span class="ot">&lt;-</span> <span class="fu">dbConnect</span>(RSQLite<span class="sc">::</span><span class="fu">SQLite</span>(), <span class="st">"data/lahman.db"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<section id="section-10" class="level2">
+<h2 class="anchored" data-anchor-id="section-10">11.</h2>
+<p>Now, to look at the tables in the database (note that the connecting was done in the previous step) .</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbListTables</span>(con)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "AllstarFull"         "Appearances"         "AwardsManagers"     
+ [4] "AwardsPlayers"       "AwardsShareManagers" "AwardsSharePlayers" 
+ [7] "Batting"             "BattingPost"         "CollegePlaying"     
+[10] "Fielding"            "FieldingOF"          "FieldingOFsplit"    
+[13] "FieldingPost"        "HallOfFame"          "HomeGames"          
+[16] "LahmanData"          "Managers"            "ManagersHalf"       
+[19] "Parks"               "People"              "Pitching"           
+[22] "PitchingPost"        "Salaries"            "Schools"            
+[25] "SeriesPost"          "Teams"               "TeamsFranchises"    
+[28] "TeamsHalf"           "battingLabels"       "fieldingLabels"     
+[31] "pitchingLabels"     </code></pre>
+</div>
+</div>
+</section>
+<section id="section-11" class="level2">
+<h2 class="anchored" data-anchor-id="section-11">12.</h2>
+<p>Now, we want to return the Teams table for the year 2015. I’m going to pretend I’m not 100% sure what the column name for year, and look at the ‘Teams’ table.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tbl</span>(con,<span class="st">"Teams"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># Source:   table&lt;`Teams`&gt; [?? x 48]
+# Database: sqlite 3.53.3 [C:\Users\ps1618ln.e\OneDrive - Minnesota State\abRetraining Materials\ST 558\Repos\ST558_Group8_Homework\data\lahman.db]
+   yearID lgID  teamID franchID divID  Rank     G Ghome     W     L DivWin WCWin
+    &lt;int&gt; &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;chr&gt;
+ 1   1871 NA    BS1    BNA      &lt;NA&gt;      3    31    NA    20    10 &lt;NA&gt;   &lt;NA&gt; 
+ 2   1871 NA    CH1    CNA      &lt;NA&gt;      2    28    NA    19     9 &lt;NA&gt;   &lt;NA&gt; 
+ 3   1871 NA    CL1    CFC      &lt;NA&gt;      8    29    NA    10    19 &lt;NA&gt;   &lt;NA&gt; 
+ 4   1871 NA    FW1    KEK      &lt;NA&gt;      7    19    NA     7    12 &lt;NA&gt;   &lt;NA&gt; 
+ 5   1871 NA    NY2    NNA      &lt;NA&gt;      5    33    NA    16    17 &lt;NA&gt;   &lt;NA&gt; 
+ 6   1871 NA    PH1    PNA      &lt;NA&gt;      1    28    NA    21     7 &lt;NA&gt;   &lt;NA&gt; 
+ 7   1871 NA    RC1    ROK      &lt;NA&gt;      9    25    NA     4    21 &lt;NA&gt;   &lt;NA&gt; 
+ 8   1871 NA    TRO    TRO      &lt;NA&gt;      6    29    NA    13    15 &lt;NA&gt;   &lt;NA&gt; 
+ 9   1871 NA    WS3    OLY      &lt;NA&gt;      4    32    NA    15    15 &lt;NA&gt;   &lt;NA&gt; 
+10   1872 NA    BL1    BLC      &lt;NA&gt;      2    58    NA    35    19 &lt;NA&gt;   &lt;NA&gt; 
+# ℹ more rows
+# ℹ 36 more variables: LgWin &lt;chr&gt;, WSWin &lt;chr&gt;, R &lt;int&gt;, AB &lt;int&gt;, H &lt;int&gt;,
+#   X2B &lt;int&gt;, X3B &lt;int&gt;, HR &lt;int&gt;, BB &lt;int&gt;, SO &lt;int&gt;, SB &lt;int&gt;, CS &lt;int&gt;,
+#   HBP &lt;int&gt;, SF &lt;int&gt;, RA &lt;int&gt;, ER &lt;int&gt;, ERA &lt;dbl&gt;, CG &lt;int&gt;, SHO &lt;int&gt;,
+#   SV &lt;int&gt;, IPouts &lt;int&gt;, HA &lt;int&gt;, HRA &lt;int&gt;, BBA &lt;int&gt;, SOA &lt;int&gt;, E &lt;int&gt;,
+#   DP &lt;int&gt;, FP &lt;dbl&gt;, name &lt;chr&gt;, park &lt;chr&gt;, attendance &lt;int&gt;, BPF &lt;int&gt;,
+#   PPF &lt;int&gt;, teamIDBR &lt;chr&gt;, teamIDlahman45 &lt;chr&gt;, teamIDretro &lt;chr&gt;</code></pre>
+</div>
+</div>
+<p>I see that the column I need is ‘yearID’, so…</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>teams_2015_dplyr<span class="ot">&lt;-</span><span class="fu">tbl</span>(con,<span class="st">"Teams"</span>)<span class="sc">|&gt;</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(yearID<span class="sc">==</span><span class="dv">2015</span>)</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>teams_2015_dplyr</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># Source:   SQL [?? x 48]
+# Database: sqlite 3.53.3 [C:\Users\ps1618ln.e\OneDrive - Minnesota State\abRetraining Materials\ST 558\Repos\ST558_Group8_Homework\data\lahman.db]
+   yearID lgID  teamID franchID divID  Rank     G Ghome     W     L DivWin WCWin
+    &lt;int&gt; &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;chr&gt;
+ 1   2015 NL    ARI    ARI      W         3   162    81    79    83 N      N    
+ 2   2015 NL    ATL    ATL      E         4   162    81    67    95 N      N    
+ 3   2015 AL    BAL    BAL      E         3   162    78    81    81 N      N    
+ 4   2015 AL    BOS    BOS      E         5   162    81    78    84 N      N    
+ 5   2015 AL    CHA    CHW      C         4   162    81    76    86 N      N    
+ 6   2015 NL    CHN    CHC      C         3   162    81    97    65 N      Y    
+ 7   2015 NL    CIN    CIN      C         5   162    81    64    98 N      N    
+ 8   2015 AL    CLE    CLE      C         3   161    80    81    80 N      N    
+ 9   2015 NL    COL    COL      W         5   162    81    68    94 N      N    
+10   2015 AL    DET    DET      C         5   161    81    74    87 N      N    
+# ℹ more rows
+# ℹ 36 more variables: LgWin &lt;chr&gt;, WSWin &lt;chr&gt;, R &lt;int&gt;, AB &lt;int&gt;, H &lt;int&gt;,
+#   X2B &lt;int&gt;, X3B &lt;int&gt;, HR &lt;int&gt;, BB &lt;int&gt;, SO &lt;int&gt;, SB &lt;int&gt;, CS &lt;int&gt;,
+#   HBP &lt;int&gt;, SF &lt;int&gt;, RA &lt;int&gt;, ER &lt;int&gt;, ERA &lt;dbl&gt;, CG &lt;int&gt;, SHO &lt;int&gt;,
+#   SV &lt;int&gt;, IPouts &lt;int&gt;, HA &lt;int&gt;, HRA &lt;int&gt;, BBA &lt;int&gt;, SOA &lt;int&gt;, E &lt;int&gt;,
+#   DP &lt;int&gt;, FP &lt;dbl&gt;, name &lt;chr&gt;, park &lt;chr&gt;, attendance &lt;int&gt;, BPF &lt;int&gt;,
+#   PPF &lt;int&gt;, teamIDBR &lt;chr&gt;, teamIDlahman45 &lt;chr&gt;, teamIDretro &lt;chr&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="section-12" class="level2">
+<h2 class="anchored" data-anchor-id="section-12">13.</h2>
+<p>Next up, we’ll try to do the same thing, using SQL code this time. Luckily, it looks pretty straightforward using the showquery function:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tbl</span>(con,<span class="st">"Teams"</span>)<span class="sc">|&gt;</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(yearID<span class="sc">==</span><span class="dv">2015</span>)<span class="sc">|&gt;</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">show_query</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;SQL&gt;
+SELECT `Teams`.*
+FROM `Teams`
+WHERE (`yearID` = 2015.0)</code></pre>
+</div>
+</div>
+<p>With that handy, I think we can try the SQL code:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>teams_2015_sql<span class="ot">&lt;-</span><span class="fu">tbl</span>(con,<span class="fu">sql</span>(</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"SELECT `Teams`.*</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="st">  FROM `Teams`</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="st">  WHERE (`yearID` = 2015.0)"</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>teams_2015_sql</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># Source:   SQL [?? x 48]
+# Database: sqlite 3.53.3 [C:\Users\ps1618ln.e\OneDrive - Minnesota State\abRetraining Materials\ST 558\Repos\ST558_Group8_Homework\data\lahman.db]
+   yearID lgID  teamID franchID divID  Rank     G Ghome     W     L DivWin WCWin
+    &lt;int&gt; &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;chr&gt;
+ 1   2015 NL    ARI    ARI      W         3   162    81    79    83 N      N    
+ 2   2015 NL    ATL    ATL      E         4   162    81    67    95 N      N    
+ 3   2015 AL    BAL    BAL      E         3   162    78    81    81 N      N    
+ 4   2015 AL    BOS    BOS      E         5   162    81    78    84 N      N    
+ 5   2015 AL    CHA    CHW      C         4   162    81    76    86 N      N    
+ 6   2015 NL    CHN    CHC      C         3   162    81    97    65 N      Y    
+ 7   2015 NL    CIN    CIN      C         5   162    81    64    98 N      N    
+ 8   2015 AL    CLE    CLE      C         3   161    80    81    80 N      N    
+ 9   2015 NL    COL    COL      W         5   162    81    68    94 N      N    
+10   2015 AL    DET    DET      C         5   161    81    74    87 N      N    
+# ℹ more rows
+# ℹ 36 more variables: LgWin &lt;chr&gt;, WSWin &lt;chr&gt;, R &lt;int&gt;, AB &lt;int&gt;, H &lt;int&gt;,
+#   X2B &lt;int&gt;, X3B &lt;int&gt;, HR &lt;int&gt;, BB &lt;int&gt;, SO &lt;int&gt;, SB &lt;int&gt;, CS &lt;int&gt;,
+#   HBP &lt;int&gt;, SF &lt;int&gt;, RA &lt;int&gt;, ER &lt;int&gt;, ERA &lt;dbl&gt;, CG &lt;int&gt;, SHO &lt;int&gt;,
+#   SV &lt;int&gt;, IPouts &lt;int&gt;, HA &lt;int&gt;, HRA &lt;int&gt;, BBA &lt;int&gt;, SOA &lt;int&gt;, E &lt;int&gt;,
+#   DP &lt;int&gt;, FP &lt;dbl&gt;, name &lt;chr&gt;, park &lt;chr&gt;, attendance &lt;int&gt;, BPF &lt;int&gt;,
+#   PPF &lt;int&gt;, teamIDBR &lt;chr&gt;, teamIDlahman45 &lt;chr&gt;, teamIDretro &lt;chr&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="section-13" class="level2">
+<h2 class="anchored" data-anchor-id="section-13">14.</h2>
+<p>Now we’ll look to return all the players that when to the Hall of Fame, the year they were voted in and their category. First, I’ll look at the ‘HallOfFame’ table.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tbl</span>(con,<span class="st">"HallOfFame"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># Source:   table&lt;`HallOfFame`&gt; [?? x 9]
+# Database: sqlite 3.53.3 [C:\Users\ps1618ln.e\OneDrive - Minnesota State\abRetraining Materials\ST 558\Repos\ST558_Group8_Homework\data\lahman.db]
+   playerID  yearID votedBy ballots needed votes inducted category needed_note
+   &lt;chr&gt;      &lt;int&gt; &lt;chr&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;      
+ 1 cobbty01    1936 BBWAA       226    170   222 Y        Player   &lt;NA&gt;       
+ 2 ruthba01    1936 BBWAA       226    170   215 Y        Player   &lt;NA&gt;       
+ 3 wagneho01   1936 BBWAA       226    170   215 Y        Player   &lt;NA&gt;       
+ 4 mathech01   1936 BBWAA       226    170   205 Y        Player   &lt;NA&gt;       
+ 5 johnswa01   1936 BBWAA       226    170   189 Y        Player   &lt;NA&gt;       
+ 6 lajoina01   1936 BBWAA       226    170   146 N        Player   &lt;NA&gt;       
+ 7 speaktr01   1936 BBWAA       226    170   133 N        Player   &lt;NA&gt;       
+ 8 youngcy01   1936 BBWAA       226    170   111 N        Player   &lt;NA&gt;       
+ 9 hornsro01   1936 BBWAA       226    170   105 N        Player   &lt;NA&gt;       
+10 cochrmi01   1936 BBWAA       226    170    80 N        Player   &lt;NA&gt;       
+# ℹ more rows</code></pre>
+</div>
+</div>
+<p>It looks like we’ll want the columns ‘playerID’, ‘yearID’, and ‘category’. Although it won’t be returned, we also need to know that a ‘Y’ in the ‘inducted’ columns tells us which players we want.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>hall_of_fame<span class="ot">&lt;-</span><span class="fu">tbl</span>(con,<span class="st">"HallOfFame"</span>)<span class="sc">|&gt;</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(inducted <span class="sc">==</span> <span class="st">"Y"</span>)<span class="sc">|&gt;</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(playerID,yearID,category)<span class="sc">|&gt;</span></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>hall_of_fame</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 340 × 3
+   playerID  yearID category         
+   &lt;chr&gt;      &lt;int&gt; &lt;chr&gt;            
+ 1 cobbty01    1936 Player           
+ 2 ruthba01    1936 Player           
+ 3 wagneho01   1936 Player           
+ 4 mathech01   1936 Player           
+ 5 johnswa01   1936 Player           
+ 6 lajoina01   1937 Player           
+ 7 speaktr01   1937 Player           
+ 8 youngcy01   1937 Player           
+ 9 bulkemo99   1937 Pioneer/Executive
+10 johnsba99   1937 Pioneer/Executive
+# ℹ 330 more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="section-14" class="level2">
+<h2 class="anchored" data-anchor-id="section-14">15.</h2>
+<p>For this quesiton, we want to add the first and last names of the players (from the ‘People’ table) to the table we just created. First, though, I want a look at the ‘People’ table.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tbl</span>(con,<span class="st">"People"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># Source:   table&lt;`People`&gt; [?? x 26]
+# Database: sqlite 3.53.3 [C:\Users\ps1618ln.e\OneDrive - Minnesota State\abRetraining Materials\ST 558\Repos\ST558_Group8_Homework\data\lahman.db]
+   playerID  birthYear birthMonth birthDay birthCountry birthState birthCity   
+   &lt;chr&gt;         &lt;int&gt;      &lt;int&gt;    &lt;int&gt; &lt;chr&gt;        &lt;chr&gt;      &lt;chr&gt;       
+ 1 aardsda01      1981         12       27 USA          CO         Denver      
+ 2 aaronha01      1934          2        5 USA          AL         Mobile      
+ 3 aaronto01      1939          8        5 USA          AL         Mobile      
+ 4 aasedo01       1954          9        8 USA          CA         Orange      
+ 5 abadan01       1972          8       25 USA          FL         Palm Beach  
+ 6 abadfe01       1985         12       17 D.R.         La Romana  La Romana   
+ 7 abadijo01      1850         11        4 USA          PA         Philadelphia
+ 8 abbated01      1877          4       15 USA          PA         Latrobe     
+ 9 abbeybe01      1869         11       11 USA          VT         Essex       
+10 abbeych01      1866         10       14 USA          NE         Falls City  
+# ℹ more rows
+# ℹ 19 more variables: deathYear &lt;int&gt;, deathMonth &lt;int&gt;, deathDay &lt;int&gt;,
+#   deathCountry &lt;chr&gt;, deathState &lt;chr&gt;, deathCity &lt;chr&gt;, nameFirst &lt;chr&gt;,
+#   nameLast &lt;chr&gt;, nameGiven &lt;chr&gt;, weight &lt;int&gt;, height &lt;int&gt;, bats &lt;chr&gt;,
+#   throws &lt;chr&gt;, debut &lt;chr&gt;, finalGame &lt;chr&gt;, retroID &lt;chr&gt;, bbrefID &lt;chr&gt;,
+#   deathDate &lt;dbl&gt;, birthDate &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<p>I guess it was unnecessary since we were given the column names in the problem, but I feel better having seen it.</p>
+<p>Now, on to the task. I’m going to use my code from above with chaining, since the result of the above will be used as the first argument in left_join:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>hall_of_fame_names<span class="ot">&lt;-</span><span class="fu">tbl</span>(con,<span class="st">"HallOfFame"</span>)<span class="sc">|&gt;</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(inducted <span class="sc">==</span> <span class="st">"Y"</span>)<span class="sc">|&gt;</span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(playerID,yearID,category)<span class="sc">|&gt;</span></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(<span class="fu">tbl</span>(con,<span class="st">"People"</span>),<span class="at">by=</span><span class="st">"playerID"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">collect</span>()<span class="sc">|&gt;</span></span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(nameFirst,nameLast,playerID,yearID,category)</span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>hall_of_fame_names</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 340 × 5
+   nameFirst nameLast  playerID  yearID category         
+   &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt;      &lt;int&gt; &lt;chr&gt;            
+ 1 Ty        Cobb      cobbty01    1936 Player           
+ 2 Babe      Ruth      ruthba01    1936 Player           
+ 3 Honus     Wagner    wagneho01   1936 Player           
+ 4 Christy   Mathewson mathech01   1936 Player           
+ 5 Walter    Johnson   johnswa01   1936 Player           
+ 6 Nap       Lajoie    lajoina01   1937 Player           
+ 7 Tris      Speaker   speaktr01   1937 Player           
+ 8 Cy        Young     youngcy01   1937 Player           
+ 9 Morgan    Bulkeley  bulkemo99   1937 Pioneer/Executive
+10 Ban       Johnson   johnsba99   1937 Pioneer/Executive
+# ℹ 330 more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="section-15" class="level2">
+<h2 class="anchored" data-anchor-id="section-15">16.</h2>
+<p>Next, we’ll focus on the managers and end up doing some manipulation of the data in the table. As I’m wont to do, I’ll start by looking at the ‘Managers’ table:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tbl</span>(con,<span class="st">"Managers"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># Source:   table&lt;`Managers`&gt; [?? x 10]
+# Database: sqlite 3.53.3 [C:\Users\ps1618ln.e\OneDrive - Minnesota State\abRetraining Materials\ST 558\Repos\ST558_Group8_Homework\data\lahman.db]
+   playerID  yearID teamID lgID  inseason     G     W     L  rank plyrMgr
+   &lt;chr&gt;      &lt;int&gt; &lt;chr&gt;  &lt;chr&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  
+ 1 wrighha01   1871 BS1    NA           1    31    20    10     3 Y      
+ 2 woodji01    1871 CH1    NA           1    28    19     9     2 Y      
+ 3 paborch01   1871 CL1    NA           1    29    10    19     8 Y      
+ 4 lennobi01   1871 FW1    NA           1    14     5     9     8 Y      
+ 5 deaneha01   1871 FW1    NA           2     5     2     3     8 Y      
+ 6 fergubo01   1871 NY2    NA           1    33    16    17     5 Y      
+ 7 mcbridi01   1871 PH1    NA           1    28    21     7     1 Y      
+ 8 hastisc01   1871 RC1    NA           1    25     4    21     9 Y      
+ 9 pikeli01    1871 TRO    NA           1     4     1     3     6 Y      
+10 cravebi01   1871 TRO    NA           2    25    12    12     6 Y      
+# ℹ more rows</code></pre>
+</div>
+</div>
+<p>Now that I’ve given it a look, I’m more comfortable getting started:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>manager_summary<span class="ot">&lt;-</span><span class="fu">tbl</span>(con,<span class="st">"Managers"</span>)<span class="sc">|&gt;</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(playerID,G,W,L)<span class="sc">|&gt;</span></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(playerID)<span class="sc">|&gt;</span></span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">G_managed=</span><span class="fu">sum</span>(G,<span class="at">na.rm=</span><span class="dv">1</span>),<span class="at">Total_W=</span><span class="fu">sum</span>(W,<span class="at">na.rm=</span><span class="dv">1</span>),<span class="at">Total_L=</span><span class="fu">sum</span>(L,<span class="at">na.rm=</span><span class="dv">1</span>))<span class="sc">|&gt;</span></span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()<span class="sc">|&gt;</span></span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Win_Loss_Percentage=</span>Total_W<span class="sc">/</span>G_managed)<span class="sc">|&gt;</span></span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(Win_Loss_Percentage))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Missing values are always removed in SQL aggregation functions.
+Use `na.rm = TRUE` to silence this warning
+This warning is displayed once every 8 hours.</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>manager_summary</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 749 × 5
+   playerID  G_managed Total_W Total_L Win_Loss_Percentage
+   &lt;chr&gt;         &lt;int&gt;   &lt;int&gt;   &lt;int&gt;               &lt;dbl&gt;
+ 1 bensove01         1       1       0                   1
+ 2 burwebi01         1       1       0                   1
+ 3 cohenan01         1       1       0                   1
+ 4 ebeldi99          3       3       0                   1
+ 5 falkbi01          1       1       0                   1
+ 6 hardeme01         3       3       0                   1
+ 7 simmote01         1       1       0                   1
+ 8 steinte01         2       2       0                   1
+ 9 sukefcl01         2       2       0                   1
+10 tamarjo01         1       1       0                   1
+# ℹ 739 more rows</code></pre>
+</div>
+</div>
+<p>Seems unfair to include people that managed so few games, so nice next step might be to only include those who reach a certain thersold.</p>
+</section>
+<section id="section-16" class="level2">
+<h2 class="anchored" data-anchor-id="section-16">17.</h2>
+<p>Lastly, we’re going to use the results from the last two problems to find the folks in both tables. Seems like inner_join is in order.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>hall_of_fame_managers<span class="ot">&lt;-</span><span class="fu">inner_join</span>(hall_of_fame_names,manager_summary,<span class="at">by =</span> <span class="st">"playerID"</span>)<span class="sc">|&gt;</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(Win_Loss_Percentage))</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>hall_of_fame_managers</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 97 × 9
+   nameFirst nameLast   playerID  yearID category      G_managed Total_W Total_L
+   &lt;chr&gt;     &lt;chr&gt;      &lt;chr&gt;      &lt;int&gt; &lt;chr&gt;             &lt;int&gt;   &lt;int&gt;   &lt;int&gt;
+ 1 Ted       Simmons    simmote01   2020 Player                1       1       0
+ 2 George    Wright     wrighge01   1937 Pioneer/Exec…        85      59      25
+ 3 Al        Spalding   spaldal01   1939 Pioneer/Exec…       126      78      47
+ 4 Joe       McCarthy   mccarjo99   1957 Manager            3487    2125    1333
+ 5 Charlie   Comiskey   comisch01   1939 Pioneer/Exec…      1410     840     541
+ 6 Billy     Southworth southbi01   2008 Manager            1770    1044     704
+ 7 Frank     Selee      seleefr99   1999 Manager            2180    1284     862
+ 8 Frank     Chance     chancfr01   1946 Player             1622     946     648
+ 9 Earl      Weaver     weaveea99   1996 Manager            2541    1480    1060
+10 Al        Lopez      lopezal01   1977 Manager            2425    1410    1004
+# ℹ 87 more rows
+# ℹ 1 more variable: Win_Loss_Percentage &lt;dbl&gt;</code></pre>
+</div>
+</div>
+
+
 </section>
 </section>
 

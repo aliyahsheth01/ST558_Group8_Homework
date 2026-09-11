@@ -64,7 +64,8 @@ Now, we're to take what we had and filter it down to those rows where FE<0.2 and
 
 ```{r}
 glass_data_filtered<-glass_data |>
-  mutate(Type_of_glass=factor(glass_names[Type_of_glass],levels=glass_names)) |> filter(Fe<0.2, Type_of_glass %in% c("tableware","headlamps"))
+  mutate(Type_of_glass=factor(glass_names[Type_of_glass],levels=glass_names)) |> 
+  filter(Fe<0.2, Type_of_glass %in% c("tableware","headlamps"))
 glass_data_filtered
 ```
 
@@ -97,12 +98,12 @@ Continuing the previous chain...
 yeast_data_summary<-yeast_data|>
   select(-"seq_name", -"nuc")|>
   group_by(class)|>
-  mutate(across(where(is.numeric),mean, .names = "mean_{.col}")) |>
-  mutate(across(where(is.numeric),median, .names = "median_{.col}"))
+  mutate(across(where(is.numeric),mean, .names = "mean_{.col}"),
+        across(where(is.numeric),median, .names = "median_{.col}"))
 yeast_data_summary
 ```
 
-## Wine Data. 
+## Wine Data 
 
 Here, we'll read in and combine the wine data from HW 3 and combine it as we did there: 
 
@@ -143,5 +144,151 @@ wine_data_filtered<-wine_data|>filter(quality>6.5,alcohol<132)|>
 
 ### 9. 
 
+Next, we're going to pare down the data set by only keeping the variables that contain the string 'acid' and the 'alcohol', 'type', and 'quality' variables.
+
+```{r}
 wine_data_filtered<-wine_data|>filter(quality>6.5,alcohol<132)|>
-  arrange(desc(quality))
+  arrange(desc(quality)) |>
+  select(contains("acid"),alcohol,wine_type,quality)
+wine_data_filtered
+```
+
+### 10.
+
+Finally, we finish off our manipulation of the wine data by adding columns for mean and standard deviation for each value of the quality setting. 
+
+```{r}
+wine_data_filtered<-wine_data|>filter(quality>6.5,alcohol<132)|>
+  arrange(desc(quality)) |>
+  select(contains("acid"),alcohol,wine_type,quality) |>
+  group_by(quality) |>
+  mutate(alcohol_mean=mean(alcohol),alcohol_median=median(alcohol))
+wine_data_filtered
+```
+
+# Task 3: Database Practice
+
+
+In this task, we're going to be using the Lahman.db data so I need to get that first (note that it's already in my data directoy but I'm practicing here):
+
+```{r}
+library(DBI)
+
+con <- dbConnect(RSQLite::SQLite(), "data/lahman.db")
+```
+
+## 11. 
+
+Now, to look at the tables in the database (note that the connecting was done in the previous step) .
+```{r}
+dbListTables(con)
+```
+
+## 12.
+
+Now, we want to return the Teams table for the year 2015. I'm going to pretend I'm not 100% sure what the column name for year, and look at the 'Teams' table.
+
+```{r}
+tbl(con,"Teams")
+```
+
+I see that the column I need is 'yearID', so...
+```{r}
+teams_2015_dplyr<-tbl(con,"Teams")|>
+  filter(yearID==2015)
+teams_2015_dplyr
+```
+
+## 13.
+
+Next up, we'll try to do the same thing, using SQL code this time. Luckily, it looks pretty straightforward using the showquery function: 
+
+```{r}
+tbl(con,"Teams")|>
+  filter(yearID==2015)|>
+  show_query()
+```
+
+With that handy, I think we can try the SQL code: 
+```{r}
+teams_2015_sql<-tbl(con,sql(
+  "SELECT `Teams`.*
+  FROM `Teams`
+  WHERE (`yearID` = 2015.0)"
+  )
+)
+teams_2015_sql
+```
+
+## 14.
+
+Now we'll look to return all the players that when to the Hall of Fame, the year they were voted in and their category. First, I'll look at the 'HallOfFame' table.
+
+```{r}
+tbl(con,"HallOfFame")
+```
+
+It looks like we'll want the columns 'playerID', 'yearID', and 'category'. Although it won't be returned, we also need to know that a 'Y' in the 'inducted' columns tells us which players we want. 
+
+```{r}
+hall_of_fame<-tbl(con,"HallOfFame")|>
+  filter(inducted == "Y")|>
+  select(playerID,yearID,category)|>
+  collect()
+hall_of_fame
+```
+
+## 15.
+
+For this quesiton, we want to add the first and last names of the players (from the 'People' table) to the table we just created. First, though, I want a look at the 'People' table.
+
+```{r}
+tbl(con,"People")
+```
+
+I guess it was unnecessary since we were given the column names in the problem, but I feel better having seen it. 
+
+Now, on to the task. I'm going to use my code from above with chaining, since the result of the above will be used as the first argument in left_join:
+```{r}
+hall_of_fame_names<-tbl(con,"HallOfFame")|>
+  filter(inducted == "Y")|>
+  select(playerID,yearID,category)|>
+  left_join(tbl(con,"People"),by="playerID") |>
+    collect()|>
+    select(nameFirst,nameLast,playerID,yearID,category)
+hall_of_fame_names
+```
+
+## 16. 
+
+Next, we'll focus on the managers and end up doing some manipulation of the data in the table. As I'm wont to do, I'll start by looking at the 'Managers' table: 
+
+```{r}
+tbl(con,"Managers")
+```
+
+Now that I've given it a look, I'm more comfortable getting started: 
+
+```{r}
+manager_summary<-tbl(con,"Managers")|>
+  select(playerID,G,W,L)|>
+  group_by(playerID)|>
+  summarize(G_managed=sum(G,na.rm=1),Total_W=sum(W,na.rm=1),Total_L=sum(L,na.rm=1))|>
+  collect()|>
+  mutate(Win_Loss_Percentage=Total_W/G_managed)|>
+  arrange(desc(Win_Loss_Percentage))
+manager_summary
+```
+
+Seems unfair to include people that managed so few games, so nice next step might be to only include those who reach a certain thersold. 
+
+## 17. 
+
+Lastly, we're going to use the results from the last two problems to find the folks in both tables. Seems like inner_join is in order.
+
+```{r}
+hall_of_fame_managers<-inner_join(hall_of_fame_names,manager_summary,by = "playerID")|>
+  arrange(desc(Win_Loss_Percentage))
+hall_of_fame_managers
+```
+
