@@ -265,7 +265,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  7 &lt;named list&gt; &lt;NA&gt;      New … Nature Bio… http… &lt;NA&gt;       2026-09-10… "The U…
  8 &lt;named list&gt; &lt;NA&gt;      FDA … Nature Bio… http… &lt;NA&gt;       2026-09-10… "In Au…
  9 &lt;named list&gt; Dario Um… Biom… Nature Bio… http… &lt;NA&gt;       2026-09-10… "Cellc…
-10 &lt;named list&gt; &lt;NA&gt;      Biot… Nature Bio… http… https://m… 2026-09-10… "GSK p…
+10 &lt;named list&gt; Dario Um… On-d… Nature Bio… http… &lt;NA&gt;       2026-09-10… "Thera…
 # ℹ 90 more rows</code></pre>
 </div>
 </div>
@@ -352,7 +352,7 @@ dbl  (9): Year Opened, TopSpeed, MaxHeight, Drop, Length, Duration, # of Inv...
   ..   Longitude = col_double(),
   ..   Boundary = col_character()
   .. )
- - attr(*, "problems")=&lt;pointer: 0x981a735c0&gt; </code></pre>
+ - attr(*, "problems")=&lt;pointer: 0xcb5964080&gt; </code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert categorical variables to factors</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>coaster_data <span class="ot">&lt;-</span> coaster_data <span class="sc">|&gt;</span></span>
@@ -429,7 +429,7 @@ dbl  (9): Year Opened, TopSpeed, MaxHeight, Drop, Length, Duration, # of Inv...
 <h3 class="anchored" data-anchor-id="categorical-variables">Categorical Variables</h3>
 <section id="creating-and-interpreting-contingency-tables" class="level4">
 <h4 class="anchored" data-anchor-id="creating-and-interpreting-contingency-tables">6. Creating and Interpreting Contingency Tables</h4>
-<p>Contingency tables are created to summarize the categorical variables in the roller coaster data. A one-way table is first used to examine coaster type. Then a two-way table is used to examine coaster type and invertions. Finally a three-way table is used to examin the previously mentioned variables and age group.</p>
+<p>Contingency tables are created to summarize the categorical variables in the roller coaster data. A one-way table is first used to examine coaster type. Then a two-way table is used to examine coaster type and inversions. Finally a three-way table is used to examine the previously mentioned variables and age group.</p>
 <p>For the one-way contingency table, 530 of the roller coasters are steel coasters. For the two-way contingency table, 166 steel roller coasters have inversions. For the three-way contingency table, 70 roller coasters in the Recent age group are steel coasters that have inversions.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a one-way contingency table for coaster type</span></span>
@@ -477,6 +477,121 @@ Steel  Wood
          No Yes
   Steel 251  88
   Wood   33   4</code></pre>
+</div>
+</div>
+</section>
+<section id="creating-conditional-two-way-tables" class="level4">
+<h4 class="anchored" data-anchor-id="creating-conditional-two-way-tables">7. Creating Conditional Two-Way Tables</h4>
+<p>A conditional two-way contingency table is created for coaster type and inversion status, conditioned on the Recent age group. The table is produced first by filtering the original data and then by subsetting a three-way contingency table. Both methods produce the same results.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Method 1: Filter to Recent coasters, then create a two-way table</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>recent_coasters <span class="ot">&lt;-</span> coaster_data <span class="sc">|&gt;</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(AgeGroup <span class="sc">==</span> <span class="st">"Recent"</span>)</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  recent_coasters<span class="sc">$</span>Type,</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>  recent_coasters<span class="sc">$</span><span class="st">`</span><span class="at">Inversions?</span><span class="st">`</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       
+        No Yes
+  Steel 85  70
+  Wood  35   0</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Method 2: Create a three-way table</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>coaster_table <span class="ot">&lt;-</span> <span class="fu">table</span>(</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  coaster_data<span class="sc">$</span>Type,</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  coaster_data<span class="sc">$</span><span class="st">`</span><span class="at">Inversions?</span><span class="st">`</span>,</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>  coaster_data<span class="sc">$</span>AgeGroup</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>coaster_table[, , <span class="st">"Recent"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       
+        No Yes
+  Steel 85  70
+  Wood  35   0</code></pre>
+</div>
+</div>
+</section>
+<section id="creating-a-two-way-contingency-table" class="level4">
+<h4 class="anchored" data-anchor-id="creating-a-two-way-contingency-table">8. Creating a Two-Way Contingency Table</h4>
+<p>A two-way contingency table for coaster type and inversion status is created using “group_by()” and “summarize()”. The summarized data are then reshaped using “pivot_wider()” so that the output resembles the two-way contingency table created previously with “table()”.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a two-way contingency table using group_by() and summarize()</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>coaster_summary <span class="ot">&lt;-</span> coaster_data <span class="sc">|&gt;</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Type, <span class="st">`</span><span class="at">Inversions?</span><span class="st">`</span>) <span class="sc">|&gt;</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">Count=</span><span class="fu">n</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has regrouped the output.
+ℹ Summaries were computed grouped by Type and Inversions?.
+ℹ Output is grouped by Type.
+ℹ Use `summarise(.groups = "drop_last")` to silence this message.
+ℹ Use `summarise(.by = c(Type, Inversions?))` for per-operation grouping
+  (`?dplyr::dplyr_by`) instead.</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>coaster_summary</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 3
+# Groups:   Type [2]
+  Type  `Inversions?` Count
+  &lt;fct&gt; &lt;fct&gt;         &lt;int&gt;
+1 Steel No              364
+2 Steel Yes             166
+3 Wood  No              101
+4 Wood  Yes               4</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Reshape the summarized data to resemble a contingency table</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>coaster_summary <span class="sc">|&gt;</span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_from =</span> <span class="st">`</span><span class="at">Inversions?</span><span class="st">`</span>,</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_from =</span> Count</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 3
+# Groups:   Type [2]
+  Type     No   Yes
+  &lt;fct&gt; &lt;int&gt; &lt;int&gt;
+1 Steel   364   166
+2 Wood    101     4</code></pre>
+</div>
+</div>
+</section>
+<section id="section" class="level4">
+<h4 class="anchored" data-anchor-id="section">9.</h4>
+<p>A stacked bar graph and a side-by-side bar graph are created to visually compare coaster type and inversion status. The stacked bar graph shows the inversion categories within each coaster type, while the side-by-side graph places the categories next to one another for easier comparison.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a stacked bar graph of coaster type by inversion status</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(coaster_data, <span class="fu">aes</span>(<span class="at">x =</span> Type, <span class="at">fill =</span> <span class="st">`</span><span class="at">Inversions?</span><span class="st">`</span>)) <span class="sc">+</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>() <span class="sc">+</span></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Roller Coaster Type by Inversion Status"</span>,</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Coaster Type"</span>,</span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Number of Roller Coasters"</span>,</span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"Inversions?"</span></span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ST558_Homework5_Sheth_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a side-by-side bar graph of coaster type by inversion status</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(coaster_data, <span class="fu">aes</span>(<span class="at">x =</span> Type, <span class="at">fill =</span> <span class="st">`</span><span class="at">Inversions?</span><span class="st">`</span>)) <span class="sc">+</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">position =</span> <span class="st">"dodge"</span>) <span class="sc">+</span></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Roller Coaster Type by Inversion Status"</span>,</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Coaster Type"</span>,</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Number of Roller Coasters"</span>,</span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"Inversions?"</span></span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ST558_Homework5_Sheth_files/figure-html/unnamed-chunk-10-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 

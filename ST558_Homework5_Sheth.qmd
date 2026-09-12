@@ -145,7 +145,7 @@ missing_values[missing_values > 0]
 ### Categorical Variables
 
 #### 6. Creating and Interpreting Contingency Tables
-Contingency tables are created to summarize the categorical variables in the roller coaster data. A one-way table is first used to examine coaster type. Then a two-way table is used to examine coaster type and invertions. Finally a three-way table is used to examin the previously mentioned variables and age group.
+Contingency tables are created to summarize the categorical variables in the roller coaster data. A one-way table is first used to examine coaster type. Then a two-way table is used to examine coaster type and inversions. Finally a three-way table is used to examine the previously mentioned variables and age group.
 
 For the one-way contingency table, 530 of the roller coasters are steel coasters. For the two-way contingency table, 166 steel roller coasters have inversions. For the three-way contingency table, 70 roller coasters in the Recent age group are steel coasters that have inversions.
 
@@ -166,8 +166,68 @@ table(
   coaster_data$AgeGroup
 )
 ```
-#### 7.
+#### 7. Creating Conditional Two-Way Tables
+A conditional two-way contingency table is created for coaster type and inversion status, conditioned on the Recent age group. The table is produced first by filtering the original data and then by subsetting a three-way contingency table. Both methods produce the same results.
 
-#### 8.
+```{r}
+# Method 1: Filter to Recent coasters, then create a two-way table
+recent_coasters <- coaster_data |>
+  filter(AgeGroup == "Recent")
 
+table(
+  recent_coasters$Type,
+  recent_coasters$`Inversions?`
+)
+
+# Method 2: Create a three-way table
+coaster_table <- table(
+  coaster_data$Type,
+  coaster_data$`Inversions?`,
+  coaster_data$AgeGroup
+)
+
+coaster_table[, , "Recent"]
+```
+#### 8. Creating a Two-Way Contingency Table
+A two-way contingency table for coaster type and inversion status is created using "group_by()" and "summarize()". The summarized data are then reshaped using "pivot_wider()" so that the output resembles the two-way contingency table created previously with "table()".
+
+```{r}
+# Create a two-way contingency table using group_by() and summarize()
+coaster_summary <- coaster_data |>
+  group_by(Type, `Inversions?`) |>
+  summarize(Count=n())
+
+coaster_summary
+
+# Reshape the summarized data to resemble a contingency table
+coaster_summary |>
+  pivot_wider(
+    names_from = `Inversions?`,
+    values_from = Count
+  )
+```
 #### 9. 
+A stacked bar graph and a side-by-side bar graph are created to visually compare coaster type and inversion status. The stacked bar graph shows the inversion categories within each coaster type, while the side-by-side graph places the categories next to one another for easier comparison.
+
+```{r}
+# Create a stacked bar graph of coaster type by inversion status
+ggplot(coaster_data, aes(x = Type, fill = `Inversions?`)) +
+  geom_bar() +
+  labs(
+    title = "Stacked Bar Graph of Roller Coaster Type by Inversion Status",
+    x = "Coaster Type",
+    y = "Number of Roller Coasters",
+    fill = "Inversions?"
+  )
+
+# Create a side-by-side bar graph of coaster type by inversion status
+ggplot(coaster_data, aes(x = Type, fill = `Inversions?`)) +
+  geom_bar(position = "dodge") +
+  labs(
+    title = "Side-by-Side Bar Graph of Roller Coaster Type by Inversion Status",
+    x = "Coaster Type",
+    y = "Number of Roller Coasters",
+    fill = "Inversions?"
+  )
+```
+
