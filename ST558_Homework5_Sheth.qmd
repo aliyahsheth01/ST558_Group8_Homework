@@ -7,7 +7,7 @@ editor: visual
 ## Task 1: Querying an API and a Tidy-Style Function
 
 #### 1. Connecting to News API
-After obtaining the News API key from newsapi.org, the key was saved to the local console ("NEWSAPI_KEY"). The "httr" package is used to query the News API for recent articles related to pharmaceuticals. The search is limited to English-language articles published since September 1, 2026, and the returned API response is stored as an R object for further processing.
+After obtaining the News API key from newsapi.org, the key was stored in an environment variable ("NEWSAPI_KEY") through the local RStudio Console. The "httr" package is used to query the News API for recent articles related to pharmaceuticals. The search is limited to English-language articles published since September 1, 2026, and the returned API response is stored as an R object for further processing.
 
 ```{r}
 # Load package needed to query the API
@@ -121,12 +121,53 @@ coaster_data <- coaster_data |>
 ### Basic EDA
 
 #### 4. Examining Data Structure
-The structure of the resulting data set from above is then examined to determine whether the variables are stored appropriately. After conversion, the variables appear to be stored appropriately. Categorical variables are stored as factors, while quantitative measurements such as speed, height, drop, length, duration, and number of inversions are stored as numeric variables. The coaster name and boundary information remain character variables, while latitude and longitude remain numeric.
+The structure of the resulting data set from above is then examined to determine whether the variables are stored appropriately. 
+
+After conversion, the variables appear to be stored appropriately. Categorical variables are stored as factors, while quantitative measurements such as speed, height, drop, length, duration, and number of inversions are stored as numeric variables. The coaster name and boundary information remain character variables, while latitude and longitude remain numeric.
 
 ```{r}
 # Examine how the roller coaster data are stored
 str(coaster_data)
 ```
 #### 5. Documenting Missing Values
+Missing values are examined for each variable in the roller coaster data. The number of missing observations is calculated for each variable, and only variables containing one or more missing values are displayed. 
+
+Missing values were identified in six variables. There are 74 missing values for TopSpeed, 8 for MaxHeight, 128 for Drop, 33 for Length, 66 for Duration, and 36 for Make. No missing values were identified in the remaining variables.
+
+```{r}
+# Count missing values for each variable
+missing_values <- colSums(is.na(coaster_data))
+
+# Display only variables that contain missing values
+missing_values[missing_values > 0]
+```
 
 ### Categorical Variables
+
+#### 6. Creating and Interpreting Contingency Tables
+Contingency tables are created to summarize the categorical variables in the roller coaster data. A one-way table is first used to examine coaster type. Then a two-way table is used to examine coaster type and invertions. Finally a three-way table is used to examin the previously mentioned variables and age group.
+
+For the one-way contingency table, 530 of the roller coasters are steel coasters. For the two-way contingency table, 166 steel roller coasters have inversions. For the three-way contingency table, 70 roller coasters in the Recent age group are steel coasters that have inversions.
+
+```{r}
+# Create a one-way contingency table for coaster type
+table(coaster_data$Type)
+
+# Create a two-way contingency table for coaster type and inversions
+table(
+  coaster_data$Type,
+  coaster_data$`Inversions?`
+)
+
+# Create a three-way contingency table for coaster type, inversions, and age group
+table(
+  coaster_data$Type,
+  coaster_data$`Inversions?`,
+  coaster_data$AgeGroup
+)
+```
+#### 7.
+
+#### 8.
+
+#### 9. 

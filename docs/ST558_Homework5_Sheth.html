@@ -142,7 +142,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="task-1-querying-an-api-and-a-tidy-style-function">Task 1: Querying an API and a Tidy-Style Function</h2>
 <section id="connecting-to-news-api" class="level4">
 <h4 class="anchored" data-anchor-id="connecting-to-news-api">1. Connecting to News API</h4>
-<p>After obtaining the News API key from newsapi.org, the key was saved to the local console (“NEWSAPI_KEY”). The “httr” package is used to query the News API for recent articles related to pharmaceuticals. The search is limited to English-language articles published since September 1, 2026, and the returned API response is stored as an R object for further processing.</p>
+<p>After obtaining the News API key from newsapi.org, the key was stored in an environment variable (“NEWSAPI_KEY”) through the local RStudio Console. The “httr” package is used to query the News API for recent articles related to pharmaceuticals. The search is limited to English-language articles published since September 1, 2026, and the returned API response is stored as an R object for further processing.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load package needed to query the API</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(httr)</span>
@@ -265,7 +265,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  7 &lt;named list&gt; &lt;NA&gt;      New … Nature Bio… http… &lt;NA&gt;       2026-09-10… "The U…
  8 &lt;named list&gt; &lt;NA&gt;      FDA … Nature Bio… http… &lt;NA&gt;       2026-09-10… "In Au…
  9 &lt;named list&gt; Dario Um… Biom… Nature Bio… http… &lt;NA&gt;       2026-09-10… "Cellc…
-10 &lt;named list&gt; Dario Um… On-d… Nature Bio… http… &lt;NA&gt;       2026-09-10… "Thera…
+10 &lt;named list&gt; &lt;NA&gt;      Biot… Nature Bio… http… https://m… 2026-09-10… "GSK p…
 # ℹ 90 more rows</code></pre>
 </div>
 </div>
@@ -352,7 +352,7 @@ dbl  (9): Year Opened, TopSpeed, MaxHeight, Drop, Length, Duration, # of Inv...
   ..   Longitude = col_double(),
   ..   Boundary = col_character()
   .. )
- - attr(*, "problems")=&lt;pointer: 0x81f3eff60&gt; </code></pre>
+ - attr(*, "problems")=&lt;pointer: 0x981a735c0&gt; </code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert categorical variables to factors</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>coaster_data <span class="ot">&lt;-</span> coaster_data <span class="sc">|&gt;</span></span>
@@ -377,7 +377,8 @@ dbl  (9): Year Opened, TopSpeed, MaxHeight, Drop, Length, Duration, # of Inv...
 <h3 class="anchored" data-anchor-id="basic-eda">Basic EDA</h3>
 <section id="examining-data-structure" class="level4">
 <h4 class="anchored" data-anchor-id="examining-data-structure">4. Examining Data Structure</h4>
-<p>The structure of the resulting data set from above is then examined to determine whether the variables are stored appropriately. After conversion, the variables appear to be stored appropriately. Categorical variables are stored as factors, while quantitative measurements such as speed, height, drop, length, duration, and number of inversions are stored as numeric variables. The coaster name and boundary information remain character variables, while latitude and longitude remain numeric.</p>
+<p>The structure of the resulting data set from above is then examined to determine whether the variables are stored appropriately.</p>
+<p>After conversion, the variables appear to be stored appropriately. Categorical variables are stored as factors, while quantitative measurements such as speed, height, drop, length, duration, and number of inversions are stored as numeric variables. The coaster name and boundary information remain character variables, while latitude and longitude remain numeric.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Examine how the roller coaster data are stored</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(coaster_data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -409,12 +410,78 @@ dbl  (9): Year Opened, TopSpeed, MaxHeight, Drop, Length, Duration, # of Inv...
 </section>
 <section id="documenting-missing-values" class="level4">
 <h4 class="anchored" data-anchor-id="documenting-missing-values">5. Documenting Missing Values</h4>
+<p>Missing values are examined for each variable in the roller coaster data. The number of missing observations is calculated for each variable, and only variables containing one or more missing values are displayed.</p>
+<p>Missing values were identified in six variables. There are 74 missing values for TopSpeed, 8 for MaxHeight, 128 for Drop, 33 for Length, 66 for Duration, and 36 for Make. No missing values were identified in the remaining variables.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Count missing values for each variable</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>missing_values <span class="ot">&lt;-</span> <span class="fu">colSums</span>(<span class="fu">is.na</span>(coaster_data))</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Display only variables that contain missing values</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>missing_values[missing_values <span class="sc">&gt;</span> <span class="dv">0</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> TopSpeed MaxHeight      Drop    Length  Duration      Make 
+       74         8       128        33        66        36 </code></pre>
+</div>
+</div>
 </section>
 </section>
 <section id="categorical-variables" class="level3">
 <h3 class="anchored" data-anchor-id="categorical-variables">Categorical Variables</h3>
+<section id="creating-and-interpreting-contingency-tables" class="level4">
+<h4 class="anchored" data-anchor-id="creating-and-interpreting-contingency-tables">6. Creating and Interpreting Contingency Tables</h4>
+<p>Contingency tables are created to summarize the categorical variables in the roller coaster data. A one-way table is first used to examine coaster type. Then a two-way table is used to examine coaster type and invertions. Finally a three-way table is used to examin the previously mentioned variables and age group.</p>
+<p>For the one-way contingency table, 530 of the roller coasters are steel coasters. For the two-way contingency table, 166 steel roller coasters have inversions. For the three-way contingency table, 70 roller coasters in the Recent age group are steel coasters that have inversions.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a one-way contingency table for coaster type</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(coaster_data<span class="sc">$</span>Type)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Steel  Wood 
+  530   105 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a two-way contingency table for coaster type and inversions</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  coaster_data<span class="sc">$</span>Type,</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  coaster_data<span class="sc">$</span><span class="st">`</span><span class="at">Inversions?</span><span class="st">`</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       
+         No Yes
+  Steel 364 166
+  Wood  101   4</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a three-way contingency table for coaster type, inversions, and age group</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  coaster_data<span class="sc">$</span>Type,</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  coaster_data<span class="sc">$</span><span class="st">`</span><span class="at">Inversions?</span><span class="st">`</span>,</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  coaster_data<span class="sc">$</span>AgeGroup</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>, ,  = Older
+
+       
+         No Yes
+  Steel  28   8
+  Wood   33   0
+
+, ,  = Recent
+
+       
+         No Yes
+  Steel  85  70
+  Wood   35   0
+
+, ,  = Newest
+
+       
+         No Yes
+  Steel 251  88
+  Wood   33   4</code></pre>
+</div>
+</div>
 
 
+</section>
 </section>
 </section>
 
