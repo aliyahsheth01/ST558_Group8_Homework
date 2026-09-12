@@ -1,0 +1,132 @@
+---
+title: "ST558_Homework5_Sheth"
+format: html
+editor: visual
+---
+
+## Task 1: Querying an API and a Tidy-Style Function
+
+#### 1. Connecting to News API
+After obtaining the News API key from newsapi.org, the key was saved to the local console ("NEWSAPI_KEY"). The "httr" package is used to query the News API for recent articles related to pharmaceuticals. The search is limited to English-language articles published since September 1, 2026, and the returned API response is stored as an R object for further processing.
+
+```{r}
+# Load package needed to query the API
+library(httr)
+
+# Retrieve NewsAPI key from the local RStudio console
+news_api_key <- Sys.getenv("NEWSAPI_KEY")
+
+# Query NewsAPI for recent pharmaceutical news
+news_response <- GET(
+  paste0(
+    "https://newsapi.org/v2/everything?q=pharmaceuticals",
+    "&from=2026-09-01",
+    "&language=en",
+    "&apiKey=", news_api_key
+  )
+)
+
+# Confirm that the API request was successful
+status_code(news_response)
+```
+#### 2. Parsing the News API Response
+The response returned by the News API is parsed using "content()". The article information is then extracted from the "articles" element and converted to a tibble for inspection.
+
+```{r}
+# Parse the NewsAPI response
+news_content <- content(news_response)
+
+# Store the article information as a list
+article_list <- news_content$articles
+for (i in seq_along(article_list)) {
+  article_list[[i]]$source <- list(article_list[[i]]$source)
+}
+
+# Combine the individual articles into a tibble
+news_article <- dplyr::bind_rows(article_list)
+
+# Display the article data
+news_article
+```
+#### 3. Create a Function to Query API
+A function is created to allow a user to query the News API by specifying a search subject, a starting date, and an API key. The function sends the API request, parses the returned content, extracts the article information, and returns the results as a tibble. The function is demonstrated using two different search subjects.
+
+```{r}
+# Create a function to query NewsAPI and return article information
+query_news <- function(subject, from_date, api_key) {
+  response <- GET(
+    paste0(
+      "https://newsapi.org/v2/everything?q=", subject,
+    "&from=", from_date,
+    "&language=en",
+    "&apiKey=", api_key
+    )
+  )
+response_content <- content(response)
+article_list <- response_content$articles
+for (i in seq_along(article_list)) {
+  article_list[[i]]$source <- list(article_list[[i]]$source)
+}
+article_data <- dplyr::bind_rows(article_list)
+return(article_data)
+}
+
+# Using the function to query NewsAPI for pharmaceutical articles
+pharma_articles <- query_news("pharmaceuticals", "2026-09-01", news_api_key)
+
+# Display pharmaceutical articles
+pharma_articles
+
+# Using the function to query NewsAPI for biotechnology articles
+biotech_articles <- query_news("biotechnology", "2026-09-01", news_api_key)
+
+# Display biotech articles
+biotech_articles
+```
+
+## Task 2: Summarizing Roller Coaster Data
+
+### Reading in Data
+The roller coaster data are read from the provided URL. Variables representing categorical characteristics are converted to factors as appropriate. The "AgeGroup" variable is also assigned descriptive factor levels corresponding to the values provided with the data.
+
+```{r}
+# Load packages used for data manipulation and visualization
+library(tidyverse)
+
+# Read in the roller coaster data
+coaster_data <- read_csv("https://www4.stat.ncsu.edu/online/datasets/635USrollercoasters.csv")
+
+# Examine the original structure of the roller coaster data
+str(coaster_data)
+
+# Convert categorical variables to factors
+coaster_data <- coaster_data |>
+  mutate(
+    Park = factor(Park),
+    City = factor(City),
+    State = factor(State),
+    `Census Region` = factor(`Census Region`),
+    AgeGroup = factor(AgeGroup, 
+                      levels = c("1:Older", "2:Recent", "3:Newest"), 
+                      labels=c("Older", "Recent", "Newest")
+                    ),
+   Scale = factor(Scale),
+   Type = factor(Type),
+   Design = factor(Design),
+   `Inversions?` = factor(`Inversions?`),
+   Make = factor(Make)
+  )  
+```
+
+### Basic EDA
+
+#### 4. Examining Data Structure
+The structure of the resulting data set from above is then examined to determine whether the variables are stored appropriately. After conversion, the variables appear to be stored appropriately. Categorical variables are stored as factors, while quantitative measurements such as speed, height, drop, length, duration, and number of inversions are stored as numeric variables. The coaster name and boundary information remain character variables, while latitude and longitude remain numeric.
+
+```{r}
+# Examine how the roller coaster data are stored
+str(coaster_data)
+```
+#### 5. Documenting Missing Values
+
+### Categorical Variables
