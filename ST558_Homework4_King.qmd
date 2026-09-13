@@ -111,11 +111,40 @@ teams_2015_sql <- tbl(con, sql(
 FROM `Teams`
 WHERE (`yearID` = 2015.0)")
 )
+hall_of_fame <- con |>
+  tbl("HallOfFame") |>
+  filter(category == "Player", inducted == "Y") |>
+  select("playerID","yearID","category") 
+people_names <- con |>
+  tbl("People") |>
+  select("playerID","nameFirst","nameLast")
+left_join(hall_of_fame, people_names,
+          by = c("playerID")) |>
+          collect()
+
+  
+```
+## Manager Summary
+
+```{r}
+manager_summary <- con |>
+  tbl("Managers") |>
+  select("playerID", "G", "W", "L") |>
+  group_by(playerID) |>
+  summarize(G_managed = sum(G, na.rm = TRUE),
+  Total_W = sum(W, na.rm = TRUE),
+  Total_L = sum(L, na.rm = TRUE)) |>
+  collect() |>
+  mutate(Win_Loss_Percentage = Total_W / G_managed) |>
+  arrange(desc(Win_Loss_Percentage))
 ```
 
 
 
+## Final Challenge
+```{r}
 
+```
 
 
 
