@@ -111,6 +111,12 @@ teams_2015_sql <- tbl(con, sql(
 FROM `Teams`
 WHERE (`yearID` = 2015.0)")
 )
+
+
+  
+```
+
+```{r}
 hall_of_fame <- con |>
   tbl("HallOfFame") |>
   filter(category == "Player", inducted == "Y") |>
@@ -121,9 +127,9 @@ people_names <- con |>
 left_join(hall_of_fame, people_names,
           by = c("playerID")) |>
           collect()
-
-  
 ```
+
+
 ## Manager Summary
 
 ```{r}
@@ -143,7 +149,15 @@ manager_summary <- con |>
 
 ## Final Challenge
 ```{r}
-
+hall_of_fame_managers <- inner_join(manager_summary,
+                                    tbl(con, "HallOfFame") |> 
+                                      filter(inducted == "Y") |>
+                                      select("playerID","yearID","category") |>
+                                      left_join(people_names,
+                                        by = c("playerID")) |>
+                                        collect(),
+                                    by = c("playerID")) |>
+                          collect()
 ```
 
 
