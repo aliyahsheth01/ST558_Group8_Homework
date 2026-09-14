@@ -1,0 +1,167 @@
+---
+title: "ST558_Homework4_King"
+format: html
+---
+
+# Task 1: Conceptual Questions
+
+1. Rewritten nesting call:
+
+```{r}
+library(tidyverse)
+iris |>
+  as_tibble() |>
+  select(starts_with("Petal"), Species) |>
+  filter(Petal.Length < 1.55) |>
+  arrange(Species)
+```
+
+2. Long format data has each row as one observation, and each column as a variable/measurement of that observation. Wide format data has more than one observation per row. Long format is preferred.
+
+# Task 2: ???
+
+## Glass Data
+
+Reading in the data from the previous homework:
+
+```{r}
+glass_names = c("ID","RI","NA","MG","AL","SI","K","CA","BA","FE","Type_of_glass")
+glass_Data <- read_csv("https://www4.stat.ncsu.edu/online/datasets/glass.data",col_names = glass_names)
+```
+Creating the factor variable and filtering output:
+
+```{r}
+glass_data_filtered <- glass_Data |>
+  mutate(Type_Of_Glass = factor(
+    Type_of_glass,
+    levels = 1:7,
+    labels = c(
+      "building_windows_float_processed",
+      "building_windows_non_float_processed",
+      "vehicle_windows_float_processed",
+      "vehicle_windows_non_float_processed",
+      "containers",
+      "tableware",
+      "headlamps"
+    )
+  )) |>
+  filter(FE<0.2,Type_Of_Glass %in% c("tableware","headlamps"))
+
+```
+
+
+## Yeast Data
+
+Reading in data: 
+
+```{r}
+yeast_names <- c("seq_name","mcg","gvh","alm","mit","erl","pox","vac","nuc","class")
+yeast_data <- read_table("https://www4.stat.ncsu.edu/online/datasets/yeast.data",col_names = yeast_names)
+```
+
+Removing columns and adding mean/median columns:
+
+```{r}
+yeast_data_summary <- yeast_data |>
+  select(-1,-9) |>
+  group_by(class)|>
+  mutate(across(1:7,list(mean=mean,median=median),.names="{.col}_{.fn}"))
+```
+
+## Wine Data
+
+All of the reading in from previous assignment:
+
+```{r}
+library(readxl)
+white_wine <- read_excel("data/white-wine.xlsx",col_types = "numeric")
+wine_names <-read_excel("data/white-wine.xlsx", sheet = excel_sheets("data/white-wine.xlsx")[2])
+colnames(white_wine) <- wine_names$Variables
+white_wine$type <- "white"
+red_wine <- read_delim("https://www4.stat.ncsu.edu/~online/datasets/red-wine.csv",delim = ";")
+colnames(red_wine) <- wine_names$Variables
+red_wine$type <- "red"
+wine_data <- bind_rows(white_wine,red_wine)
+```
+Filtering the wine data:
+
+```{r}
+wine_data_filtered <- wine_data |>
+  filter(quality > 6.5, alcohol < 13.2) |>
+  arrange(desc(quality))|>
+  select(contains("acid"),alcohol,type,quality)|>
+  group_by(quality)|>
+  mutate(across(-5,list(mean=mean,median=median),.names="{.col}_{.fn}"))
+```
+
+
+# Task 3: Database Practice
+
+
+```{r}
+library(DBI)
+library(RSQLite)
+con <- dbConnect(RSQLite::SQLite(), "data/lahman.db")
+DBI::dbListTables(con)
+teams_2015_dplyr <- con |>
+  tbl("Teams") |>
+  filter(yearID == 2015)
+teams_2015_sql <- tbl(con, sql(
+"SELECT *
+FROM `Teams`
+WHERE (`yearID` = 2015.0)")
+)
+
+
+  
+```
+
+```{r}
+hall_of_fame <- con |>
+  tbl("HallOfFame") |>
+  filter(category == "Player", inducted == "Y") |>
+  select("playerID","yearID","category") 
+people_names <- con |>
+  tbl("People") |>
+  select("playerID","nameFirst","nameLast")
+left_join(hall_of_fame, people_names,
+          by = c("playerID")) |>
+          collect()
+```
+
+
+## Manager Summary
+
+```{r}
+manager_summary <- con |>
+  tbl("Managers") |>
+  select("playerID", "G", "W", "L") |>
+  group_by(playerID) |>
+  summarize(G_managed = sum(G, na.rm = TRUE),
+  Total_W = sum(W, na.rm = TRUE),
+  Total_L = sum(L, na.rm = TRUE)) |>
+  collect() |>
+  mutate(Win_Loss_Percentage = Total_W / G_managed) |>
+  arrange(desc(Win_Loss_Percentage))
+```
+
+
+
+## Final Challenge
+```{r}
+hall_of_fame_managers <- inner_join(manager_summary,
+                                    tbl(con, "HallOfFame") |> 
+                                      filter(inducted == "Y") |>
+                                      select("playerID","yearID","category") |>
+                                      left_join(people_names,
+                                        by = c("playerID")) |>
+                                        collect(),
+                                    by = c("playerID")) |>
+                          collect()
+```
+
+
+
+
+
+
