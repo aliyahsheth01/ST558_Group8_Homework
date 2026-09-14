@@ -103,7 +103,12 @@ yeast_data_summary <- yeast_data |>
 First, we'll read in the dataset using the code from the previous assignment:
 
 ```{r}
+# Loading necessary package to read excel data:
+
 library(readxl)
+
+# Reading in the data:
+
 white_wine <- read_excel("data/white-wine.xlsx",col_types = "numeric")
 wine_names <-read_excel("data/white-wine.xlsx", sheet = excel_sheets("data/white-wine.xlsx")[2])
 colnames(white_wine) <- wine_names$Variables
@@ -132,6 +137,8 @@ The chain is continued by grouping the wine data by "quality". The mean and stan
 
 ```{r}
 
+# Filtering the data:
+
 wine_data_filtered <- wine_data |>
   filter (
     quality > 6.5,
@@ -143,9 +150,125 @@ wine_data_filtered <- wine_data |>
     alcohol_mean = mean(alcohol),
     alcohol_sd = sd(alcohol))
 
+# Printing the table:
+
 wine_data_filtered
 
 ```
+
+
+# Task 3: Database Practice
+
+## Questions 11-13
+  
+### 11. Connect to the Database
+
+A connection is established to the "Lahman.db" database. The available tables in the database are then displayed to identify the data available for the remaining questions.
+
+```{r}
+# Load packages needed to connect to SQLite database
+library (DBI)
+library (RSQLite)
+
+# Connect to the Lahman SQLite database
+con <- dbConnect (
+  SQLite(),
+  "data/Lahman.db")
+
+# Display all tables in the database
+dbListTables (con)
+```
+
+
+### 12. Using dplyr for Teams table
+
+The "Teams" table is accessed using "tbl()", and "dplyr" functions are used to return the team data for the year 2015.
+
+```{r}
+# Accessing "Teams" table and return data for specific year using dplyr
+teams_2015_dplyr <- con |>
+  tbl("Teams") |>
+  filter(yearID == 2015)
+
+# Display the table
+teams_2015_dplyr
+```
+
+### 13. Using SQL for Teams table
+
+The 2015 "Teams" data are retrieved again, this time by using an SQL statement within "sql()" and "tbl()". This provides the same requested data using SQL rather than the "dplyr" filtering approach. 
+
+```{r}
+
+# Return teams data for the year 2015 using SQL
+teams_2015_sql <- tbl(con, sql(
+"SELECT *
+FROM `Teams`
+WHERE (`yearID` = 2015.0)")
+)
+
+# Display the table
+teams_2015_sql
+
+```
+
+## Questions 14-17
+
+### 14. Hall of Fame Players
+
+The "HallOfFame" table is used to identify players who were inducted into the Hall of Fame. The resulting data retain the player identifier, the year the player was voted in, and the category.
+
+```{r}
+
+# Return Hall of Fame inductees, induction year, and category
+
+hall_of_fame <- tbl (con, "HallOfFame") |>
+  filter(inducted == "Y") |>
+  select(playerID, yearID, category)
+
+# Display the table
+hall_of_fame
+
+```
+
+
+
+### 15. Hall of Fame Names
+
+The Hall of Fame results from Question 14 are combined with the "People" table to add each inducted player's first and last name.
+
+```{r}
+
+# Select names from the People table
+
+people_names <- tbl(con, "People") |>
+  select(playerID, nameFirst, nameLast)
+
+# Joining the hall_of_fame table with the names
+
+hall_of_fame_names <- hall_of_fame |>
+  left_join(
+    people_names,
+    by = "playerID"
+  )
+
+# Display the new table
+
+hall_of_fame_names
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
