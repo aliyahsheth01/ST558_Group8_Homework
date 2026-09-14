@@ -1,0 +1,22 @@
+---
+title: "ST558_Homework4_Combined"
+author: "Group 8"
+format: html
+---
+
+# Task 1 : Conceptual Questions
+
+1. Rewritten Function Call:
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+library(tidyverse)
+
+as_tibble(iris) |>
+    select(starts_with("Petal"), Species) |>
+    filter(Petal.Length < 1.55) |>
+    arrange(Species)
+```
+
