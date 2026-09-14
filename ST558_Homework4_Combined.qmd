@@ -98,7 +98,54 @@ yeast_data_summary <- yeast_data |>
 
 ```
 
+## Wine Data 
 
+First, we'll read in the dataset using the code from the previous assignment:
+
+```{r}
+library(readxl)
+white_wine <- read_excel("data/white-wine.xlsx",col_types = "numeric")
+wine_names <-read_excel("data/white-wine.xlsx", sheet = excel_sheets("data/white-wine.xlsx")[2])
+colnames(white_wine) <- wine_names$Variables
+white_wine$type <- "white"
+red_wine <- read_delim("https://www4.stat.ncsu.edu/~online/datasets/red-wine.csv",delim = ";")
+colnames(red_wine) <- wine_names$Variables
+red_wine$type <- "red"
+wine_data <- bind_rows(white_wine,red_wine)
+```
+
+### 7. Filtering for High-Quality
+
+A chain is started on the combined wine data, and "filter()" is used to retain only high-quality wines with "quality > 6.5" and wines with "alcohol < 132". Code for questions 7 through 10 is presented together in the chunk below.
+
+### 8. Sorting by Quality
+
+The chain is continued using "arrange()" with "desc(quality)" to sort the filtered wine data from highest quality to lowest quality.
+
+### 9. Selecting Variables
+
+The chain is continued using "select()" to retain variables containing "acid", along with the "alcohol", "type", and "quality" variables. Code for questions 7 through 10 is presented together in the chunk below. 
+
+### 10. Adding Mean and SD
+
+The chain is continued by grouping the wine data by "quality". The mean and standard deviation of "alcohol" are then calculated for each quality group and added as new variables using "mutate()".
+
+```{r}
+
+wine_data_filtered <- wine_data |>
+  filter (
+    quality > 6.5,
+    alcohol < 13.2 ) |>
+  arrange (desc(quality)) |>
+  select (contains ("acid"), alcohol, type, quality) |>
+  group_by (quality) |>
+  mutate (
+    alcohol_mean = mean(alcohol),
+    alcohol_sd = sd(alcohol))
+
+wine_data_filtered
+
+```
 
 
 
