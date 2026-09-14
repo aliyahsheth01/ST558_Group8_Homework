@@ -6,17 +6,105 @@ format: html
 
 # Task 1 : Conceptual Questions
 
-1. Rewritten Function Call:
+### 1. Rewritten Function Call:
+
+For this question, we're to rewrite the given nested function using R's chaining operator.
+
+The code performs the following: the 'iris' data is first converted to a tibble, variables beginning with "Petal" and the "Species" variable are selected, observations with "Petal.Length \< 1.55" are retained, and the resulting data are sorted by "Species".
 
 ```{r}
-#| message: false
-#| warning: false
-#| echo: false
+
 library(tidyverse)
 
 as_tibble(iris) |>
     select(starts_with("Petal"), Species) |>
     filter(Petal.Length < 1.55) |>
     arrange(Species)
+
 ```
+
+### 2. Long versus Wide Data:
+
+Long format data has each row as one observation, and each column as a variable/measurement of that observation. Wide format data may contain more than one observation in a given row, with repeated measurements often spread across multiple columns. For statistical analysis, long format data are generally preferred because most plotting, summarizing, and modeling methods expect data to be in long form.
+
+# Task 2: Reading and Manipulating Data
+
+## Glass Data
+
+### 3. Starting the Chain:
+
+For this problem, we're to replace the integers in the Type_of_glass column of our tibble with the corresponding labels that were given in the problem.
+
+The glass data are read directly from the provided URL and the columns are named.A chain is started on the glass data, and "mutate()" is used to overwrite the numeric "Type_of_glass" variable with a factor containing descriptive labels for each glass type. Code for questions 3 and 4 is presented in the same chunk below. 
+
+### 4. Continuing the Chain: 
+
+The chain is continued to retain only observations with "Fe" values less than 0.2 and glass types of either "tableware" or "headlamps". Code for questions 3 and 4 is presented in the same chunk below. 
+
+```{r}
+# Reading in the data from the previous assignment:
+
+glass_names <- c("Id", "RI", "Na", "Mg", "Al", "Si", "K", "Ca", "Ba", "Fe", "Type_of_glass")
+glass_data <- read_csv("https://www4.stat.ncsu.edu/~online/datasets/glass.data", 
+                       col_names = glass_names)
+
+# Creating the factor variable: 
+
+glass_data_filtered <- glass_data |>
+  mutate(
+    Type_of_glass = factor(
+      Type_of_glass,
+      levels = c (1, 2, 3, 4, 5, 6, 7),
+      labels = c (
+        "building_windows_float_processed", 
+        "building_windows_non_float_processed",
+        "vehicle_windows_float_processed",
+        "vehicle_windows_non_float_processed",
+        "containers",
+        "tableware",
+        "headlamps"
+      )
+    )
+  ) |>
+  filter(
+    Fe < 0.2,
+    Type_of_glass %in% c("tableware", "headlamps")
+  )
+
+```
+
+## Yeast Data
+
+### 5. Starting the Chain
+
+First, we'll read in the yeast data from before. Then, a chain is started on the yeast data, and "select()" is used to remove the "seq_name" and "nuc" variables.
+
+### 6. Continuing the Chain
+
+The chain is continued by grouping the observations by "class". The "across()" function within "mutate()" is then used to add the mean and median of each numeric variable ("mcg", "gvh", "alm", "mit", "erl", "pox", and "vac") for each class group. The code for questions 5 and 6 is presented in the same chunk below.
+
+```{r}
+# Reading in the data from the previous assignment:
+
+yeast_names <- c("seq_name","mcg","gvh","alm","mit","erl","pox","vac","nuc","class")
+yeast_data <- read_table("https://www4.stat.ncsu.edu/online/datasets/yeast.data",col_names = yeast_names)
+
+# Creating the chain:
+
+yeast_data_summary <- yeast_data |>
+  select(-"seq_name", -"nuc") |>
+  group_by(class)|>
+  mutate(across(where(is.numeric),list(mean=mean,median=median),.names="{.col}_{.fn}"))
+
+```
+
+
+
+
+
+
+
+
+
+
 
