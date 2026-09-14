@@ -133,6 +133,108 @@ wine_data <- wine_data_combined |>
 ```
 
 
+## Task 3: Database Practice
+
+#### Download the Lahman.db file associated with the Connecting to Databases notes/video.
+
+### 11) Connect to the database and then look at all of the tables in the database.
+
+```{r Task 3 Question 11}
+
+con <- DBI::dbConnect(RSQLite::SQLite(), "data/lahman.db")
+DBI::dbListTables(con)
+
+```
+
+### 12) Use the tbl() function and dplyr to return all of the data from the Teams table for the year 2015.
+
+```{r Task 3 Question 12}
+
+teams_2015 <- dplyr::tbl(con, "Teams") |> 
+  filter(yearID == 2015)
+
+teams_2015
+
+```
+
+### 13) Repeat the above by using the sql() function within tbl() (here you have to write actual SQL!).
+
+```{r Task 3 Question 13}
+
+dplyr::tbl(con, "Teams") |> 
+  filter(yearID == 2015) |>
+  show_query()
+
+teams_2015_sql <- tbl(con, sql(
+  "SELECT `Teams`.*
+    FROM `Teams`
+    WHERE (`yearID` = 2015.0)"
+))
+
+teams_2015_sql
+
+```
+
+### 14) Return all of the players in the hall of fame, the year they were voted into the hall of fame, and their category (only those three variables!). See the HallOfFame table, the inducted variable is important here.
+
+```{r Task 3 Question 14}
+
+hof_players <- dplyr::tbl(con, "HallOfFame") |>
+  filter(inducted == "Y") |>
+  select(playerID, yearID, category) 
+
+hof_players
+
+```
+
+### 15) Combine the table from the previous question with the People table in order to have the nameFirst and nameLast names added to what was returned above.
+
+```{r Task 3 Question 15}
+
+hof_players_w_names <- hof_players |>
+  left_join(dplyr::tbl(con, "People") |>
+              select(playerID, nameFirst, nameLast),
+            by = "playerID") |>
+  collect()
+
+hof_players_w_names
+
+```
+
+### 16) Return only the playerID (manager ID in this case), G, W, and L columns from the Managers table. Use chaining to then:
+
+#### Determine the overall win/loss records (sum of wins and sum of losses) for each of these hall of fame managers.
+
+#### Create a new variable that is the career win/loss percentage (Total_W/G_managed). (Note: I did this after collect() otherwise the column type has to be set. . . )
+
+#### Sort the resulting data by the win/loss percentage variable (from largest to smallest).
+
+```{r Task 3 Question 16}
+
+managers <- dplyr::tbl(con, "Managers") |>
+  select(playerID, G, W, L) |>
+  group_by(playerID) |>
+  summarize(G_managed = sum(G, na.rm = TRUE),
+            Total_W = sum(W, na.rm = TRUE),
+            Total_L = sum(L, na.rm = TRUE)) |>
+  ungroup() |>
+  collect() |>
+  mutate(w_l_percentage = Total_W/G_managed) |>
+  arrange(desc(w_l_percentage))
+  
+
+managers
+```
+
+### 17) Use the results from the previous two questions to answer this one! Return information for only the people that managed a team and were inducted into the hall of fame (regardless of their category in the hall of fame - you want to return all people in the hall of fame that ever managed at all). (Just return all of the variables from both of the above two questions - 9 total columns):
+
+```{r Task 3 Question 17}
+
+hof_managers <- inner_join(managers, as.tibble(hof_players_w_names), by = "playerID")
+
+hof_managers
+
+```
 
 
 
