@@ -161,43 +161,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h1>Task 2: Reading Delimited Data</h1>
 <section id="glass-data" class="level2">
 <h2 class="anchored" data-anchor-id="glass-data">1. Glass Data</h2>
+<p>First, we’ll load in the tidyverse package. Then, we’ll reading in the glass data. The raw data is comma delimited, so we use read_csv(), which allows the columns names are set to a vector of the names. Finally, we’ll print the tibble.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># loading in tidyverse</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: package 'readr' was built under R version 4.5.3</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: package 'dplyr' was built under R version 4.5.3</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: package 'lubridate' was built under R version 4.5.3</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-✔ dplyr     1.2.1     ✔ readr     2.2.0
-✔ forcats   1.0.1     ✔ stringr   1.6.0
-✔ ggplot2   4.0.1     ✔ tibble    3.3.0
-✔ lubridate 1.9.5     ✔ tidyr     1.3.1
-✔ purrr     1.2.0     
-── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()
-ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the raw data is comma delimited, so we use read_csv. the columns names are set to a vector of the names.</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>glassData <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"https://www4.stat.ncsu.edu/online/datasets/glass.data"</span>,<span class="at">col_names =</span> <span class="fu">c</span>(<span class="st">"ID"</span>,<span class="st">"RI"</span>,<span class="st">"NA"</span>,<span class="st">"MG"</span>,<span class="st">"AL"</span>,<span class="st">"SI"</span>,<span class="st">"K"</span>,<span class="st">"CA"</span>,<span class="st">"BA"</span>,<span class="st">"FE"</span>,<span class="st">"Type"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Rows: 214 Columns: 11
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: ","
-dbl (11): ID, RI, NA, MG, AL, SI, K, CA, BA, FE, Type
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># print the tibble</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>glassData</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>glassData <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"https://www4.stat.ncsu.edu/online/datasets/glass.data"</span>,<span class="at">col_names =</span> <span class="fu">c</span>(<span class="st">"ID"</span>,<span class="st">"RI"</span>,<span class="st">"NA"</span>,<span class="st">"MG"</span>,<span class="st">"AL"</span>,<span class="st">"SI"</span>,<span class="st">"K"</span>,<span class="st">"CA"</span>,<span class="st">"BA"</span>,<span class="st">"FE"</span>,<span class="st">"Type"</span>))</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>glassData</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 214 × 11
       ID    RI  `NA`    MG    AL    SI     K    CA    BA    FE  Type
@@ -218,27 +187,10 @@ dbl (11): ID, RI, NA, MG, AL, SI, K, CA, BA, FE, Type
 </section>
 <section id="yeast-data" class="level2">
 <h2 class="anchored" data-anchor-id="yeast-data">2. Yeast Data</h2>
+<p>Next, we’ll read in the yeast data. These raw data is space delimited, so we use read_table and rename the columns, as before, and print the tibble.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the raw data is space delimited, so we use read_table.</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>yeastData <span class="ot">&lt;-</span> <span class="fu">read_table</span>(<span class="st">"https://www4.stat.ncsu.edu/online/datasets/yeast.data"</span>,<span class="at">col_names =</span> <span class="fu">c</span>(<span class="st">"seq_name"</span>,<span class="st">"mcg"</span>,<span class="st">"gvh"</span>,<span class="st">"alm"</span>,<span class="st">"mit"</span>,<span class="st">"erl"</span>,<span class="st">"pox"</span>,<span class="st">"vac"</span>,<span class="st">"nuc"</span>,<span class="st">"class"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-── Column specification ────────────────────────────────────────────────────────
-cols(
-  seq_name = col_character(),
-  mcg = col_double(),
-  gvh = col_double(),
-  alm = col_double(),
-  mit = col_double(),
-  erl = col_double(),
-  pox = col_double(),
-  vac = col_double(),
-  nuc = col_double(),
-  class = col_character()
-)</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># print the tibble</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>yeastData</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>yeastData <span class="ot">&lt;-</span> <span class="fu">read_table</span>(<span class="st">"https://www4.stat.ncsu.edu/online/datasets/yeast.data"</span>,<span class="at">col_names =</span> <span class="fu">c</span>(<span class="st">"seq_name"</span>,<span class="st">"mcg"</span>,<span class="st">"gvh"</span>,<span class="st">"alm"</span>,<span class="st">"mit"</span>,<span class="st">"erl"</span>,<span class="st">"pox"</span>,<span class="st">"vac"</span>,<span class="st">"nuc"</span>,<span class="st">"class"</span>),<span class="at">show_col_types =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>yeastData</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1,484 × 10
    seq_name     mcg   gvh   alm   mit   erl   pox   vac   nuc class
@@ -263,10 +215,10 @@ cols(
 <section id="first-we-will-read-in-the-first-sheet-of-the-white-wine-excel-file" class="level2">
 <h2 class="anchored" data-anchor-id="first-we-will-read-in-the-first-sheet-of-the-white-wine-excel-file">3. First we will read in the first sheet of the white wine excel file</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Reading in first sheet of the file</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>wine_data <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_excel</span>(<span class="st">"data/white-wine.xlsx"</span>, <span class="at">sheet =</span> <span class="dv">1</span>)</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>wine_data</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Reading in first sheet of the file</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>wine_data <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_excel</span>(<span class="st">"data/white-wine.xlsx"</span>, <span class="at">sheet =</span> <span class="dv">1</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>wine_data</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 4,898 × 12
    `fixed acidity` `volatile acidity` `citric acid` `residual sugar` chlorides
@@ -291,10 +243,10 @@ cols(
 <section id="next-we-will-read-in-the-second-sheet-of-the-white-wine-excel-file-and-assign" class="level2">
 <h2 class="anchored" data-anchor-id="next-we-will-read-in-the-second-sheet-of-the-white-wine-excel-file-and-assign">4. Next we will read in the second sheet of the white wine excel file, and assign</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Reading in second sheet of the file</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>wine_data_colnames <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_excel</span>(<span class="st">"data/white-wine.xlsx"</span>, <span class="at">sheet =</span> <span class="dv">2</span>)</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>wine_data_colnames</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Reading in second sheet of the file</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>wine_data_colnames <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_excel</span>(<span class="st">"data/white-wine.xlsx"</span>, <span class="at">sheet =</span> <span class="dv">2</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>wine_data_colnames</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 12 × 1
    Variables           
@@ -312,24 +264,24 @@ cols(
 11 alcohol             
 12 quality             </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Assigning the vector of names from the second sheet to be the column names of the first sheet</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(wine_data) <span class="ot">&lt;-</span> wine_data_colnames[[<span class="dv">1</span>]]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Assigning the vector of names from the second sheet to be the column names of the first sheet</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(wine_data) <span class="ot">&lt;-</span> wine_data_colnames[[<span class="dv">1</span>]]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="next-we-will-add-a-column-to-indicate-if-the-wines-are-white-in-this-case-all-are" class="level2">
 <h2 class="anchored" data-anchor-id="next-we-will-add-a-column-to-indicate-if-the-wines-are-white-in-this-case-all-are">5. Next we will add a column to indicate if the wines are white (in this case, all are)</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Using dplyr::mutate to add a white wine indicator</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>wine_data <span class="ot">&lt;-</span> wine_data <span class="sc">|&gt;</span></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">wine_type =</span> <span class="st">"white"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Using dplyr::mutate to add a white wine indicator</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>wine_data <span class="ot">&lt;-</span> wine_data <span class="sc">|&gt;</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">wine_type =</span> <span class="st">"white"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="next-we-will-read-in-a-red-wine-dataset-semi-colon-delimited" class="level2">
 <h2 class="anchored" data-anchor-id="next-we-will-read-in-a-red-wine-dataset-semi-colon-delimited">6. Next we will read in a red wine dataset (semi-colon delimited)</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Using dplyr::mutate to add a white indicator</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>red_wine_data <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_delim</span>(<span class="st">"https://www4.stat.ncsu.edu/~online/datasets/red-wine.csv"</span>,</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">delim =</span> <span class="st">";"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Using dplyr::mutate to add a white indicator</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>red_wine_data <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_delim</span>(<span class="st">"https://www4.stat.ncsu.edu/~online/datasets/red-wine.csv"</span>,</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">delim =</span> <span class="st">";"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Rows: 1599 Columns: 12
 ── Column specification ────────────────────────────────────────────────────────
@@ -339,19 +291,39 @@ dbl (12): fixed acidity, volatile acidity, citric acid, residual sugar, chlo...
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co">#replacing column names</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(red_wine_data) <span class="ot">&lt;-</span> wine_data_colnames[[<span class="dv">1</span>]]</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Using dplyr::mutate to add a red wine indicator</span></span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>red_wine_data <span class="ot">&lt;-</span> red_wine_data <span class="sc">|&gt;</span></span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">wine_type =</span> <span class="st">"red"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">#replacing column names</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(red_wine_data) <span class="ot">&lt;-</span> wine_data_colnames[[<span class="dv">1</span>]]</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Using dplyr::mutate to add a red wine indicator</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>red_wine_data <span class="ot">&lt;-</span> red_wine_data <span class="sc">|&gt;</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">wine_type =</span> <span class="st">"red"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="lastly-we-will-combine-the-2-wine-data-sets" class="level2">
-<h2 class="anchored" data-anchor-id="lastly-we-will-combine-the-2-wine-data-sets">7. Lastly, we will combine the 2 wine data sets</h2>
+<section id="lastly-we-will-combine-the-2-wine-data-sets-and-print-it-out." class="level2">
+<h2 class="anchored" data-anchor-id="lastly-we-will-combine-the-2-wine-data-sets-and-print-it-out.">7. Lastly, we will combine the 2 wine data sets and print it out.</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co">#combining the 2 datasets using dplyr::bind_rows</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>wine_data_combined <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">bind_rows</span>(wine_data, red_wine_data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">#combining the 2 datasets using dplyr::bind_rows</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>wine_data_combined <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">bind_rows</span>(wine_data, red_wine_data)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>wine_data_combined</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6,497 × 13
+   fixed_acidity volatile_acidity citric_acid residual_sugar chlorides
+           &lt;dbl&gt;            &lt;dbl&gt;       &lt;dbl&gt;          &lt;dbl&gt;     &lt;dbl&gt;
+ 1           7               0.27        0.36           20.7     0.045
+ 2           6.3             0.3         0.34            1.6     0.049
+ 3           8.1             0.28        0.4             6.9     0.05 
+ 4           7.2             0.23        0.32            8.5     0.058
+ 5           7.2             0.23        0.32            8.5     0.058
+ 6           8.1             0.28        0.4             6.9     0.05 
+ 7           6.2             0.32        0.16            7       0.045
+ 8           7               0.27        0.36           20.7     0.045
+ 9           6.3             0.3         0.34            1.6     0.049
+10           8.1             0.22        0.43            1.5     0.044
+# ℹ 6,487 more rows
+# ℹ 8 more variables: free_sulfur_dioxide &lt;dbl&gt;, total_sulfur_dioxide &lt;dbl&gt;,
+#   density &lt;dbl&gt;, pH &lt;dbl&gt;, sulphates &lt;dbl&gt;, alcohol &lt;dbl&gt;, quality &lt;dbl&gt;,
+#   wine_type &lt;chr&gt;</code></pre>
+</div>
 </div>
 </section>
 </section>
@@ -361,18 +333,18 @@ dbl (12): fixed acidity, volatile acidity, citric acid, residual sugar, chlo...
 <h2 class="anchored" data-anchor-id="section-1">8.</h2>
 <p>For this task, we’ll start creating functions. To begin, we’ll take in a vector and find the IQR.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>getIQR<span class="ot">&lt;-</span><span class="cf">function</span>(x){</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">quantile</span>(x,<span class="fl">0.75</span>,<span class="at">names=</span><span class="dv">0</span>)<span class="sc">-</span><span class="fu">quantile</span>(x,<span class="fl">0.25</span>,<span class="at">names=</span><span class="dv">0</span>)</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>getIQR<span class="ot">&lt;-</span><span class="cf">function</span>(x){</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">quantile</span>(x,<span class="fl">0.75</span>,<span class="at">names=</span><span class="dv">0</span>)<span class="sc">-</span><span class="fu">quantile</span>(x,<span class="fl">0.25</span>,<span class="at">names=</span><span class="dv">0</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Note the changing of the names default within the quantiles function so that only the answer is returned. Let’s try it!</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">getIQR</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">getIQR</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 9.5</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>trial_vector<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>)</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">getIQR</span>(trial_vector)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>trial_vector<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">getIQR</span>(trial_vector)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 49.5</code></pre>
 </div>
@@ -382,19 +354,19 @@ dbl (12): fixed acidity, volatile acidity, citric acid, residual sugar, chlo...
 <h2 class="anchored" data-anchor-id="section-2">9.</h2>
 <p>Next, we’ll get the interquartile range of the numbers in the fixed_acidity and citric_acid columns of the total_wine tibble above.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"fixed_acidity IQR"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"fixed_acidity IQR"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "fixed_acidity IQR"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">getIQR</span>(wine_data_combined<span class="sc">$</span>fixed_acidity)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">getIQR</span>(wine_data_combined<span class="sc">$</span>fixed_acidity)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1.3</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"citric_acid IQR"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"citric_acid IQR"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "citric_acid IQR"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">getIQR</span>(wine_data_combined<span class="sc">$</span>citric_acid)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">getIQR</span>(wine_data_combined<span class="sc">$</span>citric_acid)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.14</code></pre>
 </div>
@@ -404,17 +376,17 @@ dbl (12): fixed acidity, volatile acidity, citric acid, residual sugar, chlo...
 <h2 class="anchored" data-anchor-id="section-3">10.</h2>
 <p>Next, we’ll write a function to get the sample coefficient of variation (defined as the sample standard deviation divided by the absolute value of the sample mean).</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>getCoefVar<span class="ot">&lt;-</span><span class="cf">function</span>(x){</span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sd</span>(x)<span class="sc">/</span><span class="fu">abs</span>(<span class="fu">mean</span>(x))</span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>getCoefVar<span class="ot">&lt;-</span><span class="cf">function</span>(x){</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sd</span>(x)<span class="sc">/</span><span class="fu">abs</span>(<span class="fu">mean</span>(x))</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>And now to test:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">getCoefVar</span>(trial_vector)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">getCoefVar</span>(trial_vector)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.574485</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">getCoefVar</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">getCoefVar</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.574485</code></pre>
 </div>
@@ -425,19 +397,19 @@ dbl (12): fixed acidity, volatile acidity, citric acid, residual sugar, chlo...
 <h2 class="anchored" data-anchor-id="section-4">11.</h2>
 <p>Now, to apply this function to columns of our tibble.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"fixed_acidity coefficient of variation"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"fixed_acidity coefficient of variation"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "fixed_acidity coefficient of variation"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">getCoefVar</span>(wine_data_combined<span class="sc">$</span>fixed_acidity)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">getCoefVar</span>(wine_data_combined<span class="sc">$</span>fixed_acidity)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.1796783</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"citric_acid coefficient of variation"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"citric_acid coefficient of variation"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "citric_acid coefficient of variation"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">getCoefVar</span>(wine_data_combined<span class="sc">$</span>citric_acid)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">getCoefVar</span>(wine_data_combined<span class="sc">$</span>citric_acid)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.4560663</code></pre>
 </div>
@@ -447,18 +419,18 @@ dbl (12): fixed acidity, volatile acidity, citric acid, residual sugar, chlo...
 <h2 class="anchored" data-anchor-id="section-5">12.</h2>
 <p>Now, we create a new function to apply the two previous ones.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>getSummaries<span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
-<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="st">"IQR"</span><span class="ot">=</span><span class="fu">getIQR</span>(x),<span class="st">"Coef_of_Var"</span><span class="ot">=</span><span class="fu">getCoefVar</span>(x))</span>
-<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>getSummaries<span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="st">"IQR"</span><span class="ot">=</span><span class="fu">getIQR</span>(x),<span class="st">"Coef_of_Var"</span><span class="ot">=</span><span class="fu">getCoefVar</span>(x))</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Giving it a shot:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">getSummaries</span>(trial_vector)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">getSummaries</span>(trial_vector)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        IQR Coef_of_Var 
   49.500000    0.574485 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">getSummaries</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">getSummaries</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        IQR Coef_of_Var 
   49.500000    0.574485 </code></pre>
@@ -469,20 +441,20 @@ dbl (12): fixed acidity, volatile acidity, citric acid, residual sugar, chlo...
 <h2 class="anchored" data-anchor-id="section-6">13.</h2>
 <p>Now, to apply this new function to the columns we’ve been referring to.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"Summary of fixed_acidity"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"Summary of fixed_acidity"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "Summary of fixed_acidity"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">getSummaries</span>(wine_data_combined<span class="sc">$</span>fixed_acidity)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">getSummaries</span>(wine_data_combined<span class="sc">$</span>fixed_acidity)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        IQR Coef_of_Var 
   1.3000000   0.1796783 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"Summary of citric_acid"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"Summary of citric_acid"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "Summary of citric_acid"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">getSummaries</span>(wine_data_combined<span class="sc">$</span>citric_acid)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">getSummaries</span>(wine_data_combined<span class="sc">$</span>citric_acid)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        IQR Coef_of_Var 
   0.1400000   0.4560663 </code></pre>
@@ -493,20 +465,20 @@ dbl (12): fixed acidity, volatile acidity, citric acid, residual sugar, chlo...
 <h2 class="anchored" data-anchor-id="section-7">14.</h2>
 <p>Finally, we’ll create a function to replace the cbind function. First, we’ll write the function:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>infix<span class="ot">&lt;-</span><span class="cf">function</span>(...){</span>
-<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cbind</span>(...)</span>
-<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>infix<span class="ot">&lt;-</span><span class="cf">function</span>(...){</span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cbind</span>(...)</span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Now, we’ll create the data frames and vector we’ll be working on:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="fl">6.28</span>)</span>
-<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>df1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">unif =</span> <span class="fu">runif</span>(<span class="dv">10</span>), <span class="at">norm =</span> <span class="fu">rnorm</span>(<span class="dv">10</span>))</span>
-<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>df2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">gamma =</span> <span class="fu">rgamma</span>(<span class="dv">10</span>, <span class="at">shape =</span> <span class="dv">1</span>), <span class="at">beta =</span> <span class="fu">rbeta</span>(<span class="dv">10</span>, <span class="at">shape1 =</span> <span class="dv">5</span>, <span class="at">shape2 =</span> <span class="dv">1</span>))</span>
-<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a>vec1 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">10</span>, <span class="at">mean =</span> <span class="dv">10</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="fl">6.28</span>)</span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>df1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">unif =</span> <span class="fu">runif</span>(<span class="dv">10</span>), <span class="at">norm =</span> <span class="fu">rnorm</span>(<span class="dv">10</span>))</span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>df2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">gamma =</span> <span class="fu">rgamma</span>(<span class="dv">10</span>, <span class="at">shape =</span> <span class="dv">1</span>), <span class="at">beta =</span> <span class="fu">rbeta</span>(<span class="dv">10</span>, <span class="at">shape1 =</span> <span class="dv">5</span>, <span class="at">shape2 =</span> <span class="dv">1</span>))</span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>vec1 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">10</span>, <span class="at">mean =</span> <span class="dv">10</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Now, to test!</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">infix</span>(df1,df2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">infix</span>(df1,df2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        unif        norm        gamma      beta
 1  0.6062683  0.36802518 5.393571e-01 0.7991168
@@ -520,7 +492,7 @@ dbl (12): fixed acidity, volatile acidity, citric acid, residual sugar, chlo...
 9  0.5096485 -0.36856649 1.373379e+00 0.6823349
 10 0.0644768 -0.59955464 1.806886e+00 0.9479136</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">infix</span>(df1,df2,vec1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">infix</span>(df1,df2,vec1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        unif        norm        gamma      beta      vec1
 1  0.6062683  0.36802518 5.393571e-01 0.7991168  9.991384
