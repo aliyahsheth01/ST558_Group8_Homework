@@ -280,7 +280,7 @@ manager_summary<-tbl(con,"Managers")|>
 manager_summary
 ```
 
-Seems unfair to include people that managed so few games, so nice next step might be to only include those who reach a certain thersold. 
+Seems unfair to include people that managed so few games, so nice next step might be to only include those who reach a certain thresold. 
 
 ## 17. 
 
