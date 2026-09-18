@@ -5,7 +5,7 @@ editor: visual
 ---
 
 
-# Task 1 
+# __Task 1 - Querying an API and a Tidy-Style Function__
 
 ## 1. 
 To get started, I wanted to put my API key somewhere handy.
@@ -27,7 +27,9 @@ Next, we're asked to parse what we just received:
 ```{r}
 library(jsonlite)
 parsed <- fromJSON(rawToChar(poll_info$content))
-parsed
+print("Total results=")
+parsed[[2]]
+head(parsed[[3]],5)
 ```
 
 Here, we can see the list mentioned in the "R console" picture that shows that the status is "OK", 4,962 articles were returned from the search and that the third item in the list is the (49x8) data frame. 
@@ -49,21 +51,173 @@ search_parsed
 Now, to try it: 
 
 ```{r}
-search("polls","2026-08-20","020bec21c3dd48a4b5485d44cbffd92f")
+search_1<-search("polls","2026-08-20","020bec21c3dd48a4b5485d44cbffd92f")
+print("Total results")
+search_1[[2]]
+head(search_1[[3]],5)
 ```
 So, it looks like a few more articles have been published between when I queried directly when I got the function working. Let's try a few more times: 
 
 ```{r}
-search("Dolly Parton","2026-08-20","020bec21c3dd48a4b5485d44cbffd92f")
+search_2<-search("Dolly Parton","2026-08-20","020bec21c3dd48a4b5485d44cbffd92f")
+print("Total results")
+search_2[[2]]
+head(search_2[[3]],5)
 ```
 
 
 And
 
 ```{r}
-search("Kyler Murray","2026-08-20","020bec21c3dd48a4b5485d44cbffd92f")
+search_3<-search("Kyler Murray","2026-08-20","020bec21c3dd48a4b5485d44cbffd92f")
+print("Total results")
+search_3[[2]]
+head(search_3[[3]],5)
 ```
 
-# Task 2
 
-## 
+# **Task 2 - Summarizing Roller Coaster Data**
+# Basic EDA
+
+To begin this task, I went to the url provided and downloaded the file to our working directory. Because I haven't yet, I'll next load the tidyverse and readr packages.
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+library(tidyverse)
+library(readr)
+```
+
+Now, we'll pull the data into R: 
+
+```{r}
+raw_coasters<-read_csv("data/635USrollercoasters.csv")
+str(raw_coasters)
+```
+
+Looking over the structure, I see that Census Region, AgeGroup, Scale, Type, Design, and Inversions? should be treated as factors. 
+
+```{r}
+unique(raw_coasters$`Census Region`)
+unique(raw_coasters$AgeGroup)
+unique(raw_coasters$Scale)
+unique(raw_coasters$Type)
+unique(raw_coasters$Design)
+unique(raw_coasters$`Inversions?`)
+```
+Now, to create the factors: 
+
+```{r}
+coasters<-raw_coasters|>
+  select(-Latitude,-Longitude,-Boundary)|>
+  mutate(CensusRegionF=factor(`Census Region`,levels=c("West","Midwest","South","Northeast")))|>
+  mutate(AgeGroup=case_match(AgeGroup,"3:Newest"~"Newest","2:Recent"~"Recent","1:Older"~"Older"))|>
+  mutate(AgeGroupF=factor(AgeGroup,levels=c("Newest","Recent","Older")))|>
+  mutate(ScaleF=factor(Scale,levels=c("Extreme","Thrill","Family","Kiddie")))|>
+  mutate(TypeF=factor(Type,levels=c("Steel","Wood")))|>
+  mutate(DesignF=factor(Design,levels=c("Sit Down","Inverted","Bobsled","Suspended","Wing","Flying","Stand Up")))|>
+  mutate(InversionsF=factor(`Inversions?`,levels=c("Yes","No")))|>
+  select(-`Census Region`,-AgeGroup,-Scale,-Type,-Design,-`Inversions?`)
+```
+
+## 4. 
+ 
+Now that we have some cleaned up data, we can look at it to verify that everything is looking good: 
+```{r}
+coasters
+```
+
+All seems pretty reasonable to me. 
+
+## 5. 
+Next, to look for missing variables. For this, I'll steel the function from the notes.
+
+```{r}
+sum_na <- function(column){
+  sum(is.na(column))
+}
+na_counts <- coasters |>
+  summarize(across(everything(), sum_na))|>
+ select(where(~ .x > 0))
+na_counts
+sum(na_counts)
+```
+It looks like there are 6 columns with missing data, good for a total of 345 missing values.
+
+# Categorical Variables
+## 6. 
+
+Nest, we're to create some contingency tables with the factors we created aboce. First, a one-way table: 
+
+```{r}
+table(coasters$ScaleF)
+```
+
+From the table above, we can see that "Extreme" was the most numerous roller coaster in the data set, with a total of 269 roller coasters being of that type.
+
+And a two-way table: 
+
+```{r}
+table(coasters$ScaleF, coasters$TypeF)
+```
+Look at the table above, we see that most of the roller coasters are made of steel. In fact, 216 of the 269 Extreme coasters are made of stell. 
+
+
+And three-way:
+
+```{r}
+table(coasters$ScaleF,coasters$TypeF,coasters$AgeGroupF)
+```
+
+From this table, we can see that the dominance of steel roller coasters is a recent phenomenon. In fact, when we look at the Older category, we see that less than half of the Extreme roller coasters (8 out of 17) were made of steel. 
+
+## 7. 
+
+Next, we'll create a two-way table, conditioned on a third variable, in two ways. 
+
+```{r}
+filtered_coasters <- filter(coasters, AgeGroupF == "Older")
+table(filtered_coasters$ScaleF, filtered_coasters$TypeF)
+```
+Now, to create the same table another way: 
+
+```{r}
+three_way<-table(coasters$ScaleF,coasters$TypeF,coasters$AgeGroupF)
+
+three_way[,,3]
+```
+
+## 8. 
+Now, we'll do the same thing with functions in dplr. 
+
+```{r}
+#| message: false
+coasters|>
+  group_by(ScaleF,TypeF)|>
+  summarize(count=n())|>
+  pivot_wider(names_from=TypeF,values_from=count)
+```
+
+## 9.
+
+Finally, we'll create a stacked bar graph and a side-by side bar graph. 
+
+First, the stacked bar graph:
+
+```{r}
+#| message: false
+
+library(ggplot2)
+ggplot(coasters, aes(x = ScaleF, fill = TypeF)) +
+  geom_bar()+
+  labs(x="Scale of the roller coaster",y="Count") +
+  scale_fill_discrete("Material")
+```
+
+Finally, the side-by-side: 
+```{r}
+ggplot(coasters, aes(x = ScaleF, fill = TypeF)) +
+  geom_bar(position="dodge")+
+  labs(x="Scale of the roller coaster",y="Count") +
+  scale_fill_discrete("Material")
+```
