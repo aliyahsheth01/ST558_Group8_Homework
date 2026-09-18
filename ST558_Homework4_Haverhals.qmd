@@ -6,14 +6,9 @@ editor: visual
 
 # Task 1: Conceptual Questions
 
-## 1. 
-  
-  For this question, we're to rewrite the given nested function using R's chaining operator. Note that it felt weird to not give the result a name, so I gave the output of the piping a name. I read the given code as performing the following: 
-  1. Taken in the iris data as a tibble.
-  2. Pull out only the Species column and those that start with the string "Petal". 
-  3. Filter "in" those observations with petal length less than 1.55.
-  4. Rearrange the tibble so that the entries are grouped by the Species column.
-  Here's the code I'd use: 
+## 1.
+
+For this question, we're to rewrite the given nested function using R's chaining operator. Note that it felt weird to not give the result a name, so I gave the output of the piping a name. I read the given code as performing the following: 1. Taken in the iris data as a tibble. 2. Pull out only the Species column and those that start with the string "Petal". 3. Filter "in" those observations with petal length less than 1.55. 4. Rearrange the tibble so that the entries are grouped by the Species column. Here's the code I'd use:
 
 ```{r}
 #| message: false
@@ -26,16 +21,17 @@ task_1 <- as_tibble(iris) |>
   arrange(Species)
 task_1
 ```
-  
-## 2. 
-  
-  When data is in "long" format, that means that every row represents an individual observation. "Wide" format allows for multiple observations to be in the same row. This seems like it'd be useful (or, at least, used) when collecting data longitudinally. It's also good for displaying data. 
-  
-  It seems to me that we'd like to use long format data because it'd make it easier to pull call that data for the sake of manipulations. For example, if you have the same observation made over time, it'd be nice to have all those data in a single column when, say, finding the mean of them. 
-  
+
+## 2.
+
+When data is in "long" format, that means that every row represents an individual observation. "Wide" format allows for multiple observations to be in the same row. This seems like it'd be useful (or, at least, used) when collecting data longitudinally. It's also good for displaying data.
+
+It seems to me that we'd like to use long format data because it'd make it easier to pull call that data for the sake of manipulations. For example, if you have the same observation made over time, it'd be nice to have all those data in a single column when, say, finding the mean of them.
+
 # Task 2
-  First, we'll read in the data: 
-  
+
+First, we'll read in the data:
+
 ```{r}
 #Code from HW 3
 #| message: false
@@ -46,6 +42,7 @@ glass_data
 ```
 
 ## Glass Data
+
 ### 3.
 
 For this problem, we're to replace the integers in the Type_of_glass column of our tibble with the corresponding labels that were given in the problem
@@ -58,9 +55,9 @@ glass_data<-glass_data |>
 glass_data
 ```
 
-### 4. 
+### 4.
 
-Now, we're to take what we had and filter it down to those rows where FE<0.2 and the type of glass is either "tableware" or "headlamps."
+Now, we're to take what we had and filter it down to those rows where FE\<0.2 and the type of glass is either "tableware" or "headlamps."
 
 ```{r}
 glass_data_filtered<-glass_data |>
@@ -70,9 +67,10 @@ glass_data_filtered
 ```
 
 ## Yeast Data
+
 ### 5.
 
-To get started here, we'll read in the yeast data from before: 
+To get started here, we'll read in the yeast data from before:
 
 ```{r}
 #| message: false
@@ -82,7 +80,7 @@ To get started here, we'll read in the yeast data from before:
 yeast_data<-read_delim("https://www4.stat.ncsu.edu/~online/datasets/yeast.data",delim = "  ",col_names=c("seq_name","mcg","gvh","alm","mit","erl","pox","vac","nuc","class"))
 ```
 
-Next, we'll remove the columns seq_name and nuc. 
+Next, we'll remove the columns seq_name and nuc.
 
 ```{r}
 yeast_data_summary<-yeast_data|>
@@ -90,8 +88,8 @@ yeast_data_summary<-yeast_data|>
 yeast_data_summary
 ```
 
-
 ### 6.
+
 Continuing the previous chain...
 
 ```{r}
@@ -103,9 +101,9 @@ yeast_data_summary<-yeast_data|>
 yeast_data_summary
 ```
 
-## Wine Data 
+## Wine Data
 
-Here, we'll read in and combine the wine data from HW 3 and combine it as we did there: 
+Here, we'll read in and combine the wine data from HW 3 and combine it as we did there:
 
 ```{r}
 #| message: false
@@ -124,25 +122,25 @@ red_wine<-red_wine|>mutate(wine_type = "red")
 wine_data<-bind_rows(white_wine,red_wine)
 ```
 
+### 7.
 
-### 7. 
-Next, we'll start filtering the data to only include those observations where the quality rating is over 6.5  and the alcohol content is less than 132:
+Next, we'll start filtering the data to only include those observations where the quality rating is over 6.5 and the alcohol content is less than 132:
 
 ```{r}
 wine_data_filtered<-wine_data|>filter(quality>6.5,alcohol<132)
 wine_data_filtered
 ```
 
-### 8. 
+### 8.
 
-Next, we'll arrange the observations by quality, from low to high: 
+Next, we'll arrange the observations by quality, from low to high:
+
 ```{r}
 wine_data_filtered<-wine_data|>filter(quality>6.5,alcohol<132)|>
   arrange(desc(quality))
 ```
 
-
-### 9. 
+### 9.
 
 Next, we're going to pare down the data set by only keeping the variables that contain the string 'acid' and the 'alcohol', 'type', and 'quality' variables.
 
@@ -155,7 +153,7 @@ wine_data_filtered
 
 ### 10.
 
-Finally, we finish off our manipulation of the wine data by adding columns for mean and standard deviation for each value of the quality setting. 
+Finally, we finish off our manipulation of the wine data by adding columns for mean and standard deviation for each value of the quality setting.
 
 ```{r}
 wine_data_filtered<-wine_data|>filter(quality>6.5,alcohol<132)|>
@@ -168,7 +166,6 @@ wine_data_filtered
 
 # Task 3: Database Practice
 
-
 In this task, we're going to be using the Lahman.db data so I need to get that first (note that it's already in my data directoy but I'm practicing here):
 
 ```{r}
@@ -177,9 +174,10 @@ library(DBI)
 con <- dbConnect(RSQLite::SQLite(), "data/lahman.db")
 ```
 
-## 11. 
+## 11.
 
 Now, to look at the tables in the database (note that the connecting was done in the previous step) .
+
 ```{r}
 dbListTables(con)
 ```
@@ -193,6 +191,7 @@ tbl(con,"Teams")
 ```
 
 I see that the column I need is 'yearID', so...
+
 ```{r}
 teams_2015_dplyr<-tbl(con,"Teams")|>
   filter(yearID==2015)
@@ -201,7 +200,7 @@ teams_2015_dplyr
 
 ## 13.
 
-Next up, we'll try to do the same thing, using SQL code this time. Luckily, it looks pretty straightforward using the showquery function: 
+Next up, we'll try to do the same thing, using SQL code this time. Luckily, it looks pretty straightforward using the showquery function:
 
 ```{r}
 tbl(con,"Teams")|>
@@ -209,7 +208,8 @@ tbl(con,"Teams")|>
   show_query()
 ```
 
-With that handy, I think we can try the SQL code: 
+With that handy, I think we can try the SQL code:
+
 ```{r}
 teams_2015_sql<-tbl(con,sql(
   "SELECT `Teams`.*
@@ -228,7 +228,7 @@ Now we'll look to return all the players that when to the Hall of Fame, the year
 tbl(con,"HallOfFame")
 ```
 
-It looks like we'll want the columns 'playerID', 'yearID', and 'category'. Although it won't be returned, we also need to know that a 'Y' in the 'inducted' columns tells us which players we want. 
+It looks like we'll want the columns 'playerID', 'yearID', and 'category'. Although it won't be returned, we also need to know that a 'Y' in the 'inducted' columns tells us which players we want.
 
 ```{r}
 hall_of_fame<-tbl(con,"HallOfFame")|>
@@ -246,9 +246,10 @@ For this quesiton, we want to add the first and last names of the players (from 
 tbl(con,"People")
 ```
 
-I guess it was unnecessary since we were given the column names in the problem, but I feel better having seen it. 
+I guess it was unnecessary since we were given the column names in the problem, but I feel better having seen it.
 
 Now, on to the task. I'm going to use my code from above with chaining, since the result of the above will be used as the first argument in left_join:
+
 ```{r}
 hall_of_fame_names<-tbl(con,"HallOfFame")|>
   filter(inducted == "Y")|>
@@ -259,15 +260,15 @@ hall_of_fame_names<-tbl(con,"HallOfFame")|>
 hall_of_fame_names
 ```
 
-## 16. 
+## 16.
 
-Next, we'll focus on the managers and end up doing some manipulation of the data in the table. As I'm wont to do, I'll start by looking at the 'Managers' table: 
+Next, we'll focus on the managers and end up doing some manipulation of the data in the table. As I'm wont to do, I'll start by looking at the 'Managers' table:
 
 ```{r}
 tbl(con,"Managers")
 ```
 
-Now that I've given it a look, I'm more comfortable getting started: 
+Now that I've given it a look, I'm more comfortable getting started:
 
 ```{r}
 manager_summary<-tbl(con,"Managers")|>
@@ -280,9 +281,9 @@ manager_summary<-tbl(con,"Managers")|>
 manager_summary
 ```
 
-Seems unfair to include people that managed so few games, so nice next step might be to only include those who reach a certain thresold. 
+Seems unfair to include people that managed so few games, so nice next step might be to only include those who reach a certain thresold.
 
-## 17. 
+## 17.
 
 Lastly, we're going to use the results from the last two problems to find the folks in both tables. Seems like inner_join is in order.
 
@@ -291,4 +292,3 @@ hall_of_fame_managers<-inner_join(hall_of_fame_names,manager_summary,by = "playe
   arrange(desc(Win_Loss_Percentage))
 hall_of_fame_managers
 ```
-
