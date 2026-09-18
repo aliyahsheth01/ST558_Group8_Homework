@@ -1,0 +1,75 @@
+---
+title: "Homework 5"
+author: "Carlos Petzold"
+format: html
+---
+
+### Task 1 - Querying an API and a Tidy-Style Function
+
+#### 1) Use GET() from the httr package to return information about a topic that you are interested in that has been in the news lately (store the result as an R object). Note: We can only look 30 days into the past with a free account.
+
+```{r Task 1 Question 1}
+
+#pull needed libraries
+library(httr)
+library(jsonlite)
+
+#api key
+news_api_key <- "0d36c91e11824ce488ef692db17fe779"
+
+#pull news
+data <- GET(paste0("https://newsapi.org/v2/everything?q=Dortmund",
+                   "&from=2026-09-14",
+                   "&language=en",
+                   "&apiKey=", news_api_key))
+
+#check that it was successful
+status_code(data)
+
+
+```
+
+#### 2) Parse what is returned and find your way to the data frame that has the actual article information in it (check content). Note the first column should be a list column!
+
+```{r Task 1 Question 2}
+
+#pull content
+soccer_news_content <- content(data, as = "text", encoding = "UTF-8") |>
+  fromJSON()
+
+str(soccer_news_content, max.level = 1)
+
+# Store the article information as a df
+articles <- soccer_news_content$articles
+
+articles
+
+```
+
+#### 3) Now write a quick function that allows the user to easily query this API. The inputs to the function should be the title/subject to search for (string), a time period to search from (string - you’ll search from that time until the present), and an API key.
+
+```{r Task 1 Question 3}
+
+ get_news <- function(subject, date, api_key) {
+   
+   url <- paste0("https://newsapi.org/v2/everything?q=", subject,
+                 "&from=", date,
+                 "&language=en",
+                 "&apiKey=", api_key)
+   
+   result <- GET(url)
+   parsed <- content(result, as = "text", encoding = "UTF-8") |>
+     fromJSON()
+   
+   return(parsed$articles)
+   
+ }
+
+#Articles about Bundesliga:
+bundesliga_news <- get_news("Bundesliga", "2026-09-14", news_api_key)
+
+#Articles about Fifa:
+NFL_news <- get_news("NFL", "2026-09-14", news_api_key)
+
+```
+
