@@ -5,3 +5,65 @@ editor: visual
 ---
 
 
+# Task 1 
+
+## 1. 
+To get started, I wanted to put my API key somewhere handy.
+
+```{r}
+# API key: 020bec21c3dd48a4b5485d44cbffd92f
+```
+
+Now, I'll make my request to API to see if I can find information related to recent political polls. 
+
+```{r}
+library(httr)
+poll_info<-GET("https://newsapi.org/v2/everything?q=polls&from=2026-08-20&language=en&pageSize=50&apiKey=020bec21c3dd48a4b5485d44cbffd92f")
+```
+## 2.
+
+Next, we're asked to parse what we just received:
+
+```{r}
+library(jsonlite)
+parsed <- fromJSON(rawToChar(poll_info$content))
+parsed
+```
+
+Here, we can see the list mentioned in the "R console" picture that shows that the status is "OK", 4,962 articles were returned from the search and that the third item in the list is the (49x8) data frame. 
+
+## 3. 
+
+Now, to write a function to query the API. Note that I got help from Google on how to allow spaces in the x character string.  
+
+```{r}
+search<-function(x,y,z){
+  x <- URLencode(as.character(x))
+  url<-paste0("https://newsapi.org/v2/everything?q=",as.character(x),"&from=",as.character(y),"&language=en&pageSize=50&apiKey=",as.character(z))
+  search_results<-GET(url)
+  search_parsed <- fromJSON(rawToChar(search_results$content))
+search_parsed
+}
+```
+
+Now, to try it: 
+
+```{r}
+search("polls","2026-08-20","020bec21c3dd48a4b5485d44cbffd92f")
+```
+So, it looks like a few more articles have been published between when I queried directly when I got the function working. Let's try a few more times: 
+
+```{r}
+search("Dolly Parton","2026-08-20","020bec21c3dd48a4b5485d44cbffd92f")
+```
+
+
+And
+
+```{r}
+search("Kyler Murray","2026-08-20","020bec21c3dd48a4b5485d44cbffd92f")
+```
+
+# Task 2
+
+## 
