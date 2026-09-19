@@ -61,8 +61,32 @@ missing<-is.na(RC_data)
 ```
 
 
+### Contingency Tables
+
+One way table:
+
+There are 134 roller coasters in the Midwest region.
+
+```{r}
+table(RC_data$Census.Region)
+```
 
 
+Two way table:
+
+There are 4 Thrill-scale roller coasters with a bobsled design.
+
+```{r}
+table(RC_data$Design,RC_data$Scale)
+```
+
+Three way table:
+
+There are 6 older Extreme-scale roller coasters in the Midwest.
+
+```{r}
+table(RC_data$Census.Region,RC_data$Scale,RC_data$AgeGroup)
+```
 
 
 
