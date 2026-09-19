@@ -49,19 +49,19 @@ RC_data <- read.csv("data/635USrollercoasters.csv") |>
 ```
 ## Basic EDA
 
-### 1. Data Storage
+### 4. Data Storage
 
 ```{r}
 str(RC_data)
 ```
 
-### Missing Values
+### 5. Missing Values
 ```{r}
 missing<-is.na(RC_data)
 ```
 
 
-### Contingency Tables
+### 6. Contingency Tables
 
 One way table:
 
@@ -87,10 +87,51 @@ There are 6 older Extreme-scale roller coasters in the Midwest.
 ```{r}
 table(RC_data$Census.Region,RC_data$Scale,RC_data$AgeGroup)
 ```
+### 7. Conditional Two-Way
 
+Method 1:
+```{r}
+RC_dataf <- filter(RC_data, Scale == "Kiddie")
+table(RC_dataf$Census.Region,RC_dataf$Type)
+```
 
+Method 2:
 
+```{r}
+subset_table<-table(RC_data$Census.Region,RC_data$Type,RC_data$Scale)
+subset_table[,,"Kiddie"]
+```
 
+### 8. Two-Way Table with dplyr
 
+```{r}
+RC_data |>
+  drop_na(Design, Scale) |>
+  group_by(Design, Scale) |>
+  summarize(count = n())|>
+  pivot_wider(names_from = Scale, values_from = count)
+```
+
+### 9. Bar Graphs
+
+Stacked bar graph:
+
+```{r}
+ggplot(data = RC_data |> 
+         drop_na(Inversions., Scale) |>
+         group_by(Inversions., Scale) |>
+         summarize(count = n()), aes(x = Inversions., y = count, fill = Scale)) +
+  geom_bar(stat = "identity") +
+  labs(x="Inversions?",y="Degree of Extremeness", title = "Degree of Extremeness by Inversions")
+```
+
+Side by Side: 
+
+```{r}
+ggplot(data = RC_data |> drop_na(Inversions., Scale), aes(x = Inversions., fill = Scale)) + 
+  geom_bar(position = "dodge") + 
+  labs(x = "Inversions?",y="Degree of Extremeness",title="Extremeness of Coaster and if There's Inversions")+ 
+  scale_fill_discrete("Scale")
+```
 
 
