@@ -3,3 +3,36 @@ title: "ST558_Homework5_King"
 format: html
 ---
 
+# Task 1: Querying an API and a Tidy-Style Function
+
+### 1. Using GET()
+
+```{r}
+library(httr)
+API_KEY<-"API_KEY"
+news_get <- GET(paste0("https://newsapi.org/v2/everything?q=gas&from=2026-09-01&language=en&apiKey=", API_KEY))
+```
+
+### 2. Retrieving the Article Info
+
+```{r}
+news_content <- content(news_get)
+news_articles<- news_content$articles
+
+```
+
+### 3. Function
+
+
+
+```{r}
+news_grabber <- function(subject,time,api_key){
+  GET(paste0("https://newsapi.org/v2/everything?q=",subject,
+             "&from=",time,
+             "&language=en&apiKey=", api_key))
+}
+
+test_grab<-news_grabber("cats","2026-09-01",API_KEY)
+
+```
+
