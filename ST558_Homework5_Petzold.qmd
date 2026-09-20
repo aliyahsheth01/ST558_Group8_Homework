@@ -73,3 +73,121 @@ NFL_news <- get_news("NFL", "2026-09-14", news_api_key)
 
 ```
 
+
+### Task 2 - Summarizing Roller Coaster Data
+
+#### Reading in this dataset and converting to factors as needed
+
+#### 4) Look at how the data is stored and see if everything makes sense.
+
+#### 5) Document any missing values in the data
+
+```{r Task 2 Questions 4 and 5}
+
+#read in roller coaster data
+rc_data <- readr::read_csv("https://www4.stat.ncsu.edu/online/datasets/635USrollercoasters.csv") |>
+  dplyr::select(-Boundary, Latitude, Longitude) |>
+  dplyr::mutate(across(where(is.character) & !Coaster, factor)) |>
+  dplyr::rename('Inversions' = 'Inversions?', 'num_inversions' = '# of Inversions')
+
+#check structure of roller coaster data
+str(rc_data)
+
+#document any missing values in the data (from notes)
+sum_na <- function(column){
+  sum(is.na(column))
+}
+na_counts <- rc_data |>
+  dplyr::summarize(across(everything(), sum_na))|>
+ dplyr::select(where(~ .x > 0))
+na_counts
+sum(na_counts)
+
+```
+
+#### 6) Create a one-way contingency table, a two-way contingency table, and a three-way contingency table for some of the factor variables you created previously. Use table() to accomplish this.
+
+##### Interpret a number from each resulting table (that is, pick out a value produced and explain whatthat value means.)
+
+```{r Task 2 Question 6 pt1}
+
+table(rc_data |>
+        dplyr::select(num_inversions))
+
+```
+
+We can see above the number of roller coasters with certain numbers of inversions, with 0 being the most common and 1-5 being the next most common number of inversions. There are 456 coasters with 0 inversions.
+
+```{r Task 2 Question 6 pt2}
+
+table(rc_data |>
+        dplyr::select(Type, Design))
+
+```
+
+We can see above the design of roller coasters by each type, either steel or wood. Steel coasters are the most common by quite a lot, with the vast majority of those steel coasters being either Inverted or Sit Down coasters. There are no Inverted wood coasters however, with the vast majority being Sit Down coasters and one being a bobsled coaster. There are 456 Sit Down steel coasters.
+
+```{r Task 2 Question 6 pt3}
+
+table(rc_data |>
+        dplyr::select(Type, Design, Scale))
+
+```
+
+Now we have extended the Type by Design table to incorporate the Scale. The most common type of coaster Scale is extreme, with Family and Thrill close behind, and very few kiddie. There are 158 Extreme, Steel, Sit Down coasters in our data.
+
+
+#### 7) Create a conditional two-way table using table(). That is, condition on one variable’s setting andcreate a two-way table. Do this using two different methods:
+
+##### Once, by subsetting the data (say with filter()) and then creating the two-way table
+
+##### Once, by creating a three-way table and subsetting it
+
+```{r Task 2 Question 7}
+
+#subsetting with filter()
+rc_filt <- rc_data |>
+  dplyr::filter(Scale == "Extreme")
+
+table(rc_filt |>
+        dplyr::select(Type, Design, Scale)) 
+        
+#subsetting with []
+twt_subset <- table(rc_filt |>
+        dplyr::select(Type, Design, Scale)) 
+
+twt_subset[,,1]
+
+```
+
+
+#### 8) Create a two-way contingency table using group_by() and summarize() from dplyr. Then use pivot_wider() to make the result look more like the output from table().
+
+```{r Task 2 Question 8}
+
+rc_data |>
+  dplyr::group_by(Type, Design) |>
+  dplyr::summarize(sum = dplyr::n()) |>
+  tidyr::pivot_wider(names_from = Design, values_from = sum)
+
+```
+
+#### 9)  Create a stacked bar graph and a side-by-side bar graph. Give relevant x and y labels, and a title for the plots.
+
+```{r Task 2 Question 9}
+
+library(ggplot2)
+
+ggplot(rc_data, aes(x = Type, fill = Design)) +
+  geom_bar() +
+  labs(x = "Type of roller coaster", y = "Count") +
+  scale_fill_discrete("Design")
+
+
+ggplot(rc_data, aes(x = Type, fill = Design)) +
+  geom_bar(position = "dodge") +
+  labs(x="Type of roller coaster", y = "Count") +
+  scale_fill_discrete("Design")
+
+```
+
