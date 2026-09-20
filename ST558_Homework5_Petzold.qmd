@@ -156,7 +156,7 @@ table(rc_filt |>
 twt_subset <- table(rc_filt |>
         dplyr::select(Type, Design, Scale)) 
 
-twt_subset[,,1]
+twt_subset[,,1] 
 
 ```
 
