@@ -14,16 +14,18 @@ ui <- fluidPage(
       selectizeInput(inputId = "corr_x", label = "x Variable", choices = numeric_vars, selected = "PINCP"),
       selectizeInput(inputId = "corr_y", label = "y Variable", choices = numeric_vars, selected = "JWMNP"),
       
-      "Note the vector with these names comes from the helpers.R files. The object is called `numeric_vars`. Make sure you don't assign the same initial value to both inputs!",
       br(),
-      "Place your radio buttons here! One radio button for each variable we may subset on. Set the internal IDs for these to be hhl_corr, fs_corr, and schl_corr.",
-      "Notice that you can use choiceNames and choiceValues to have different values show vs the values you use internally for comparisons. There are 'internal' values already used in the server file - the first large commented section - so you should set the internal values to match those!",
+      h2("Choose a subset of the data:"),
+      radioButtons(inputId = "hhl_corr", label = "Household Langugage", choices = c("All" = "all", "English only" = "english", "Spanish" = "spanish", "Other" = "other"), selected = "all"),
+      radioButtons(inputId = "fs_corr", label = "SNAP Recipient", choices = c("All" = "all", "Yes" = "yes", "No" = "no"), selected = "all"),
+      radioButtons(inputId = "schl_corr", label = "Educational attainment", choices = c( "All" = "all", "High School not Completed" = "no_hs", "High school or GED" = "hs", "College Degree" = "college"), selected = "all"),
+      
       h2("Select a Sample Size"),
-      "Put your slider for sample size here. Give this an ID of corr_n.",
+      sliderInput(inputId = "corr_n", label = "", min = 20, max = 500, value = 20, step = 12),
       actionButton("corr_sample","Get a Sample!")
     ),
     mainPanel(
-      "Add a plotOutput here for the scatter plot!",
+      plotOutput(outputId = "corr_plot"),
       conditionalPanel("input.corr_sample", #only show if a sample has been taken
                        h2("Guess the correlation!"),
                        column(6, 
