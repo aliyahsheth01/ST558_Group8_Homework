@@ -11,19 +11,19 @@ ui <- fluidPage(
   sidebarLayout(
     sidebarPanel(
       h2("Select Variables to Find Correlation:"),
-      selectizeInput(inputId = "corr_x", label = "X Variables", choices = numeric_vars, selected = "PINCP"),
-      selectizeInput(inputId = "corr_y", label = "Y Variables", choices = numeric_vars, selected = "JWMNP"),
+      selectizeInput(inputId = "corr_x", label = "x variable", choices = numeric_vars, selected = "PINCP"),
+      selectizeInput(inputId = "corr_y", label = "y variable", choices = numeric_vars, selected = "JWMNP"),
       br(),
       h2("Choose a Subset of the Data:"),
       radioButtons(inputId = "hhl_corr", label = "Household Language", choices = c("All" = "all", "English Only" = "english", "Spanish" = "spanish", "Other"="other"), selected = "all"),
       radioButtons(inputId = "fs_corr", label = "SNAP Recipient", choices = c("All" = "all", "Yes" = "yes", "No" = "no"), selected = "all"),
-      radioButtons(inputId = "schl_corr.", label = "Educational Attainment", choices = c("All" = "all", "High School Not Completed" = "no_hs", "High School or GED" = "hs","College Degree" = "cd"), selected = "all"),
+      radioButtons(inputId = "schl_corr", label = "Educational Attainment", choices = c("All" = "all", "High School Not Completed" = "no_hs", "High School or GED" = "hs","College Degree" = "cd"), selected = "all"),
       h2("Select a Sample Size"),
-      sliderInput(inputId = "corr_n.", label = "", min = 20, max = 500, value = 20, step = 1),
+      sliderInput(inputId = "corr_n", label = "", min = 20, max = 500, value = 20, step = 1),
       actionButton("corr_sample","Get a Sample!")
     ),
     mainPanel(
-      "Add a plotOutput here for the scatter plot!",
+      plotOutput("corr_plot"),
       conditionalPanel("input.corr_sample", #only show if a sample has been taken
                        h2("Guess the correlation!"),
                        column(6, 
