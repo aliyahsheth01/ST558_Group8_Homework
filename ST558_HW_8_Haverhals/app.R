@@ -7,7 +7,7 @@ source("helpers.R")
 # Define UI for application that draws a histogram
 ui <- fluidPage(
 
-  "Add a title panel here!",
+  "Correlation Exploration",
   sidebarLayout(
     sidebarPanel(
       h2("Select Variables to Find Correlation:"),
@@ -33,7 +33,7 @@ ui <- fluidPage(
           "English only" = "english",
           "Spanish" = "spanish",
           "Other" = "other"),
-        selected = "All"
+        selected = "all"
       ),
       radioButtons(
         "fs_corr",
@@ -42,17 +42,17 @@ ui <- fluidPage(
           "All" = "all",
           "Yes" = "yes",
           "No" = "no"),
-          selected = "All"
+          selected = "all"
       ),
       radioButtons(
         "schl_corr",
         "Educational attainment",
         choices = list(
           "All" = "all",
-          "High School not Completed" = c("01","04","03","07","10","0","02","08","06","14","12","15","13","05","11","09"),
-          "High School or GED" = c("16","17","18","19"),
+          "High School not Completed" = "no_hs",
+          "High School or GED" = "hs",
           "College Degree" = c("20","21","22","23","24")),
-        selected = "All"
+        selected = "all"
       ),
      # "Place your radio buttons here! One radio button for each variable we may subset on. Set the internal IDs for these to be hhl_corr, fs_corr, and schl_corr.",
     #  "Notice that you can use choiceNames and choiceValues to have different values show vs the values you use internally for comparisons. There are 'internal' values already used in the server file - the first large commented section - so you should set the internal values to match those!",
@@ -132,7 +132,7 @@ server <- function(input, output, session) {
     # #Uncomment the next large block of code to go in an
     # #observeEvent() to look for the action button (corr_sample)
     # #Note you can highlight and bulk comment/uncomment (ctrl+shift+c or similar on mac)
-    observeEvent(input$corr_sample,{ 
+   observeEvent(input$corr_sample,{ 
     if(input$hhl_corr == "all"){
       hhl_sub <- HHLvals
     } else if(input$hhl_corr == "english"){
@@ -186,7 +186,8 @@ server <- function(input, output, session) {
                       replace = TRUE,
                       prob = subsetted_data$PWGTP/sum(subsetted_data$PWGTP))
           #   #***You now need to update the sample_corr reactive value object***
-      sample_corr<-c(subsetted_data[index,],cor(sample_corr$corr_data |> select(corr_vars))[1,2])
+      sample_corr$corr_data<-subsetted_data[index,]
+      sample_corr$corr_truth<-cor(sample_corr$corr_data |> select(corr_vars))[1,2]
     #   #the corr_data argument should be updated to be the subsetted_data[index,]
     #   #the corr_truth argument should be updated to be the correlation between
     #   #the two variables selected. This can be found with this code:
@@ -199,7 +200,7 @@ server <- function(input, output, session) {
     # #Use the code below to validate that data exists, (this goes in the renderPlot and you'll need 
     # #to install the shinyalert package if you don't have it) and then create the appropriate
     #scatter plot
-     scatterplot<-renderPlot({
+     output$scatterplot<-renderPlot({
        validate(
         need(!is.null(sample_corr$corr_data), "Please select your variables, subset, and click the 'Get a Sample!' button.")
       )
