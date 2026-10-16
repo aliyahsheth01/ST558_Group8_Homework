@@ -1,0 +1,137 @@
+---
+title: "ST558_Homework5_King"
+format: html
+---
+
+# Task 1: Querying an API and a Tidy-Style Function
+
+### 1. Using GET()
+
+```{r}
+library(httr)
+API_KEY<-"API_KEY"
+news_get <- GET(paste0("https://newsapi.org/v2/everything?q=gas&from=2026-09-01&language=en&apiKey=", API_KEY))
+```
+
+### 2. Retrieving the Article Info
+
+
+```{r}
+news_content <- content(news_get)
+news_articles<- news_content$articles
+
+```
+
+### 3. Function
+
+
+```{r}
+news_grabber <- function(subject,time,api_key){
+  GET(paste0("https://newsapi.org/v2/everything?q=",subject,
+             "&from=",time,
+             "&language=en&apiKey=", api_key))
+}
+
+test_grab1<-news_grabber("cats","2026-09-01",API_KEY)
+test_grab2<-news_grabber("cats","2026-09-01",API_KEY)
+
+```
+
+
+# Task 2: Roller Coaster Data
+
+Reading in the coaster data, turning all character variables except for the coaster name and the mapping boundary into a factor.
+
+```{r}
+library(tidyverse) 
+RC_data <- read.csv("data/635USrollercoasters.csv") |>
+  mutate(across(where(is.character) & !Coaster & !Boundary, factor))
+```
+## Basic EDA
+
+### 4. Data Storage
+
+```{r}
+str(RC_data)
+```
+
+### 5. Missing Values
+```{r}
+missing<-is.na(RC_data)
+```
+
+
+### 6. Contingency Tables
+
+One way table:
+
+There are 134 roller coasters in the Midwest region.
+
+```{r}
+table(RC_data$Census.Region)
+```
+
+
+Two way table:
+
+There are 4 Thrill-scale roller coasters with a bobsled design.
+
+```{r}
+table(RC_data$Design,RC_data$Scale)
+```
+
+Three way table:
+
+There are 6 older Extreme-scale roller coasters in the Midwest.
+
+```{r}
+table(RC_data$Census.Region,RC_data$Scale,RC_data$AgeGroup)
+```
+### 7. Conditional Two-Way
+
+Method 1:
+```{r}
+RC_dataf <- filter(RC_data, Scale == "Kiddie")
+table(RC_dataf$Census.Region,RC_dataf$Type)
+```
+
+Method 2:
+
+```{r}
+subset_table<-table(RC_data$Census.Region,RC_data$Type,RC_data$Scale)
+subset_table[,,"Kiddie"]
+```
+
+### 8. Two-Way Table with dplyr
+
+```{r}
+RC_data |>
+  drop_na(Design, Scale) |>
+  group_by(Design, Scale) |>
+  summarize(count = n())|>
+  pivot_wider(names_from = Scale, values_from = count)
+```
+
+### 9. Bar Graphs
+
+Stacked bar graph:
+
+```{r}
+ggplot(data = RC_data |> 
+         drop_na(Inversions., Scale) |>
+         group_by(Inversions., Scale) |>
+         summarize(count = n()), aes(x = Inversions., y = count, fill = Scale)) +
+  geom_bar(stat = "identity") +
+  labs(x="Inversions?",y="Degree of Extremeness", title = "Degree of Extremeness by Inversions")
+```
+
+Side by Side: 
+
+```{r}
+ggplot(data = RC_data |> drop_na(Inversions., Scale), aes(x = Inversions., fill = Scale)) + 
+  geom_bar(position = "dodge") + 
+  labs(x = "Inversions?",y="Degree of Extremeness",title="Extremeness of Coaster and if There's Inversions")+ 
+  scale_fill_discrete("Scale")
+```
+
+

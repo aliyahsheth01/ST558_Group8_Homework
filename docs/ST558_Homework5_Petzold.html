@@ -1,0 +1,1680 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Carlos Petzold">
+
+<title>Homework 5</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-1d4f84655f446305ac42a8f1abcf7405.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="fullcontent quarto-light">
+
+<div id="quarto-search-results"></div>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Homework 5</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Carlos Petzold </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="task-1---querying-an-api-and-a-tidy-style-function" class="level3">
+<h3 class="anchored" data-anchor-id="task-1---querying-an-api-and-a-tidy-style-function">Task 1 - Querying an API and a Tidy-Style Function</h3>
+<section id="use-get-from-the-httr-package-to-return-information-about-a-topic-that-you-are-interested-in-that-has-been-in-the-news-lately-store-the-result-as-an-r-object.-note-we-can-only-look-30-days-into-the-past-with-a-free-account." class="level4">
+<h4 class="anchored" data-anchor-id="use-get-from-the-httr-package-to-return-information-about-a-topic-that-you-are-interested-in-that-has-been-in-the-news-lately-store-the-result-as-an-r-object.-note-we-can-only-look-30-days-into-the-past-with-a-free-account.">1) Use GET() from the httr package to return information about a topic that you are interested in that has been in the news lately (store the result as an R object). Note: We can only look 30 days into the past with a free account.</h4>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#pull needed libraries</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(httr)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(jsonlite)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">#api key</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>news_api_key <span class="ot">&lt;-</span> <span class="st">"0d36c91e11824ce488ef692db17fe779"</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">#pull news</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">GET</span>(<span class="fu">paste0</span>(<span class="st">"https://newsapi.org/v2/everything?q=Dortmund"</span>,</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"&amp;from=2026-09-14"</span>,</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"&amp;language=en"</span>,</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"&amp;apiKey="</span>, news_api_key))</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co">#check that it was successful</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">status_code</span>(data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 200</code></pre>
+</div>
+</div>
+</section>
+<section id="parse-what-is-returned-and-find-your-way-to-the-data-frame-that-has-the-actual-article-information-in-it-check-content.-note-the-first-column-should-be-a-list-column" class="level4">
+<h4 class="anchored" data-anchor-id="parse-what-is-returned-and-find-your-way-to-the-data-frame-that-has-the-actual-article-information-in-it-check-content.-note-the-first-column-should-be-a-list-column">2) Parse what is returned and find your way to the data frame that has the actual article information in it (check content). Note the first column should be a list column!</h4>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#pull content</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>soccer_news_content <span class="ot">&lt;-</span> <span class="fu">content</span>(data, <span class="at">as =</span> <span class="st">"text"</span>, <span class="at">encoding =</span> <span class="st">"UTF-8"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fromJSON</span>()</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(soccer_news_content, <span class="at">max.level =</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>List of 3
+ $ status      : chr "ok"
+ $ totalResults: int 194
+ $ articles    :'data.frame':   100 obs. of  8 variables:</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Store the article information as a df</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>articles <span class="ot">&lt;-</span> soccer_news_content<span class="sc">$</span>articles</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>articles</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             source.id                               source.name
+1   al-jazeera-english                        Al Jazeera English
+2             bbc-news                                  BBC News
+3                 &lt;NA&gt;                                Slanted.de
+4             bbc-news                                  BBC News
+5                 &lt;NA&gt; English Premier League Index - Opta Stats
+6                 &lt;NA&gt;                              Bulinews.com
+7                 &lt;NA&gt;                             Fear The Wall
+8                 &lt;NA&gt;                              Bulinews.com
+9                 &lt;NA&gt;                                       WWD
+10                &lt;NA&gt;                       Worldsoccertalk.com
+11                &lt;NA&gt;                   Bavarian Football Works
+12                &lt;NA&gt;                              Bulinews.com
+13                &lt;NA&gt;                           Onefootball.com
+14                &lt;NA&gt;                              Bulinews.com
+15                &lt;NA&gt;                     Dpa-international.com
+16                &lt;NA&gt;                     The Football Faithful
+17                &lt;NA&gt;                              Bulinews.com
+18                &lt;NA&gt;                        Playmakerstats.com
+19                &lt;NA&gt;                             Roundtable.io
+20                &lt;NA&gt;                     Dpa-international.com
+21                &lt;NA&gt;                       Yahoo Entertainment
+22                &lt;NA&gt;                Getfootballnewsgermany.com
+23                &lt;NA&gt;                              Bulinews.com
+24                &lt;NA&gt;                              Bulinews.com
+25                &lt;NA&gt;                              Bulinews.com
+26                &lt;NA&gt;                           Onefootball.com
+27                &lt;NA&gt;                              Bulinews.com
+28                &lt;NA&gt;                        Barcauniversal.com
+29                &lt;NA&gt;                     The Football Faithful
+30                &lt;NA&gt;                              Bulinews.com
+31                &lt;NA&gt;                   Bavarian Football Works
+32                &lt;NA&gt;                        Playmakerstats.com
+33                &lt;NA&gt;                        Barcauniversal.com
+34                &lt;NA&gt; English Premier League Index - Opta Stats
+35                &lt;NA&gt;                                Www.bvb.de
+36                &lt;NA&gt;                              Bulinews.com
+37                &lt;NA&gt;                                Www.bvb.de
+38                &lt;NA&gt;                           Onefootball.com
+39                &lt;NA&gt;                                Www.bvb.de
+40                &lt;NA&gt;                           Onefootball.com
+41                &lt;NA&gt;                        Barcauniversal.com
+42                &lt;NA&gt;                           Onefootball.com
+43                &lt;NA&gt;                     Dpa-international.com
+44                &lt;NA&gt;                Getfootballnewsgermany.com
+45                &lt;NA&gt;                              DW (English)
+46                &lt;NA&gt;                                  Vanguard
+47                &lt;NA&gt;                              Bulinews.com
+48                &lt;NA&gt;                              Bulinews.com
+49                &lt;NA&gt;                        The Peoples Person
+50                &lt;NA&gt;                           Leedsunited.com
+51                &lt;NA&gt;                Getfootballnewsgermany.com
+52                &lt;NA&gt;                                PRNewswire
+53                &lt;NA&gt;                          Cultofcalcio.com
+54                &lt;NA&gt;                        Playmakerstats.com
+55                &lt;NA&gt;                                       CNA
+56                &lt;NA&gt;                     Dpa-international.com
+57                &lt;NA&gt;                     Dpa-international.com
+58                &lt;NA&gt;                   Bavarian Football Works
+59                &lt;NA&gt;                        Playmakerstats.com
+60                &lt;NA&gt;                       Yahoo Entertainment
+61                &lt;NA&gt;                                CBS Sports
+62                &lt;NA&gt;                   Bavarian Football Works
+63                &lt;NA&gt;                           Onefootball.com
+64                &lt;NA&gt;                       Madriduniversal.com
+65                &lt;NA&gt;                       Yahoo Entertainment
+66                &lt;NA&gt;                        The4thofficial.net
+67                &lt;NA&gt;                                       CNA
+68                &lt;NA&gt;                                       CNA
+69                &lt;NA&gt;                                  Vanguard
+70                &lt;NA&gt;                                  Vanguard
+71     football-italia                           Football Italia
+72                &lt;NA&gt;                              Bulinews.com
+73                &lt;NA&gt;                   Bavarian Football Works
+74                &lt;NA&gt;                   Getfootballnewsbene.com
+75                &lt;NA&gt;                           Onefootball.com
+76                &lt;NA&gt;                   Getfootballnewsbene.com
+77                &lt;NA&gt;                              Juventus.com
+78                &lt;NA&gt;                           Leedsunited.com
+79                &lt;NA&gt;                           Onefootball.com
+80                &lt;NA&gt;                           Onefootball.com
+81                &lt;NA&gt;                  Get French Football News
+82                &lt;NA&gt;                  Getfootballnewsspain.com
+83                &lt;NA&gt;                           Onefootball.com
+84                &lt;NA&gt;                  Getfootballnewsspain.com
+85                &lt;NA&gt;                       Yahoo Entertainment
+86                &lt;NA&gt;                             Fear The Wall
+87                &lt;NA&gt;                  Get French Football News
+88                &lt;NA&gt;                              Bulinews.com
+89                &lt;NA&gt;                        The Peoples Person
+90                &lt;NA&gt;                           Onefootball.com
+91                &lt;NA&gt;                              Bulinews.com
+92                &lt;NA&gt;                Getfootballnewsgermany.com
+93                &lt;NA&gt;                              Juventus.com
+94                &lt;NA&gt;                     Dpa-international.com
+95                &lt;NA&gt;                                 The Punch
+96                &lt;NA&gt;                           Leedsunited.com
+97                &lt;NA&gt;                  Get French Football News
+98                &lt;NA&gt;                     Dpa-international.com
+99                &lt;NA&gt;                     Dpa-international.com
+100               &lt;NA&gt;                              Bulinews.com
+                                 author
+1                                  &lt;NA&gt;
+2                             BBC Sport
+3                          tim.eglinski
+4                           Simon Stone
+5                             EPL Index
+6                              Bulinews
+7                      Patrick Morrison
+8                              Bulinews
+9                        Stephen Garner
+10                      Martina Alcheva
+11                           CSmith1919
+12                             Bulinews
+13                          OneFootball
+14                             Bulinews
+15                                  DPA
+16                The Football Faithful
+17                             Bulinews
+18                       Playmakerstats
+19                      Subhojyoti Basu
+20                                  DPA
+21                     Associated Press
+22             Get German Football News
+23                             Bulinews
+24                             Bulinews
+25                             Bulinews
+26                    Borussia Dortmund
+27                             Bulinews
+28                      Barca Universal
+29                The Football Faithful
+30                             Bulinews
+31                           CSmith1919
+32                       Playmakerstats
+33                      Barca Universal
+34                            EPL Index
+35                    Borussia Dortmund
+36                             Bulinews
+37                    Borussia Dortmund
+38                    Borussia Dortmund
+39                    Borussia Dortmund
+40                    Borussia Dortmund
+41                      Barca Universal
+42                    Borussia Dortmund
+43                                  DPA
+44             Get German Football News
+45                     Jonathan Harding
+46                          Henry Oduah
+47                             Bulinews
+48                             Bulinews
+49                   The Peoples Person
+50                         Leeds United
+51             Get German Football News
+52                                 &lt;NA&gt;
+53                   The Cult of Calcio
+54                       Playmakerstats
+55                                 &lt;NA&gt;
+56                                  DPA
+57                                  DPA
+58                           CSmith1919
+59                       Playmakerstats
+60                                  AFP
+61                       Pardeep Cattry
+62                           CSmith1919
+63                          OneFootball
+64                     Madrid Universal
+65                                  AFP
+66                     The 4th Official
+67                                 &lt;NA&gt;
+68                                 &lt;NA&gt;
+69           efosataiwo@vanguardngr.com
+70           efosataiwo@vanguardngr.com
+71                       Susy Campanale
+72                             Bulinews
+73                           CSmith1919
+74  Get Belgian and Dutch Football News
+75                          OneFootball
+76  Get Belgian and Dutch Football News
+77               Juventus Football Club
+78                         Leeds United
+79                          OneFootball
+80                          OneFootball
+81             Get French Football News
+82            Get Spanish Football News
+83                    Borussia Dortmund
+84            Get Spanish Football News
+85                                  AFP
+86                          Sean Keyser
+87             Get French Football News
+88                             Bulinews
+89                   The Peoples Person
+90                    Borussia Dortmund
+91                             Bulinews
+92             Get German Football News
+93               Juventus Football Club
+94                                  DPA
+95                     Punch Newspapers
+96                         Leeds United
+97             Get French Football News
+98                                  DPA
+99                                  DPA
+100                            Bulinews
+                                                                                                                                                                          title
+1                                                                                                    Ronaldo keeps Portugal place for Nations League as Jesus names first squad
+2                                                                                                                         Liverpool watch £51.5m-rated Smit - Saturday's gossip
+3                                                                                                                                                 Slanted Experimental Type 4.0
+4                                                                                                                                            What next for Gabriel and Man Utd?
+5                                                                                                                  Former Manchester United star unlikely to rejoin former club
+6                                                                                                                        Confirmed Lineups: VfB Stuttgart vs. Borussia Dortmund
+7                                                                                                    Match Preview: Dortmund Travel to Stuttgart Before the International Break
+8                                                                                                  Report: Dortmund join Manchester United for highly-rated Leicester youngster
+9                                                                                             Puma Commercial Chief Matthias Baeumer Exits After Nearly 20 Years at the Company
+10                                            Christian Pulisic joins Zlatan Ibrahimovic and Robert Lewandowski in elite European Cup history after extending incredible streak
+11                                                                                                             Bundesliga Watch: Will Jadon Sancho return to Borussia Dortmund?
+12                                                                                                                 Stuttgart considered Fabio Silva move before Dortmund switch
+13                                                                                                               Guirassy, Demirovic, Silva?... XIs in for Stuttgart v Dortmund
+14                                                                                                                  Schlotterbeck hails impact of "top-class" Gadou in Dortmund
+15                                                                                                         Karetsas set to return into Dortmund squad from circulatory problems
+16                                                                                                             VFB Stuttgart vs Borussia Dortmund – Match preview and team news
+17                                                                                                                           Joey Veerman: “Dortmund move is right step for me”
+18                                                                                 PREVIEW | Stuttgart vs Borussia Dortmund: team news, lineups, predictions (Bundesliga 19/09)
+19                                                                             Former PSV Star Joey Veerman Proving Johan Derksen Wrong? Dutch Pundit Admits: ‘It Surprises Me’
+20                                                                                                         Dortmund's Karetsas back in team training after circulatory problems
+21                                                                                     Dortmund teenager Karetsas is back in training after health problems in Champions League
+22                                                                                                     Stuttgart tried to sign Fabio Silva before his move to Borussia Dortmund
+23                                                                                         Guirassy believes Dortmund benefit from his competition with “energetic” Fábio Silva
+24                                                                                               VfB Stuttgart vs. Borussia Dortmund preview: BVB put perfect start on the line
+25                                                                               INTERVIEW: "I needed to play a bigger role" – Cole Campbell on leaving Dortmund for Elversberg
+26                                                                                                                     09 facts to give Dortmund hope for the trip to Stuttgart
+27                                                                                   2. Bundesliga sensation Zoma earns first Italy call-up alongside Dortmund youngster Inácio
+28                                                                   Borussia Dortmund beginning to regret the price they demanded for Adeyemi’s transfer to Barcelona – report
+29                                                                                                       Borussia Dortmund XI vs VFB Stuttgart – Predicted lineup and team news
+30                                                                                                        Dortmund keen to fend off Real Madrid interest in Kobel with new deal
+31                                                                       Germany boss Jürgen Klopp has special plan for two Bayern Munich stars, one Borussia Dortmund standout
+32                                                                                                                     Europe's Top Performers: key statistics from the weekend
+33                                                                                         Barcelona summer arrival expected to return to national team squad under new manager
+34                                                                                                         Manchester United could face Bundesliga giants in move for youngster
+35                                                                                                      Schlotterbeck is raring to go: “We can accomplish a lot with the team!”
+36                                                                                                 Serhou Guirassy: “It’s up to us to take advantage of Bayern dropping points”
+37                                                                                                     BVB vs. Betis: Get your tickets now for the next Champions League night!
+38                                                                                                                            Countdown to Stuttgart: TV coverage, kits, record
+39                                                                                                                             Countdown for Stuttgart: Facts, Jerseys, Weather
+40                                                                                                       BVB v Betis: get your tickets now for the next Champions League night!
+41                                                                                              Barcelona’s left-wing battle takes an unexpected turn after Adeyemi’s emergence
+42                                                                                                                          Schlotterbeck raring to go: „This team can go far!“
+43                                                                                                                                              Germany's Nations League squads
+44                                                                                                                    Jürgen Klopp’s full 44-player Germany National Team squad
+45                                                                                                                       Jürgen Klopp's first Germany squad includes 44 players
+46                                                                                                                        Klopp calls up 44 players in huge first Germany squad
+47                                                                                            Watzke reveals he considered England boss Tuchel for Germany job after Qatar exit
+48                                                                                   “You have to accept that”: Union Berlin coach and captain react after losing 7-0 to Bayern
+49                                                                                                     “The squad is…”: Niko Kovac addresses Jadon Sancho’s possible BVB return
+50                                                                                                                      Anton Stach named in Jürgen Klopp's first Germany squad
+51                                                          USMNT hopeful Cole Campbell discusses Elversberg’s surprise start and professional journey at Bundesliga roundtable
+52                                                                                                                     REJO debuts puff-twice technology in expansion to Europe
+53                                                                                                                                Inter and Juventus Share a Few Future Targets
+54                                                                              PREVIEW | SC Paderborn 07 vs TSG Hoffenheim: team news, lineups, predictions (Bundesliga 20/09)
+55                                                                                                      Van Dijk stays on but Depay omitted from Xavi’s first Netherlands squad
+56                                                                                                                                New Germany coach Klopp to select first squad
+57                                                                                                        Bayern bash Union 7-0 as Kane hits record-quick ton, Olise nets three
+58  Bayern Munich News: FC Bayern battling Liverpool, Real Madrid for PSV’s Paul Wanner?; Real Madrid eyeing Bundesliga goalkeeper?; Erling Haaland vs. The Mountain; and MORE!
+59                                                                                                                         Jürgen Klopp names 44 players in first Germany squad
+60                                                                                                                        Klopp calls up 44 players in huge first Germany squad
+61                                                                      USMNT roster: Cavan Sullivan, Julian Hall named to youthful USA squad as embrace of young talent begins
+62                                                                                                                                    Detailed German national team roster list
+63                                                                                                                              Club blames Yamal for historic Bayern thrashing
+64                                                                                       Bundesliga defensive ace back on Real Madrid’s radar; player available for €60 million
+65                                                                                                     Mancini brings nine newcomers into the first squad of his Italy comeback
+66                                                                                   Newcastle United Join £12m Race For Leicester Teen: Would They Benefit From An Early Deal?
+67                                                                                                                              Ronaldo included in Jesus' first Portugal squad
+68                                                                                             Mancini names nine uncapped players in expanded Italy squad after summer turmoil
+69                                                                                                              Witsel retires from internationals after 18-year Belgium career
+70                                                                                                                           Ronaldo named in Portugal squad for Nations League
+71                                                                                                                      Italy U21: Reggiani, Liberali and Lulli get first calls
+72                                                                                                       A call from Klopp or U21s? In-form Paris Brunner set for DFB promotion
+73                                                                                                     Report: Former Bayern Munich star Leroy Sané not getting Germany call-up
+74                                                                                                                        Ajax keen on former Tottenham and Brighton midfielder
+75                                                                                                               ☕️ FC Breakfast: Galtier snaps , Foden teases , Nmecha banger 
+76                                                                                                     140 and out: Axel Witsel calls time on international career with Belgium
+77                                                                                                                                                Standout Stats | Juventus-NEC
+78                                                                                                                          Switzerland’s Nations League campaign awaits Elvedi
+79                                                                                                                           With Olise on fire, Bayern blow Union Berlin away!
+80                                                                                                                ☕️ FC Breakfast: Zidane on Dembélé-Mbappé ️, Da Cunha , Olise 
+81                                                                                                             Monaco’s Paris Brunner faces possible suspension for celebration
+82                                                                                                                       Barcelona star set for international recall this month
+83                                                                                                                 UEFA Champions League: ticket info for trip to FK Bodø/Glimt
+84                                                                                                                         Official: Barcelona star handed international recall
+85                                                                                                              Witsel retires from internationals after 18-year Belgium career
+86                                                                                Konstantinos Karetsas Returns to Training After Brief Hospitalization With Circulatory Issues
+87                                                                                              Paris Brunner set for Germany U21 call, as Jurgen Klopp monitors Monaco forward
+88                                                                                                                    OFI vs. Hoffenheim preview: Team news &amp; predicted lineups
+89                                                                                       German giants ready to ruin Man United’s transfer plans for “the next Jude Bellingham”
+90                                                                                                                          U23 set for crunch clash with promoted side Rhynern
+91                                                                      "That's set in stone" – Elversberg prodigy Cole Campbell reaffirms desire to represent USA over Iceland
+92                                                                                                                 FEATURE | Five standout players from Bundesliga – Matchday 3
+93                                                                                                                         UEFA Europa League | Juventus-NEC | Post-match stats
+94                                                                                                            'Have fun under pressure': Klopp picks 44 players for first games
+95                                                                                                              Witsel retires from internationals after 18-year Belgium career
+96                                                                                                                 Gudmundsson selected for Sweden’s September/October fixtures
+97                                                                                              Monaco manager Filipe Luís admits Paris Brunner celebration a ‘topic’ this week
+98                                                                                                          Germany's Klopp picks 44 players in two squads for first four games
+99                                                                                                           Bundesliga president joins DFB boss in calling for Infantino to go
+100                                                                                          Ginter reveals “very good and appreciative” conversation with Klopp after DFB snub
+                                                                                                                                                                                                                                                              description
+1                                                                                                                                                      Ex-Manchester United and Real Madrid forward Cristiano Ronaldo named in Portugal squad to face ⁠Norway and Denmark.
+2                                                                                         Netherlands midfielder Kees Smit is watched by Liverpool, Tottenham lead the race for Brazil defender Arthur Dias and Monaco's Folarin Balogun is expected to leave in January.
+3                                                                                       Following the success of the first three editions, Slanted Experimental Type 4.0 continues the series’...\nDer Beitrag Slanted Experimental Type 4.0 erschien zuerst auf slanted.
+4                                                                                                                          On the night JJ Gabriel was supposed to become Manchester United's youngest player in history, the scramble is on to persuade him not to quit.
+5                                                               Jadon Sancho Transfer Latest: Borussia Dortmund Rule Out Return After Manchester United ExitJadon Sancho’s future has taken another significant turn, with Borussia Dortmund making clear that a third...
+6                                                              Stuttgart entertain Borussia Dortmund in the biggest match of the Bundesliga weekend before the international break. The Swabians have a perfect home record with comfortable wins over 1. Köln and Vik...
+7                                                                                                                                                                                                                     Dortmund head South before the international break!
+8                                                             Borussia Dortmund are reportedly keeping a close eye on highly-rated Leicester City midfielder Louis Page.According to TEAMtalk, Dortmund sent scouts to watch the 18-year-old during Leicester's 4-3 Le...
+9                                                                                                                                                                                                                                     Baeumer joined the company in 2007.
+10  After entering the field from the bench against Benfica, Pulisic helped extend a streak that has followed him from his teenage breakthrough at Borussia Dortmund to his current chapter in Italy. \nChristian Pulisic’s European journey has reached another remarka…
+11                                                                                                                                                                                                                          Could the English winger return to BVB again?
+12                                                            VfB Stuttgart sporting director Fabian Wohlgemuth has revealed that the club previously considered a move for Borussia Dortmund forward Fabio Silva.The 24-year-old was handed his first league start of...
+13                                                              Sebastian Hoeneß and Niko Kovač, the two active coaches with the most matches in the Bundesliga, face off today in a huge showdown.Against a Stuttgart side in need after picking up only three points...
+14                                                            Nico Schlotterbeck has singled out Borussia Dortmund's summer signing Joane Gadou for praise after a strong start to life at the club.In an interview with the Westphalian outfit's media, the German de...
+15   Konstantinos Karetsas has overcome circulatory problems and is available for Borussia Dortmund for Saturday's Bundesliga match at VfB Stuttgart, coach Niko Kovač has said. Karetsas was carried off the pitch on a stretcher during last week's Champions League m…
+16                                                            Borussia Dortmund will play their final league match before the international break kicks off, and they will be looking to take another three points against VFB Stuttgart on Saturday to keep their 100...
+17                                                            Joey Veerman explains his reasons for choosing Borussia Dortmund after five seasons with PSV. The Dutch midfielder also shared his first impression of the Bundesliga in his exclusive interview with th...
+18                                                            Stuttgart and Borussia Dortmund go head-to-head at MHPArena this Saturday in the 1. Bundesliga.Stuttgart have 3 points to their name this season and occupy 14th position in the table. In their last en...
+19                                                                               After silencing critics with a dominant start in Dortmund, the Dutch midfielder is defying skepticism as even his harshest detractors admit the Bundesliga transition has been seamless.
+20   Konstantinos Karetsas has returned to Borussia Dortmund team training from circulatory issues, the Bundesliga club said on Wednesday. Summer signing Karetsas was taken off on a stretcher during last week's Champions League match against Spain's Villarreal and…
+21   Borussia Dortmund says 18-year-old midfielder Konstantinos Karetsas is back in training just over a week after he slumped to the ground in an alarming medical incident on his Champions League debut. Karetsas passed the ball to a teammate then signaled his dis…
+22                                                              VfB Stuttgart sporting director Fabian Wohlgemuth has revealed that the Swabians wanted to sign Portuguese forward Fabio Silva before his move to Borussia Dortmund. “We looked into him a year ago,��...
+23                                                             Serhou Guirassy believes Borussia Dortmund will benefit from healthy competition for places. The Guinean striker has formed a strong bond with Fábio Silva in recent games as their partnership helped ...
+24                                                              VfB StuttgartThree Bundesliga outings have brought three very different results for VfB Stuttgart in the early days of the season.&nbsp;Sebastian Hoeneß's side suffered a chastening 5-1 defeat against Ba...
+25                                                              Four years after joining Borussia Dortmund from Icelandic side&nbsp;Breiðablik, Cole Campbell decided it was time to move on this summer, joining newly-promoted Bundesliga side SV Elversberg, who paid a ...
+26                                                            01 | BVB are hard to break downPerhaps the biggest difference between the two teams so far this still-young season has been their work off the ball. While Borussia Dortmund have conceded only two goal...
+27                                                               Mohamed Ali Zoma is included in Italy’s squad for the upcoming UEFA Nations League games. The Nürnberg attacker was heavily linked with a move to relegated West Ham United this summer after making ...
+28                                                            Karim Adeyemi was supposed to give Barcelona another option in attack. Instead, seven games into his career at the club, he is starting to look like a player Hansi Flick cannot afford to overlook.That...
+29                                                            Borussia Dortmund are set to face VfB Stuttgart in their last Bundesliga fixture before the season pauses for international duty. The visitors will be aiming to secure another victory on Saturday and ...
+30                                                            Spanish outlet AS recently suggested that Real Madrid could make an offer for Gregor Kobel if they are unable to extend the contract of their current No. 1, Thibaut Courtois, beyond the end of the sea...
+31                                                                                                                                                                                                           Two FC Bayern stars will have an extended stay with Germany.
+32                                                            Along with all of the results from UEFA's 'Top 5' leagues, Playmaker is here to provide you with a rundown of the top performers.From the slickest passers enroute to the most tenacious tacklers via th...
+33                                                              FC Barcelona moved swiftly to close the signing of Karim Adeyemi from Borussia Dortmund in the summer, bringing him in for a fee of only €22 million plus add-ons.The German forward is a player that ...
+34                                                            Manchester United Face Borussia Dortmund Battle for Louis Page TransferManchester United have company, and serious company at that, in the chase for Leicester City youngster Louis Page. According to T...
+35                                                            Nico Schlotterbeck is back at Borussia Dortmund. After his long injury layoff, the 26-year-old wants to quickly regain the status as a key player that he had before. In an interview, Schlotterbeck say...
+36                                                              After three matchdays, Borussia Dortmund have a slender lead over FC Bayern in the Bundesliga standings. For Serhou Guirassy, it’s now up to them to keep that distance at the end of the season."Of c...
+37                                                            On Wednesday, November 4, 2026, Borussia Dortmund will host top Spanish club Real Betis for a home game in the UEFA Champions League. Kickoff is at 9 p.m.BVB members have a decisive advantage: Member ...
+38                                                            Head-to-head: Strong runThe Bundesliga record between BVB and VfB Stuttgart is almost perfectly balanced: in 112 meetings, VfB Stuttgart have won 44 times, Borussia Dortmund 42 times, and 26 matches e...
+39                                                            Record: Strong StreakThe Bundesliga head-to-head record between BVB and VfB Stuttgart is nearly even: In 112 matches, VfB Stuttgart has won 44 times, Borussia Dortmund 42 times, and 26 games ended in ...
+40                                                            On Wednesday, 4 November 2026, Borussia Dortmund will host Spanish top club Real Betis at home in the UEFA Champions League. Kick-off is at 9 pm.BVB members have the decisive advantage: Member presale...
+41                                                             Karim Adeyemi arrived at Barcelona with a fairly clear place in the hierarchy.&nbsp;Anthony Gordon was expected to command serious minutes on the left, while the former Borussia Dortmund forward offered a...
+42                                                            Nico Schlotterbeck is back at Borussia Dortmund. After his long injury layoff, the 26-year-old wants to quickly become the leader he was before. In the interview, Schlotterbeck says about his return t...
+43   Germany coach Jürgen Klopp has announced two squads for his first four matches in charge in the Nations League. Squad one for the games in the Netherlands on September 24 and against Greece on September 27: Goalkeepers: Finn Dahmen (Augsburg), Alexander Nübel…
+44                                                             Jürgen Klopp has officially named his first Germany squad, selecting an extraordinary 44 players for the upcoming UEFA Nations League fixtures against the Netherlands, Greece and Serbia.The new Bunde...
+45                                                                                                                Germany's new head coach Jürgen Klopp has named a huge squad for his first four games, splitting them into two groups. A host of new faces is included.
+46  Teams are restricted to naming 20 outfield players and three goalkeepers for each match but the former Liverpool manager took the unusual step of naming a larger squad.\nThe post Klopp calls up 44 players in huge first Germany squad appeared first on Vanguard …
+47                                                            German Football Association vice-president Hans-Joachim Watzke has revealed that he would have liked to replace Hansi Flick with current England boss Thomas Tuchel as Germany coach following the disas...
+48                                                              Union Berlin’s rough start to the campaign continued with a 7-0 defeat in Bayern on Friday evening. The defeat leaves the capital city club with only a single point after the first four league games...
+49                                                            1Former Manchester United forward Jadon Sancho is yet to decide his next destination after leaving Old Trafford this summer. The English forward spent last season on loan at Aston Villa, and won the E...
+50                                                               Leeds United midfielder Anton Stach has been named in Jürgen Klopp’s first Germany squad since the former Liverpool boss took charge of the national team.Klopp announced his first selection as Germ...
+51                                                                Cole Campbell’s first weeks as a Bundesliga starter have offered an appropriate snapshot of the wider SV Elversberg story. Three matches into the newly-promoted club’s maiden German top-flight cam...
+52   Ongoing expansion across Europe with a diverse product portfolio: the brand announces at InterTabac 2026. Puff-twice technology extends the lifecycle of heating sticks to reuse. The brand furthers its technology to drive next-generation innovations. DORTMUND,…
+53                                                              Following last summer’s shake-up, Juventus intend to sign more Italian players, something that Inter have been doing for years. The two rivals are set to compete for several talents.According to Tut...
+54                                                            SC Paderborn 07 and TSG Hoffenheim face off this Sunday at the Home Deluxe Arena in 1. Bundesliga.SC Paderborn 07 have 1 point to their name this season and occupy 15th position in the table. In their...
+55   Sept 18 : Netherlands' record scorer Memphis Depay was left out, but captain Virgil van Dijk continues his international career as new coach Xavi Hernandez named his first squad on Friday for the upcoming Nations League matches.• Depay played only as a substi…
+56   Jürgen Klopp will give a first indication of how he wants to rebuild the German national team after another poor World Cup showing when the new selects his first squad on Thursday. Hopes in former Borussia Dortmund and Liverpool coach Klopp are huge, but that…
+57   Bayern Munich's Harry Kane scored his 100th and 101st Bundesliga goals in record time during a 7-0 home thrashing of Union Berlin on Friday, as Michael Olise netted a hat-trick and Jamal Musiala put a tough few months behind him with a spectacular strike. The…
+58                                                                                                                                                                                                                 Could FC Bayern really want to bring back Paul Wanner?
+59                                                              Jürgen Klopp announced his first squad in charge of the Germany national team,&nbsp;unveiling two separate lists for the four Nations League fixtures against the Netherlands, Greece, Serbia and Greece ag...
+60   Germany coach Jurgen Klopp handed 16 players their first call-ups on Thursday as he unveiled a 44-man squad for his first camp since taking over as coach in the summer.&nbsp;Teams are restricted to naming 20 outfield players and three goalkeepers for each match bu…
+61                                                           The squad for the fall friendlies is almost evenly divided between players who competed at this summer's World Cup and uncapped players, the latter group boasting an average age of 19 years and six months
+62                                                                                                                                                                                                                               Germany is ready for its upcoming games.
+63                                                            Bayern hosted Union Berlin in Munich and handed them a resounding 7-0 thrashing, featuring a hat-trick from Olise and two goals from Kane, with Musiala and Saibari rounding out the scoreline.After the...
+64                                                              Real Madrid spent the majority of the summer trying to reinforce their defensive unit, with purchases such as Marc Cucurella, Ibrahima Konate, Denzel Dumfries.However, the club’s early performances ...
+65                                   Italy coach Roberto Mancini on Friday called up 34 players, nine for the first time, for the opening four games of his second stint in charge of the Azzurri.&nbsp;He opens his reign with four Nations League Group A1 games in 11 days.
+66                                                                Newcastle United have joined the competition for Leicester City’s 18-year-old midfielder Louis Page, according to TEAMtalk’s Graeme Bailey. The English youth international attracted serious attent...
+67   Sept 18 : Cristiano Ronaldo has been included in new Portugal manager Jorge Jesus' first 25-man squad for the defending champions' upcoming four Nations League matches.In August, Ronaldo fuelled speculation about his retirement plans after saying the coming y…
+68   Sept 18 : Roberto Mancini has launched his second tenure as Italy head coach with a sweeping rebuild, naming an expanded 34-man roster on Friday for their Nations League games as the team try to rebound from missing out on the 2026 World Cup.Mancini returned …
+69  Veteran midfielder Axel Witsel announced his retirement from international football on Wednesday, bringing an end to a Belgium career which saw him become their second-most capped player.\nThe post Witsel retires from internationals after 18-year Belgium caree…
+70           Cristiano Ronaldo was called up for the start of Portugal's Nations League campaign on Friday as Jorge Jesus named his first squad since taking over as coach.\nThe post Ronaldo named in Portugal squad for Nations League appeared first on Vanguard News.
+71                                                                          Coach Silvio Baldini called 25 Italy players for the final Under-21 European Championship qualifiers against Armenia and Poland, including Mattia Liberali, Luca Reggiani and Emanuele Lulli.
+72                                                                L'Équipe reports Paris Brunner could make Jürgen Klopp’s Germany squad on Thursday. The new coach of Germany national team is expected to list a 40-man squad as there will be four UEFA Nations Lea...
+73                                                                                                                                                                              The ex-FC Bayern attacker will not be a part of the German national team per this report.
+74                                                            While the transfer window may be shut, Ajax are not quite done yet in reinforcing the squad. According to De Telegraaf, Ajax are just one of a number of sides keen on signing now former Tottenham midf...
+75                                                                Galtier loses it Christophe Galtier gave us the WTF image of the weekend this Sunday.As his Neom side claimed a 4-2 win over Al Fateh, the former PSG coach was sent off after giving the opposing b...
+76                                                            Axel Witsel has officially retired from international football at the age of 37. The midfielder, who currently plays for Nice in Ligue 1, ends his career with the Belgian Red Devils having amassed 140...
+77                                                              The Men's First Team beat NEC Nijmegen 5-0 to begin their UEFA Europa League campaign.Let’s reflect on the standout stats from the game.JUVENTUS-NEC STANDOUT STATSJuventus have won their opening mat...
+78                                                            Leeds United defender Nico Elvedi has been named in the Switzerland squad for their upcoming UEFA Nations League fixtures.The 29-year-old centre-back has 73 international caps and was a key member of ...
+79                                                            Olise and Kane put on a show!On Friday night, Bayern Munich treated themselves to a real festival away at Union Berlin (0-7) on Matchday 4 of the Bundesliga.The match got underway with a superb goal f...
+80                                                                   Mbappé or Dembélé for the Ballon d'Or? Zidane answers!As the media feud between Kylian Mbappé and Ousmane Dembélé over the Ballon d'Or rages on, Zinédine Zidane was asked to share his thoughts ...
+81                                                            Paris Brunner (20) has begun the season in excellent form for AS Monaco. The German has benefited from the absences of Folarin Balogun and Matthis Abline up front to assert himself as the first-choice...
+82                                                            A member of the summer recruitment drive at La Liga giants Barcelona is set to be imminently rewarded for his exploits since joining the club.This comes amid the understanding that Karim Adeyemi is pr...
+83                                                            In recent days, we have received a large number of ticket inquiries. We would therefore like to begin by thanking everyone for the great interest in attending our away match in Norway.For this away ma...
+84                                                              Barcelona star Karim Adeyemi has this week been rewarded for his impressive efforts since taking his talents to Catalunya’s capital. This comes courtesy of a return to the German national team setup...
+85   Veteran midfielder Axel Witsel announced his retirement from international football on Wednesday, bringing an end to a Belgium career which saw him become their second-most capped player.Only long-time teammate Jan Vertonghen, with 157 caps, has played more t…
+86                                                                                                                                                                                                     It seems that Karetsas’s health issues last week were not serious.
+87                                                               Paris Brunner looks set to be called up to Germany’s U21 squad for the first time, as per a report from Florian Plettenberg. It comes amid a strong start to the season for the former Borussia Dortm...
+88                                                            Having snapped a two-game Bundesliga losing streak with a 2-1 win over VfB Stuttgart at the weekend, TSG Hoffenheim begin their European campaign on Thursday with an away trip to Crete to face Greek s...
+89                                                            1 Manchester United completed their midfield revamp over the course of the summer, but it seems INEOS are not too happy with their current contingent.Carlos Baleba remains injured, while Andrey Santos...
+90                                                            SituationWith a win in the rescheduled match, BVB could move even closer to the top of the table. With four wins and three draws so far, BVB sit in fourth place, ready to pounce. This is due not only ...
+91                                                            The son of an American-born Icelandic mother and an American father, SV Elversberg forward Cole Campbell is eligible to represent both countries at international level.Campbell initially played for Ic...
+92                                                            Bundesliga Matchday 3 produced emphatic victories, individual brilliance and several performances that could prove significant as the season develops. RB Leipzig and Freiburg both scored five, Borussi...
+93                                                            Some stats from the match between Juventus and NEC on Matchday 1 of the UEFA Europa League league phaseJuventus have won their opening match of a major European competition by a margin of at least fiv...
+94   Jürgen Klopp has nominated 44 players in two squads for his first four matches as German national team coach where established players and newcomers are to "have fun under pressure" in his rebuilding mission. Led by captain Joshua Kimmich, the large squad ann…
+95           Veteran midfielder Axel Witsel has announced his retirement from international football, ending an 18-year career as Belgium’s second-most capped player.\n\nRead More: https://punchng.com/witsel-retires-from-internationals-after-18-year-belgium-career/
+96                                                               Leeds United defender Gabriel Gudmundsson has been named in Graham Potter’s Sweden squad for the upcoming September/October international break.The 27-year-old, who was born in Malmö, has won 28 ca...
+97                                                                   Filipe Luís has admitted that Paris Brunner’s throat-slice celebration in front of the RC Strasbourg Alsace fans last week has been a “topic” at the club this week. The celebration came after h...
+98   Jürgen Klopp has nominated 44 players and split them into two squads for his first four matches as German national team coach. Led by captain Joshua Kimmich, who returns into midfield from the right back position, the large squad announced by Klopp on Thursda…
+99                                                                                          Bundesliga president Hans-Joachim Watzke has joined German Football Federation (DFB) chief Bernd Neuendorf in calling for FIFA boss Gianni Infantino to leave. "He should go.
+100                                                            Matthias Ginter has opened up about his conversation with new Germany head coach Jürgen Klopp after missing out on the squad for the upcoming Nations League matches.The 32-year-old SC Freiburg defend...
+                                                                                                                                                                                      url
+1                                                                   https://www.aljazeera.com/sports/2026/9/18/ronaldo-keeps-portugal-place-for-nations-league-as-jesus-names-first-squad
+2                                                                                                                             https://www.bbc.co.uk/sport/football/articles/cwd083944eeko
+3                                                                                                                                   https://www.slanted.de/slanted-experimental-type-4-0/
+4                                                                                                                             https://www.bbc.co.uk/sport/football/articles/crgjqw0l01njo
+5                                                                                           https://eplindex.com/150449/former-manchester-united-star-unlikely-to-rejoin-former-club.html
+6                                                                                                                https://bulinews.com/confirmed-lineups-vfb-stuttgart-borussia-dortmund-2
+7                                                                  https://www.fearthewall.com/bvb-league/24903/match-preview-dortmund-travel-to-stuttgart-before-the-international-break
+8                                                                                               https://bulinews.com/dortmund-join-manchester-united-for-highly-rated-leicester-youngster
+9                                                                       https://wwd.com/footwear-news/shoe-industry-news/puma-matthias-baeumer-chief-commercial-officer-exits-1239231922/
+10                    https://worldsoccertalk.com/news/christian-pulisic-joins-zlatan-ibrahimovic-and-robert-lewandowski-in-elite-european-cup-history-after-extending-incredible-streak/
+11                                                   https://www.bavarianfootballworks.com/bayern-munich-bundesliga/255632/bundesliga-watch-will-jadon-sancho-return-to-borussia-dortmund
+12                                                                                                      https://bulinews.com/stuttgart-considered-fabio-silva-move-before-dortmund-switch
+13                                                                                      https://onefootball.com/en/news/guirassy-demirovic-silva-xis-in-for-stuttgart-v-dortmund-43488791
+14                                                                                                               https://bulinews.com/schlotterbeck-hails-impact-top-class-gadou-dortmund
+15                                                                                                    https://dpa-international.com/sports/urn:newsml:dpa.com:20090101:260917-930-700888/
+16                                                                                                            https://thefootballfaithful.com/vfb-stuttgart-vs-borussia-dortmund-preview/
+17                                                                                                                         https://bulinews.com/joey-veerman-dortmund-move-right-step-for
+18                                                      https://www.playmakerstats.com/news/preview-stuttgart-vs-borussia-dortmund-team-news-lineups-predictions-bundesliga-19-09/1206483
+19                         https://roundtable.io/sports/soccer/eredivisie/psv-eindhoven/news/former-psv-star-joey-veerman-proving-johan-derksen-wrong-dutch-pundit-admits-it-surprises-me
+20                                                                                                    https://dpa-international.com/sports/urn:newsml:dpa.com:20090101:260916-930-694884/
+21                                                                                              https://sports.yahoo.com/articles/dortmund-teenager-karetsas-back-training-125024161.html
+22                                                                  https://www.getfootballnewsgermany.com/2026/stuttgart-tried-to-sign-fabio-silva-before-his-move-to-borussia-dortmund/
+23                                                                                          https://bulinews.com/guirassy-believes-dortmund-benefit-his-competition-energetic-fabio-silva
+24                                                                                            https://bulinews.com/vfb-stuttgart-borussia-dortmund-preview-bvb-put-perfect-start-the-line
+25                                                                                             https://bulinews.com/needed-play-bigger-role-cole-campbell-leaving-dortmund-for-elversberg
+26                                                                                      https://onefootball.com/en/news/09-facts-to-give-dortmund-hope-for-the-trip-to-stuttgart-43483834
+27                                                                            https://bulinews.com/2-bundesliga-sensation-zoma-earns-first-italy-call-alongside-dortmund-youngster-inacio
+28                                                    https://barcauniversal.com/borussia-dortmund-beginning-to-regret-the-price-they-demanded-for-adeyemis-transfer-to-barcelona-report/
+29                                                                                                              https://thefootballfaithful.com/borussia-dortmund-xi-vs-stuttgart-lineup/
+30                                                                                                        https://bulinews.com/dortmund-keen-fend-off-real-madrid-interest-kobel-new-deal
+31        https://www.bavarianfootballworks.com/germany-international-soccer/257641/germany-boss-jurgen-klopp-has-special-plan-for-two-bayern-munich-stars-one-borussia-dortmund-standout
+32                                                                                    https://www.playmakerstats.com/news/europe-s-top-performers-key-statistics-from-the-weekend/1202189
+33                                                                       https://barcauniversal.com/barcelona-summer-arrival-expected-to-return-to-national-team-squad-under-new-manager/
+34                                                                                  https://eplindex.com/150450/manchester-united-could-face-bundesliga-giants-in-move-for-youngster.html
+35                                               https://www.bvb.de/de/en/news/news-overview/news.html/2026/9/18/Schlotterbeck-is-raring-to-go-We-can-accomplish-a-lot-with-the-team.html
+36                                                                                                             https://bulinews.com/serhou-guirassy-take-advantage-bayern-dropping-points
+37                                             https://www.bvb.de/de/en/news/news-overview/news.html/2026/9/17/BVB-vs-Betis-Get-your-tickets-now-for-the-next-Champions-League-night.html
+38                                                                                                https://onefootball.com/en/news/countdown-to-stuttgart-tv-coverage-kits-record-43481201
+39                                                                     https://www.bvb.de/de/en/news/news-overview/news.html/2026/9/18/Countdown-for-Stuttgart-Facts-Jerseys-Weather.html
+40                                                                          https://onefootball.com/en/news/bvb-v-betis-get-your-tickets-now-for-the-next-champions-league-night-43475545
+41                                                                              https://barcauniversal.com/barcelonas-left-wing-battle-takes-an-unexpected-turn-after-adeyemis-emergence/
+42                                                                                               https://onefootball.com/en/news/schlotterbeck-raring-to-go-this-team-can-go-far-43483839
+43                                                                                                    https://dpa-international.com/sports/urn:newsml:dpa.com:20090101:260917-930-698677/
+44                                                                                                                          https://www.getfootballnewsgermany.com/2026/germany-44-squad/
+45                                                                                            https://www.dw.com/en/j%C3%BCrgen-klopps-first-germany-squad-includes-44-players/a-79289254
+46                                                                                             https://www.vanguardngr.com/2026/09/klopp-calls-up-44-players-in-huge-first-germany-squad/
+47                                                                                    https://bulinews.com/watzke-reveals-considered-england-boss-tuchel-for-germany-job-after-qatar-exit
+48                                                                                      https://bulinews.com/you-accept-that-union-berlin-coach-and-captain-react-after-losing-7-0-bayern
+49                                                                    https://thepeoplesperson.com/2026/09/14/the-squad-is-niko-kovac-addresses-jadon-sanchos-possible-bvb-return-315967/
+50                                                                                             https://www.leedsunited.com/en/news/anton-stach-named-in-jurgen-klopps-first-germany-squad
+51                                                                                                       https://www.getfootballnewsgermany.com/2026/cole-campbell-bundesliga-roundtable/
+52                                                                       https://www.prnewswire.com/news-releases/rejo-debuts-puff-twice-technology-in-expansion-to-europe-302880210.html
+53                                                                                                             https://cultofcalcio.com/inter-and-juventus-share-more-than-a-few-targets/
+54                                                   https://www.playmakerstats.com/news/preview-sc-paderborn-07-vs-tsg-hoffenheim-team-news-lineups-predictions-bundesliga-20-09/1208175
+55                                                                               https://www.channelnewsasia.com/sport/van-dijk-stays-depay-omitted-xavis-first-netherlands-squad-6394876
+56                                                                                                    https://dpa-international.com/sports/urn:newsml:dpa.com:20090101:260915-930-687188/
+57                                                                                                    https://dpa-international.com/sports/urn:newsml:dpa.com:20090101:260918-930-708889/
+58  https://www.bavarianfootballworks.com/transfer-rumors/255616/bayern-munich-liverpool-psv-paul-wanner-real-madrid-eyeing-bundesliga-haaland-mountain-borussia-dortmund-manchester-city
+59                                                                                       https://www.playmakerstats.com/news/jurgen-klopp-names-44-players-in-first-germany-squad/1205871
+60                                                                                                           https://sports.yahoo.com/articles/klopp-calls-44-players-huge-084518955.html
+61                                                                                         https://www.cbssports.com/soccer/news/usmnt-roster-cavan-sullivan-julian-hall-named-usa-squad/
+62                                                                    https://www.bavarianfootballworks.com/germany-international-soccer/257649/detailed-german-national-team-roster-list
+63                                                                                               https://onefootball.com/en/news/club-blames-yamal-for-historic-bayern-thrashing-43487392
+64                                                                      https://madriduniversal.com/bundesliga-defensive-ace-back-on-real-madrids-radar-player-available-for-e60-million/
+65                                                                                                   https://sports.yahoo.com/articles/mancini-brings-nine-newcomers-first-180603561.html
+66                                                            https://the4thofficial.net/2026/09/newcastle-united-join-12m-race-for-leicester-teen-would-they-benefit-from-an-early-deal/
+67                                                                                           https://www.channelnewsasia.com/sport/ronaldo-included-in-jesus-first-portugal-squad-6395031
+68                                                         https://www.channelnewsasia.com/sport/mancini-names-nine-uncapped-players-in-expanded-italy-squad-after-summer-turmoil-6395676
+69                                                                                   https://www.vanguardngr.com/2026/09/witsel-retires-from-internationals-after-18-year-belgium-career/
+70                                                                                                https://www.vanguardngr.com/2026/09/ronaldo-named-in-portugal-squad-for-nations-league/
+71                                                                                                             https://football-italia.net/italy-u21-reggiani-liberali-lulli-first-calls/
+72                                                                                                          https://bulinews.com/call-klopp-u21s-form-paris-brunner-set-for-dfb-promotion
+73                                      https://www.bavarianfootballworks.com/germany-international-soccer/257290/report-former-bayern-munich-star-leroy-sane-not-getting-germany-call-up
+74                                                                                                 https://getfootballnewsbene.com/ajax-keen-on-former-tottenham-and-brighton-midfielder/
+75                                                                                         https://onefootball.com/en/news/fc-breakfast-galtier-snaps-foden-teases-nmecha-banger-43456478
+76                                                                               https://getfootballnewsbene.com/140-and-out-axel-witsel-calls-time-on-international-career-with-belgium/
+77                                                                                                         https://www.juventus.com/en/news/articles/standout-stats-juventus-nec-18-09-26
+78                                                                                                 https://www.leedsunited.com/en/news/switzerlands-nations-league-campaign-awaits-elvedi
+79                                                                                              https://onefootball.com/en/news/with-olise-on-fire-bayern-blow-union-berlin-away-43485267
+80                                                                                          https://onefootball.com/en/news/fc-breakfast-zidane-on-dembele-mbappe-da-cunha-olise-43486659
+81                                                                            https://www.getfootballnewsfrance.com/2026/monacos-paris-brunner-faces-possible-suspension-for-celebration/
+82                                                                                               https://getfootballnewsspain.com/barcelona-star-set-for-international-recall-this-month/
+83                                                                                    https://onefootball.com/en/news/uefa-champions-league-ticket-info-for-trip-to-fk-bodoglimt-43466716
+84                                                                                                https://getfootballnewsspain.com/official-barcelona-star-handed-international-recall-2/
+85                                                                                              https://sports.yahoo.com/articles/witsel-retires-internationals-18-belgium-182118360.html
+86                                                https://www.fearthewall.com/general/24896/konstantinos-karetsas-returns-to-training-after-brief-hospitalization-with-circulatory-issues
+87                                                             https://www.getfootballnewsfrance.com/2026/paris-brunner-set-for-germany-u21-call-as-jurgen-klopp-monitors-monaco-forward/
+88                                                                                                                https://bulinews.com/ofi-hoffenheim-preview-team-news-predicted-lineups
+89                                                    https://thepeoplesperson.com/2026/09/14/german-giants-ready-to-ruin-man-uniteds-transfer-plans-for-the-next-jude-bellingham-315932/
+90                                                                                           https://onefootball.com/en/news/u23-set-for-crunch-clash-with-promoted-side-rhynern-43466721
+91                                                                       https://bulinews.com/that-set-stone-elversberg-prodigy-cole-campbell-reaffirms-desire-represent-usa-over-iceland
+92                                                                                https://www.getfootballnewsgermany.com/2026/bundesliga-power-rankings-kane-nusa-nmecha-dortmund-bayern/
+93                                                                                             https://www.juventus.com/en/news/articles/uefa-europa-league-juventus-nec-post-match-stats
+94                                                                                                    https://dpa-international.com/sports/urn:newsml:dpa.com:20090101:260917-930-699017/
+95                                                                                                   https://punchng.com/witsel-retires-from-internationals-after-18-year-belgium-career/
+96                                                                                        https://www.leedsunited.com/en/news/gudmundsson-selected-for-swedens-september-october-fixtures
+97                                                              https://www.getfootballnewsfrance.com/2026/monaco-manager-filipe-luis-admits-paris-brunner-celebration-a-topic-this-week/
+98                                                                                                    https://dpa-international.com/sports/urn:newsml:dpa.com:20090101:260917-930-698540/
+99                                                                                                    https://dpa-international.com/sports/urn:newsml:dpa.com:20090101:260917-930-702006/
+100                                                                                      https://bulinews.com/ginter-reveals-very-good-and-appreciative-conversation-klopp-after-dfb-snub
+                                                                                                                                                                                                                                                                                  urlToImage
+1                                                                                  https://www.aljazeera.com/wp-content/uploads/2026/09/2026-07-08T080800Z_632051431_MT1USATODAY29350844_RTRMADP_3_SOCCER-FIFA-WORLD-CUP-2026-ROUND-OF-16-PORTUGAL-V-SPAIN-1789737404.jpg?resize=1920%2C1440
+2                                                                                                                                                                               https://ichef.bbci.co.uk/ace/branded_sport/1200/cpsprodpb/1f87/live/2ec4a210-b39a-11f1-a430-4d16ee157c41.png
+3                                                                                                                                                                                                                       https://www.slanted.de/wp-content/uploads/2026/09/Slanted_XT4_23.jpg
+4                                                                                                                                                                               https://ichef.bbci.co.uk/ace/branded_sport/1200/cpsprodpb/7039/live/f7b9c130-b1bc-11f1-b1d1-571ed4d7ff2c.jpg
+5                    https://s.yimg.com/lo/mysterio/api/bafa5f66f3a3269c6da19ad581e59eb46ffb4d934191d66ed447f7f9ddb83a42/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fepl_index_articles_253%2F785ada2e8bc7facc67660a012d7a3739.jpg
+6                     https://s.yimg.com/lo/mysterio/api/333cacbe7e790e9e8537c324949cc85c172348f19c60e7b1b07812e060018479/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fbulinews_articles_290%2Fcb3d23c168f9ec2dc472fe417e6b25e2.jpg
+7                    https://s.yimg.com/lo/mysterio/api/aefc4718476d6b138a754901e05c40a0fa39bceb687e58e9d31ce258f100b7b6/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fsb_nation_articles_115%2Feae36b1e55c15a22a0890082f58039e7.jpg
+8                     https://s.yimg.com/lo/mysterio/api/7860a439be3bdb1eeb06e384a46badb49741d8902a72fca63cef04268a1a0cbf/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fbulinews_articles_290%2Fe1279b0d1bf942e67b45604bebbab6ae.jpg
+9                   https://s.yimg.com/lo/mysterio/api/95a15277de55233c0dd4571a64e6123bdc35a15e0704c011771fb3c358945499/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Ffootwear_news_finance_8%2F8b384df377a6bb2bfb0390d3bfc2b178.jpg
+10                                                                                                                                                               https://media.worldsoccertalk.com/wp-content/uploads/sites/6/2026/09/15210420/pulisic-lewandowksi-ibrahimovic-1200x740.webp
+11                   https://s.yimg.com/lo/mysterio/api/8605070b8ce2708fcc27493947b6fedc17f5314556487818dce17a5968c3f932/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fsb_nation_articles_115%2F92a173e50ee6fb44c15122df52c73211.jpg
+12                    https://s.yimg.com/lo/mysterio/api/5162a5e856eccc442250c2ac4f0a70d4a16c3a2a728d9d5f895690abc4b7d3d4/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fbulinews_articles_290%2Fc3f1bb6d8ac3d05223f6a33ac384acc1.jpg
+13            https://s.yimg.com/lo/mysterio/api/486ebde0a2a4d3330446ffa1fde9cdc08294828bea67136799336e9e9e3786f1/lightyear_networkapi/resizefill_w1024_h683%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fonefootball_articles_802%2F3082e174436fe8d8ac2f1cf5d2b9d101.jpg
+14                    https://s.yimg.com/lo/mysterio/api/d1bb893c651ffb7f1b791d132d4363eb46f316d627f12623b5cbe1d78e073682/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fbulinews_articles_290%2F42002f0f3aab293d738970f63824b62c.jpg
+15                    https://s.yimg.com/lo/mysterio/api/51dc44a8cfd65776c649cbd44fa1584281fd42a139367ccdb65fc1cdddfab948/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fdpa_international_526%2Fac0228755d68a627c9af9f26802fc34b.jpg
+16       https://s.yimg.com/lo/mysterio/api/9f4f0f56f320c250e99b6fbbeb7abd8fb34311bfaac606de38b875b7b089c939/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fthe_football_faithful_articles_458%2F13daf20a281fc726875a3daf53277892.jpg
+17                    https://s.yimg.com/lo/mysterio/api/31dd90f48c8e8ffcd604ccd1dce31c9d4a272afaa974caf17a74f45d2285bf7d/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fbulinews_articles_290%2F1cc8502d39eda0af5a07ad7ddaba5cd8.jpg
+18          https://s.yimg.com/lo/mysterio/api/0b5d33adaa43bb2af995ba9d97ae968661f276fbbcca5c1b15fedfe04bd09c0c/lightyear_networkapi/resizefill_w620_h413%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fplaymakerstats_articles_264%2F6350854d35be7ccbadb783f2d2d8b531.jpg
+19      https://s.yimg.com/lo/mysterio/api/6ede4e85046cc08a86208dfe86c7e8f20bf9de0c6eb42fd3ff2521fc79840193/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Froundtable_sports_psv_eindhoven_320%2Feb86077aff8ce575cf87d32e4a85e733.jpg
+20                    https://s.yimg.com/lo/mysterio/api/5687bc4c599139de634f29a8dd2e0479448ea7e88c73b6afeb1879fb40416501/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fdpa_international_526%2F1097c0a2b2876a43e0ad8205a3c29079.jpg
+21                                   https://s.yimg.com/lo/mysterio/api/9bbec6d36a0c12fed8bf635e2380bf9cda343401f4523a9236719068969ca85a/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fap.org%2F4bf7d5ed893a3b4addb9245c41c0329a.jpg
+22    https://s.yimg.com/lo/mysterio/api/a75e0cd9aeb8a2badb03589714c88bab9fb1c15cf1cbce05403d8bedfb23c490/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fget_german_football_news_articles_128%2F2af5feb5c6a148991543bafd6ce46991.jpg
+23                    https://s.yimg.com/lo/mysterio/api/9f7728d58e5f47287e14ae618181da94932c7254d1d7df691f74b75077651962/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fbulinews_articles_290%2F29eafc0ea3f38482fa4c940ca33ceb91.jpg
+24                    https://s.yimg.com/lo/mysterio/api/24116995e1f5c446da4d53aa8f287834ea7a6d7e95a8f8b884986ee1ce4e8e45/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fbulinews_articles_290%2F57f56b2f64ab74c427ffbb6b6f00931c.jpg
+25                    https://s.yimg.com/lo/mysterio/api/7d95dd050431631f23bb713f51fccc611b176c2c602416a9aa9c7267e6a6e328/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fbulinews_articles_290%2F75778211658c80d0f5f65fa6dbb3f97e.jpg
+26      https://s.yimg.com/lo/mysterio/api/b272f33f720668a269ce1ce62b266def2937d06c8ed50b88703cee8c28f16195/lightyear_networkapi/resizefill_w1024_h576%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fborussia_dortmund_articles_399%2F2ff082b59a5e11ac2f4cff1fc04e70b1.jpg
+27                    https://s.yimg.com/lo/mysterio/api/efed707ccf2519ef10829615828262d5c243e07f6716ea76d88391c5d807fd8e/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fbulinews_articles_290%2Fa167f3ad6ed54bbd42d1e91ca33e0d8c.jpg
+28             https://s.yimg.com/lo/mysterio/api/255ba61c74fe003ecdbd021d9e3a40512e654079156c88563eb41dd47eba2919/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fbarca_universal_articles_732%2Fae608e9bffefa2968689058c8b2a67b3.jpg
+29       https://s.yimg.com/lo/mysterio/api/ee7e22c78210f1106fd3f028c644dec36a88a30cb3b5800a7a1abe6614cc241c/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fthe_football_faithful_articles_458%2F38badf112c63f95286556bef30909cde.jpg
+30                    https://s.yimg.com/lo/mysterio/api/557871bc45d60201016ee1d09e039e41cb4eb388d4b3bf1135b36e418ba67dfa/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fbulinews_articles_290%2F5c7d432b7e61338b39567c4896d95d05.jpg
+31                   https://s.yimg.com/lo/mysterio/api/fd5f9370168107c5be9a82bf69e18daaef0f5dcaf7e146e076a662a67a62be31/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fsb_nation_articles_115%2F7c4d5acf0d271d41719a2e5ccaba75fd.jpg
+32              https://s.yimg.com/lo/mysterio/api/c88f85dbaa183b899cbe37cefb5fd8571d791beb3323bab7612741a1bf649f80/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fplaymakerstats_articles_264%2Ff3b218a775a7e1d1579be769d6b64035.jpg
+33             https://s.yimg.com/lo/mysterio/api/65e71cf9a97919755aef66eeec2913ae7c8c677ecce64aa438446826d196fe4f/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fbarca_universal_articles_732%2Fe25e8622118ec0e9f008c00d0d81b680.jpg
+34                   https://s.yimg.com/lo/mysterio/api/ea275a89fd0988be4b5d1759e9aeb4925dfd1887facce3641f8ea590e158c3a2/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fepl_index_articles_253%2F5881de459b12488fea23c8ab6c077917.jpg
+35      https://s.yimg.com/lo/mysterio/api/44799ed2263b801cb10f7e95c238c7c15f2b7f6d783a2a5d3b5328ccd9825f9d/lightyear_networkapi/resizefill_w1024_h576%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fborussia_dortmund_articles_399%2Febd6bd9d141bf787f68df9a00d7cb986.jpg
+36                    https://s.yimg.com/lo/mysterio/api/14a89b29b087f952cde70a99ef46a52d6c77ab35d7cfff120ab4f040675bb250/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fbulinews_articles_290%2F412c7ad1daeba28a43f1a8d2fd8d62b1.jpg
+37      https://s.yimg.com/lo/mysterio/api/af3e1e567ea67a50a32603f03d6ed74d86da60b5a7d7eecbb5a88c6ff9611eb3/lightyear_networkapi/resizefill_w1024_h576%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fborussia_dortmund_articles_399%2F51362415533287efd47d6524318d0822.jpg
+38      https://s.yimg.com/lo/mysterio/api/d209bac5af210f05ac7d3feb188e704831b0a568395349bfb107318cdcb6b317/lightyear_networkapi/resizefill_w1024_h576%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fborussia_dortmund_articles_399%2F8adadd8a419db2c2525ec615503f66a8.jpg
+39           https://s.yimg.com/lo/mysterio/api/3afdaaaaee73d09c64715a5685b1400a160d984649e6c1593483acae2a3eac51/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fborussia_dortmund_articles_399%2Ff4348cfa771ca10be915ee6523e0dbae.jpg
+40      https://s.yimg.com/lo/mysterio/api/a241b8cafeebce3f0f89cd11c00c7549ec5e5b9df186e6530fd39e49b11c21b7/lightyear_networkapi/resizefill_w1024_h576%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fborussia_dortmund_articles_399%2Fff0ba27e62b5ba02c36577617621dc73.jpg
+41             https://s.yimg.com/lo/mysterio/api/ce7ccdb34f017c47f2a722d1922085ffd2a4080919d1dcc674ec04b0affebcbe/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fbarca_universal_articles_732%2F5eda1b43c454fcfe0c0302d92f423548.jpg
+42      https://s.yimg.com/lo/mysterio/api/11645aef0ee0bd0a0d01ec0f5143ae1b9812bec310e91877f28115b333af8001/lightyear_networkapi/resizefill_w1024_h576%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fborussia_dortmund_articles_399%2F09a3bfb6dc81241fbc927d7168c25658.jpg
+43                    https://s.yimg.com/lo/mysterio/api/bbcbea2c0fc597918cd398a83e1541bbfbcc37c013760c7e5955aefdd7f2846d/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fdpa_international_526%2Fe2aeeb02eb1317e9eee613601ee570f5.jpg
+44    https://s.yimg.com/lo/mysterio/api/18019f86623890be0472f267bc628e19b9caa07dbf2d83de16c4b9c3bf96e69c/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fget_german_football_news_articles_128%2Fb10f020d36edb99c414a6b8de961af8d.jpg
+45                                                                                                                                                                                                                                                https://static.dw.com/image/79302511_6.jpg
+46                                                                                                                                                                     https://cdn.vanguardngr.com/wp-content/uploads/2026/07/AFP__20260724__C3332JC__v1__MidRes__FblGerHeadCoachPresser.jpg
+47                    https://s.yimg.com/lo/mysterio/api/a8cfac897e4cd1d9610b9db3fdf2c0b936bd0f603abb7f7917fea6f22cbf3ce7/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fbulinews_articles_290%2F7b8709fb4d71a4ea1556b68b7249d8ed.jpg
+48                    https://s.yimg.com/lo/mysterio/api/ae234cee28f6208298b61fae6939263c373c793530b28c80a17c2afa33f902d7/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fbulinews_articles_290%2Fe66eb954eab1a95e91f6c317da910d38.jpg
+49          https://s.yimg.com/lo/mysterio/api/a65500a4b0e57ead1a5440ce42cd840464983c894e04b6670a0179794d399a9b/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fthe_peoples_person_articles_356%2F30d9c86bf429807f9fdcbafe592a9a9f.jpg
+50                https://s.yimg.com/lo/mysterio/api/2f39dc53ca3f5a8100ba0a08292a376fe2a636f016e763a2875941d3f06b16c2/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fleeds_united_articles_969%2F8505030b973d01f4e625a7a60c81c883.jpg
+51    https://s.yimg.com/lo/mysterio/api/3523faa3610336053c84549e12f6aeac0bfe838e27fb92b9b4923c8292106121/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fget_german_football_news_articles_128%2F577ce9179ab15ccd989104e672597f80.jpg
+52                                                                                                                                                                                          https://mmx.prnewswire.com/media/MS1989290/20260915164828EDT_image_1.jpg?id=OA2952040&amp;p=facebook
+53          https://s.yimg.com/lo/mysterio/api/f27cd764b28ec990bf0ba74dd3f79d84073991d99438110bbcc077743d6c4033/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fthe_cult_of_calcio_articles_203%2F95d3e8fa19324806187efd44f17a8e9c.jpg
+54          https://s.yimg.com/lo/mysterio/api/8c7220f846eb1198e75fa1e443682e4eb114b54c1fa4c5e15e5c0f45d8d5c0e3/lightyear_networkapi/resizefill_w620_h413%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fplaymakerstats_articles_264%2Fde5e34c410d2214f95550e32706b6e9c.jpg
+55            https://dam.mediacorp.sg/image/upload/s--EgcX1v9z--/c_fill,g_auto,h_676,w_1200/fl_relative,g_south_east,l_mediacorp:cna:watermark:2024-04:reuters_1,w_0.1/f_auto,q_auto/v1/one-cms/core/2026-09-18T113751Z_1_LYNXMPEM8H0ZX_RTROPTP_3_SOCCER-WORLDCUP-NLD-MAR.JPG?itok=A1rgnmU1
+56                    https://s.yimg.com/lo/mysterio/api/a30ee13037568edc5a85beaa040008de5fbea7da32e0b8c8eb56f7e6d7bade4c/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fdpa_international_526%2F2601626397908cc98847c67aef999b9a.jpg
+57                    https://s.yimg.com/lo/mysterio/api/1ff193bdef520709a742b0aa6b03430bd7a7b0bf790b1bc66eff40fae5f3a3b5/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fdpa_international_526%2F0b6cacdf2e843a3b7a7917b0ad7e64a7.jpg
+58                   https://s.yimg.com/lo/mysterio/api/ec78f0e7d8f56a66e4d180fbb04b0d2ff97814af84a1f3f37d04cc33e9f349db/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fsb_nation_articles_115%2F770d91cd3bea24e1bfa0618486f78b0b.jpg
+59              https://s.yimg.com/lo/mysterio/api/49c909880bed3d0863bfcbf29c6ac9f74920a54bfec36557e1ebe63fde5eef79/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fplaymakerstats_articles_264%2Fe2d52b8c237384e95bedca713105fc9d.jpg
+60                              https://s.yimg.com/lo/mysterio/api/142ffad03e96c2155bb1911e50898b0e0fbce6f623a01e317acd041413e49ef1/lightyear_networkapi/resizefill_w768_h512%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fafp.com%2Fb1b75b48bd1480abb38d4d13004a3797.jpg
+61                                                                                                                         https://sportshub.cbsistatic.com/i/r/2026/09/17/34f76e73-2a0e-4e53-a79c-c0f42801563e/thumbnail/1200x675/12bcc506eb0ddaa6f2174d627b3e8d34/julian-hall-sullivan.jpg
+62                   https://s.yimg.com/lo/mysterio/api/f725af39373963bdf1a3ddbfddda6b2bc1e8469e78ced1e525c465cb95a556e1/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fsb_nation_articles_115%2F513fd580be5647c533c28cf48babdeca.jpg
+63                 https://s.yimg.com/lo/mysterio/api/daf28d57df253b89f5915b4e5ea07b24eb0d15dd539b2a7177a6e42ef7708f4a/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fonefootball_articles_802%2F2092a74fb277b8c2cccf82b0138a7902.jpg
+64            https://s.yimg.com/lo/mysterio/api/3943d9f237db7d714b0840d28b676f280f06a0c3765a1945a68fa900795c607e/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fmadrid_universal_articles_561%2F527f8a24c3acddaed1f3e15ebd3f7123.jpg
+65                              https://s.yimg.com/lo/mysterio/api/2acf0bb559db7fb325b8a8aac6a9a81606b4c6e6e0d5379845f1c6f5b58da038/lightyear_networkapi/resizefill_w768_h513%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fafp.com%2F40ac313bb6f52ed3c8463087ce6e1203.jpg
+66            https://s.yimg.com/lo/mysterio/api/ce235d40cafc9ead670cc8c292f3c22782826126f2d106fe2a075eb43534b50a/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fthe_4th_official_articles_868%2F2ce175e4ba7353f50f1f30ce0ec14030.jpg
+67               https://dam.mediacorp.sg/image/upload/s--VBCHAI6g--/c_fill,g_auto,h_676,w_1200/fl_relative,g_south_east,l_mediacorp:cna:watermark:2024-04:reuters_1,w_0.1/f_auto,q_auto/v1/one-cms/core/2026-09-18T123426Z_1_LYNXMPEM8H134_RTROPTP_3_SOCCER-SAUDI-KHA-NSR.JPG?itok=IX-FrYOf
+68       https://dam.mediacorp.sg/image/upload/s--MEXLbPoj--/c_fill,g_auto,h_676,w_1200/fl_relative,g_south_east,l_mediacorp:cna:watermark:2024-04:reuters_1,w_0.1/f_auto,q_auto/v1/one-cms/core/2026-09-18T184401Z_1_LYNXMPEM8H1PL_RTROPTP_3_SOCCER-ITALY-MANCINI-RANIERI.JPG?itok=LWWKoMrS
+69                                                                                                                                                                                                                     https://cdn.vanguardngr.com/wp-content/uploads/2023/01/Artboard-1.png
+70                                                                                                                                                                                                https://cdn.vanguardngr.com/wp-content/uploads/2026/06/cristiano-ronaldo-22-490x275-1.webp
+71                                                                                                                                                                            https://icdn.football-italia.net/wp-content/uploads/2026/08/liverpool-fc-v-como-calcio-pre-season-friendly.jpg
+72                    https://s.yimg.com/lo/mysterio/api/36c5d55341f3109858942814db538bb449889cbbb8c5a7aae74efc9c95a2a839/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fbulinews_articles_290%2F856e95437bd9178c16584966ac659815.jpg
+73                   https://s.yimg.com/lo/mysterio/api/e9776894358bc420c1d0db6b34782ed9040fd21ff3261ecb59909aa2a802c31b/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fsb_nation_articles_115%2F8b0197fbb9bb597069c88770dba6680a.jpg
+74  https://s.yimg.com/lo/mysterio/api/1678f9c8fd3ef644805a4bfeb461671b974b972eec50a5e5e28c28e2689a0bc5/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fget_belgian_and_dutch_football_news_262%2Fbf391f74d5b4f407ec5daea8b05637ae.jpg
+75                 https://s.yimg.com/lo/mysterio/api/49a89a3ac11d09fc09a8b23da08de830f908f02fb2af693c4d18335a0a2abe47/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fonefootball_articles_802%2F00ae403d6b8ce7d5d6b15a7cf07c4fa9.jpg
+76  https://s.yimg.com/lo/mysterio/api/4be9cd7209e38d7d173f4615aadd32ab51a62d4b10ba9a05cefce9b48ebf4652/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fget_belgian_and_dutch_football_news_262%2Fb368fd2d8adfd690884ab9832df95276.jpg
+77      https://s.yimg.com/lo/mysterio/api/bdddd478df8273e9ab01b78ccb6d52c85634614329f9514a2277f8766af88a67/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fjuventus_football_club_articles_524%2F2187016b5c49a526e35177d4593808da.jpg
+78                https://s.yimg.com/lo/mysterio/api/1956c35850a914ebf8b06146109e08bd248e1e8bf67b4fbdd5c2ea7de4e7d341/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fleeds_united_articles_969%2F5cce7bb37d595383a86ab6627ce715b0.jpg
+79                 https://s.yimg.com/lo/mysterio/api/cc39bfc7fc6427ae4ec5afb9461c4c9e7b7c39d866072c8d1dd565b192505e53/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fonefootball_articles_802%2F487caba0694ab1f6d22414931f2cad53.jpg
+80                 https://s.yimg.com/lo/mysterio/api/e567a18d6d4102c5a67fff3748922528a8904b53bb5bb571d544d7b99954c3d0/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fonefootball_articles_802%2Fc1523796e292a725b505c157deee092e.jpg
+81             https://s.yimg.com/lo/mysterio/api/d1a4d609300276012116ff0f7b9be03db7ef2bd284353602dd0b92a255d47dec/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fget_french_football_news_702%2F4427c7650282429f8e7013a82c8f1a94.jpg
+82   https://s.yimg.com/lo/mysterio/api/3b4c27f751047ef468f473546b3695d9320551828f6945a6f8168b591d3b389c/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fget_spanish_football_news_articles_403%2Fd882a17b12ca23e2f2b9e6537c113912.jpg
+83      https://s.yimg.com/lo/mysterio/api/e295ca5adc143a272683335590680dfcd84adc287415c6ea497b15c54a7a2485/lightyear_networkapi/resizefill_w1024_h576%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fborussia_dortmund_articles_399%2Ff4860cff32864bb443cbdd22e0d82a88.jpg
+84   https://s.yimg.com/lo/mysterio/api/365a8149e0b0d6d2f1c2b1b3ac4ffc6562908762789bd7de760524c3697f39b5/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fget_spanish_football_news_articles_403%2Fb6d386482d2f79515844a0e5b8ce38c4.jpg
+85                              https://s.yimg.com/lo/mysterio/api/5ea214be40aee839974f6c2855bb6ec053e62c8f9c105792c692b79345afe2ff/lightyear_networkapi/resizefill_w768_h512%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fafp.com%2Fd1868dc57f0f4670a77dc7d6dd3fcec0.jpg
+86                   https://s.yimg.com/lo/mysterio/api/c276ee1807e21e7bc87461ef126238cf35f03f5f40d1e80b357f52e7fc6c3765/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fsb_nation_articles_115%2F2e577d105a2e8d820c941846c5a9efc1.jpg
+87             https://s.yimg.com/lo/mysterio/api/c410874df1993615035d3cf2f70f5a0dceea1fa5e421351e5b0565a069878803/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fget_french_football_news_702%2Fcef09a48dae7be41cdffa4d8da3669ac.jpg
+88                    https://s.yimg.com/lo/mysterio/api/85e646be2cbdc431a93d6bae9ec425c5e7638951328baacff173307ed0575664/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fbulinews_articles_290%2Fa0e4349aa973de0527bfa161b9ae9853.jpg
+89          https://s.yimg.com/lo/mysterio/api/b3e43b8563316126144bd3a77f1b91cdfeeeb3bfae24dede1ae6d73b8a8c55fe/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fthe_peoples_person_articles_356%2F07d658ce15fd82b19e07835a449c57bf.jpg
+90      https://s.yimg.com/lo/mysterio/api/4f8ed9cb2d073b11172de35ad9c98e59dcae5e36cae3f90cd1c354953cd350ba/lightyear_networkapi/resizefill_w1024_h576%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fborussia_dortmund_articles_399%2F36b4b6f23a3f01f9a915da4c13352795.jpg
+91                    https://s.yimg.com/lo/mysterio/api/94df7f6f689018c84a6e62e0a018cbbca497302de5d85e36383953e0838d4214/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fbulinews_articles_290%2F3dfb619aef8a21eff5761416dfb4a89c.jpg
+92    https://s.yimg.com/lo/mysterio/api/4917ea5798b72a5cbe934f724613e4bfaf01abfff99ac0d11f00146b718eefa9/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fget_german_football_news_articles_128%2F4a277840f741dd0840e2d83b731f9338.jpg
+93      https://s.yimg.com/lo/mysterio/api/d05ee4c6d5447f019b6ca88fb5976e53a9ce9c0cd9e1170c54a6dac4e826b769/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fjuventus_football_club_articles_524%2F8b1b36c822f65cdb5b5a26226b5c198c.jpg
+94                    https://s.yimg.com/lo/mysterio/api/3b5eefb5e11148d2354daabe1679bf67beb4cee29a4803499db4bad9d1e26fd5/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fdpa_international_526%2F9c35a330341f5e4d95b54a4a118d2f81.jpg
+95                                                                                                                                            https://cdn.punchng.com/wp-content/uploads/2026/09/16200255/AFP__20260916__C8HY4T3__v1__MidRes__FilesFblBelAxelWitsel_1789585375-1200x630.webp
+96                https://s.yimg.com/lo/mysterio/api/e7e9f685d7e0de0d16ab4e41b28a032e6baed5eeee0c29605dd39d61b6b832f0/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fleeds_united_articles_969%2Fdf43b8809f4fb0c6a963ecd6ffa9c9c7.jpg
+97             https://s.yimg.com/lo/mysterio/api/d4521ac3a14382426fa05072dbc69bdbf985ac848a994effbd66adf056a53654/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fget_french_football_news_702%2F16c05b17215cc15d6ebaa0c616109508.jpg
+98                    https://s.yimg.com/lo/mysterio/api/8f09be7690911266dbbd2b0a3d3d0fc533c226e66513bd1a39d303d31b27fbd6/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fdpa_international_526%2F7110db36959b32129ebef6861012273e.jpg
+99                                                                                                                                                                                                                                                                                      &lt;NA&gt;
+100                   https://s.yimg.com/lo/mysterio/api/fa69b3c9067108b2f9a81fd80c74c43be1dc1f1ff37076c0948c35f1d0b60fd7/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fbulinews_articles_290%2Fa1de1309310a926c5760da97aca44b9b.jpg
+             publishedAt
+1   2026-09-18T13:36:58Z
+2   2026-09-18T20:35:52Z
+3   2026-09-16T09:00:38Z
+4   2026-09-16T13:49:17Z
+5   2026-09-14T10:50:00Z
+6   2026-09-19T15:26:00Z
+7   2026-09-18T17:50:35Z
+8   2026-09-14T12:12:00Z
+9   2026-09-14T18:51:46Z
+10  2026-09-16T20:10:23Z
+11  2026-09-14T07:00:00Z
+12  2026-09-14T07:40:00Z
+13  2026-09-19T15:36:00Z
+14  2026-09-18T15:23:00Z
+15  2026-09-17T13:33:33Z
+16  2026-09-19T05:00:00Z
+17  2026-09-19T14:21:00Z
+18  2026-09-17T16:45:00Z
+19  2026-09-19T06:20:17Z
+20  2026-09-16T13:18:30Z
+21  2026-09-16T12:50:24Z
+22  2026-09-14T10:10:00Z
+23  2026-09-17T14:20:00Z
+24  2026-09-18T11:44:00Z
+25  2026-09-19T07:00:00Z
+26  2026-09-18T16:11:00Z
+27  2026-09-18T17:36:00Z
+28  2026-09-18T06:40:00Z
+29  2026-09-19T05:00:00Z
+30  2026-09-15T09:34:00Z
+31  2026-09-17T11:45:00Z
+32  2026-09-14T09:32:00Z
+33  2026-09-15T14:35:00Z
+34  2026-09-14T11:50:00Z
+35  2026-09-18T16:37:00Z
+36  2026-09-17T13:54:00Z
+37  2026-09-17T16:05:00Z
+38  2026-09-18T08:40:00Z
+39  2026-09-18T08:15:00Z
+40  2026-09-17T07:40:00Z
+41  2026-09-17T12:30:00Z
+42  2026-09-18T16:12:00Z
+43  2026-09-17T08:48:43Z
+44  2026-09-17T10:30:00Z
+45  2026-09-17T08:50:00Z
+46  2026-09-17T08:55:26Z
+47  2026-09-18T09:41:00Z
+48  2026-09-19T11:08:00Z
+49  2026-09-14T10:35:00Z
+50  2026-09-17T09:36:00Z
+51  2026-09-16T20:15:00Z
+52  2026-09-16T06:34:00Z
+53  2026-09-18T12:05:00Z
+54  2026-09-18T17:35:00Z
+55  2026-09-18T11:37:51Z
+56  2026-09-15T09:18:35Z
+57  2026-09-18T20:33:35Z
+58  2026-09-15T04:00:00Z
+59  2026-09-17T09:45:00Z
+60  2026-09-17T08:45:18Z
+61  2026-09-17T15:08:23Z
+62  2026-09-17T11:22:12Z
+63  2026-09-19T10:37:00Z
+64  2026-09-15T14:40:00Z
+65  2026-09-18T18:06:03Z
+66  2026-09-18T20:20:00Z
+67  2026-09-18T12:34:26Z
+68  2026-09-18T18:44:01Z
+69  2026-09-16T19:07:15Z
+70  2026-09-18T12:19:31Z
+71  2026-09-18T16:14:48Z
+72  2026-09-16T06:15:00Z
+73  2026-09-16T17:53:35Z
+74  2026-09-14T14:05:00Z
+75  2026-09-14T07:20:00Z
+76  2026-09-17T09:50:00Z
+77  2026-09-18T07:00:00Z
+78  2026-09-17T22:27:00Z
+79  2026-09-18T20:23:00Z
+80  2026-09-19T07:30:00Z
+81  2026-09-15T07:40:00Z
+82  2026-09-15T18:15:00Z
+83  2026-09-15T22:30:00Z
+84  2026-09-17T17:20:00Z
+85  2026-09-16T18:21:18Z
+86  2026-09-17T01:47:11Z
+87  2026-09-17T08:10:00Z
+88  2026-09-15T11:47:00Z
+89  2026-09-14T05:05:00Z
+90  2026-09-15T22:30:00Z
+91  2026-09-15T13:51:00Z
+92  2026-09-14T18:10:00Z
+93  2026-09-18T08:00:00Z
+94  2026-09-17T09:33:37Z
+95  2026-09-16T19:06:49Z
+96  2026-09-16T11:27:00Z
+97  2026-09-16T13:40:00Z
+98  2026-09-17T08:18:37Z
+99  2026-09-17T16:07:48Z
+100 2026-09-18T17:50:00Z
+                                                                                                                                                                                                                       content
+1     Cristiano Ronaldo has been included in new Portugal manager Jorge Jesuss first 25-man squad for the defending champions upcoming four Nations League matches.\r\nIn August, Ronaldo fuelled speculation a… [+2457 chars]
+2     Netherlands midfielder Kees Smit is watched by Liverpool, Tottenham lead the race for Brazil defender Arthur Dias and Monaco's Folarin Balogun is expected to leave in January.\r\nLiverpool watched £51.… [+2129 chars]
+3       Following the success of the first three editions, Slanted Experimental Type 4.0 continues the series exploration of innovative approaches in typography and graphic design. The new edition was create… [+1047 chars]
+4     Gabriel is not the first young player to find himself at odds with his club over their future direction.\r\nJadon Sancho was 17 when he stopped training at City to force through a £10m move to Borussia… [+2997 chars]
+5       Jadon Sancho's future has taken another significant turn, with Borussia Dortmund making clear that a third spell at the Bundesliga club is not on the agenda. According to Mirror, Dortmund have now mo… [+4679 chars]
+6        Stuttgart entertain Borussia Dortmund in the biggest match of the Bundesliga weekend before the international break. The Swabians have a perfect home record with comfortable wins over 1. Köln and Vik… [+721 chars]
+7       Borussia Dortmund are 5-for-5 across the opening stage of the season (here on Fear the Wall, we don't count the Super Cup unless we win it!) and the team's momentum is swelling after navigating an in… [+2698 chars]
+8     Borussia Dortmund are reportedly keeping a close eye on highly-rated Leicester City midfielder Louis Page.\r\nAccording to TEAMtalk, Dortmund sent scouts to watch the 18-year-old during Leicester's 4-3… [+1448 chars]
+9     Longtime Puma executive Matthias Baeumer is stepping down from his role as chief commercial officer at the end of the month.\r\nIn a statement issued on Friday, Puma noted that Baeumer is leaving for "… [+2114 chars]
+10      Christian Pulisics European journey has reached another remarkable chapter, and the Milan star has now joined Zlatan Ibrahimovic and Robert Lewandowski in a rare piece of elite European Cup history. … [+5610 chars]
+11      Jadon Sancho's future remains uncertain, but a return to Borussia Dortmund continues to feel like one of the more intriguing possibilities for the English winger. Sancho became a star during his firs… [+2377 chars]
+12     VfB Stuttgart sporting director Fabian Wohlgemuth has revealed that the club previously considered a move for Borussia Dortmund forward Fabio Silva.\r\nThe 24-year-old was handed his first league start… [+745 chars]
+13     Sebastian Hoeneß and Niko Kova, the two active coaches with the most matches in the Bundesliga, face off today in a huge showdown.\r\nAgainst a Stuttgart side in need after picking up only three points… [+555 chars]
+14     Nico Schlotterbeck has singled out Borussia Dortmund's summer signing Joane Gadou for praise after a strong start to life at the club.\r\nIn an interview with the Westphalian outfit's media, the German… [+816 chars]
+15    Konstantinos Karetsas has overcome circulatory problems and is available for Borussia Dortmund for Saturday's Bundesliga match at VfB Stuttgart, coach Niko Kova has said.\r\nKaretsas was carried off th… [+1066 chars]
+16      Borussia Dortmund will play their final league match before the international break kicks off, and they will be looking to take another three points against VFB Stuttgart on Saturday to keep their 10… [+3222 chars]
+17      Joey Veerman explains his reasons for choosing Borussia Dortmund after five seasons with PSV. The Dutch midfielder also shared his first impression of the Bundesliga in his exclusive interview with t… [+1837 chars]
+18    Stuttgart and Borussia Dortmund go head-to-head at MHPArena this Saturday in the 1. Bundesliga.\r\nStuttgart have 3 points to their name this season and occupy 14th position in the table. In their last… [+3215 chars]
+19    Johan Derksen has admitted he is surprised by Joey Veerman's strong start at Borussia Dortmund, despite having repeatedly criticised the former PSV midfielder during his time in Eindhoven.\r\nVeerman c… [+3607 chars]
+20     Konstantinos Karetsas has returned to Borussia Dortmund team training from circulatory issues, the Bundesliga club said on Wednesday.\r\nSummer signing Karetsas was taken off on a stretcher during last… [+480 chars]
+21      DORTMUND, Germany (AP) Borussia Dortmund says 18-year-old midfielder Konstantinos Karetsas is back in training just over a week after he slumped to the ground in an alarming medical incident on his C… [+1714 chars]
+22       VfB Stuttgart sporting director Fabian Wohlgemuth has revealed that the Swabians wanted to sign Portuguese forward Fabio Silva before his move to Borussia Dortmund. "We looked into him a year ago," h… [+915 chars]
+23      Serhou Guirassy believes Borussia Dortmund will benefit from healthy competition for places. The Guinean striker has formed a strong bond with Fábio Silva in recent games as their partnership helped … [+1201 chars]
+24    Three Bundesliga outings have brought three very different results for VfB Stuttgart in the early days of the season.\r\nSebastian Hoeneß's side suffered a chastening 5-1 defeat against Bayern Munich o… [+2858 chars]
+25      Four years after joining Borussia Dortmund from Icelandic side Breiðablik, Cole Campbell decided it was time to move on this summer, joining newly-promoted Bundesliga side SV Elversberg, who paid a c… [+5174 chars]
+26      01 | BVB are hard to break downPerhaps the biggest difference between the two teams so far this still-young season has been their work off the ball. While Borussia Dortmund have conceded only two goa… [+3751 chars]
+27      Mohamed Ali Zoma is included in Italy's squad for the upcoming UEFA Nations League games. The Nürnberg attacker was heavily linked with a move to relegated West Ham United this summer after making hi… [+1060 chars]
+28    Karim Adeyemi was supposed to give Barcelona another option in attack. Instead, seven games into his career at the club, he is starting to look like a player Hansi Flick cannot afford to overlook.\r\nT… [+1945 chars]
+29      Borussia Dortmund are set to face VfB Stuttgart in their last Bundesliga fixture before the season pauses for international duty. The visitors will be aiming to secure another victory on Saturday and… [+2137 chars]
+30       Spanish outlet AS recently suggested that Real Madrid could make an offer for Gregor Kobel if they are unable to extend the contract of their current No. 1, Thibaut Courtois, beyond the end of the se… [+534 chars]
+31      Jürgen Klopp is taking a slightly different approach with three of Germany's players during the upcoming international break, and Bayern Munich supporters will be paying particularly close attention … [+1876 chars]
+32     Along with all of the results from UEFA's 'Top 5' leagues, Playmaker is here to provide you with a rundown of the top performers.\r\nFrom the slickest passers enroute to the most tenacious tacklers via… [+953 chars]
+33    FC Barcelona moved swiftly to close the signing of Karim Adeyemi from Borussia Dortmund in the summer, bringing him in for a fee of only 22 million plus add-ons.\r\nThe German forward is a player that … [+1883 chars]
+34      Manchester United have company, and serious company at that, in the chase for Leicester City youngster Louis Page. According to TEAMtalk, Borussia Dortmund sent scouts to watch the teenager at the we… [+5564 chars]
+35      Nico Schlotterbeck is back at Borussia Dortmund. After his long injury layoff, the 26-year-old wants to quickly regain the status as a key player that he had before. In an interview, Schlotterbeck sa… [+4083 chars]
+36    After three matchdays, Borussia Dortmund have a slender lead over FC Bayern in the Bundesliga standings. For Serhou Guirassy, it's now up to them to keep that distance at the end of the season.\r\n"Of … [+1050 chars]
+37     On Wednesday, November 4, 2026, Borussia Dortmund will host top Spanish club Real Betis for a home game in the UEFA Champions League. Kickoff is at 9 p.m.\r\nBVB members have a decisive advantage: Memb… [+544 chars]
+38      The Bundesliga record between BVB and VfB Stuttgart is almost perfectly balanced: in 112 meetings, VfB Stuttgart have won 44 times, Borussia Dortmund 42 times, and 26 matches ended in draws. In terms… [+3582 chars]
+39      The Bundesliga head-to-head record between BVB and VfB Stuttgart is nearly even: In 112 matches, VfB Stuttgart has won 44 times, Borussia Dortmund 42 times, and 26 games ended in a draw. In terms of … [+3344 chars]
+40     On Wednesday, 4 November 2026, Borussia Dortmund will host Spanish top club Real Betis at home in the UEFA Champions League. Kick-off is at 9 pm.\r\nBVB members have the decisive advantage: Member pres… [+614 chars]
+41    Karim Adeyemi arrived at Barcelona with a fairly clear place in the hierarchy.\r\nAnthony Gordon was expected to command serious minutes on the left, while the former Borussia Dortmund forward offered … [+2372 chars]
+42      Nico Schlotterbeck is back at Borussia Dortmund. After his long injury layoff, the 26-year-old wants to quickly become the leader he was before. In the interview, Schlotterbeck says about his return … [+3994 chars]
+43    Germany coach Jürgen Klopp has announced two squads for his first four matches in charge in the Nations League.\r\nSquad one for the games in the Netherlands on September 24 and against Greece on Septe… [+1517 chars]
+44    Jürgen Klopp has officially named his first Germany squad, selecting an extraordinary 44 players for the upcoming UEFA Nations League fixtures against the Netherlands, Greece and Serbia.\r\nThe new Bun… [+2269 chars]
+45    Jürgen Klopp's Germany era has begun as the new head coach announced his first squad on Thursday.\r\nTo manage the newly organized international break that sees the September and October pauses&nbsp;merged … [+5478 chars]
+46      Germany’s newly appointed national football team head coach Jurgen Klopp gestures as he addresses a press conference at the headquarters of the German Football Federation (DFB) in Frankfurt am Main, … [+4082 chars]
+47       German Football Association vice-president Hans-Joachim Watzke has revealed that he would have liked to replace Hansi Flick with current England boss Thomas Tuchel as Germany coach following the disa… [+869 chars]
+48      Union Berlin's rough start to the campaign continued with a 7-0 defeat in Bayern on Friday evening. The defeat leaves the capital city club with only a single point after the first four league games … [+1245 chars]
+49    1\r\nFormer Manchester United forward Jadon Sancho is yet to decide his next destination after leaving Old Trafford this summer. The English forward spent last season on loan at Aston Villa, and won th… [+2365 chars]
+50    Leeds United midfielder Anton Stach has been named in Jürgen Klopp's first Germany squad since the former Liverpool boss took charge of the national team.\r\nKlopp announced his first selection as Germ… [+2300 chars]
+51     Cole Campbell's first weeks as a Bundesliga starter have offered an appropriate snapshot of the wider SV Elversberg story. Three matches into the newly-promoted club's maiden German top-flight campai… [+10807 chars]
+52      &lt;ul&gt;&lt;li&gt;Ongoing expansion across Europe with a diverse product portfolio: the brand announces at InterTabac 2026.&lt;/li&gt;&lt;li&gt;Puff-twice technology extends the lifecycle of heating sticks to reuse.&lt;/li&gt;&lt;… [+3181 chars]
+53    Following last summer's shake-up, Juventus intend to sign more Italian players, something that Inter have been doing for years. The two rivals are set to compete for several talents.\r\nAccording to Tu… [+1350 chars]
+54    SC Paderborn 07 and TSG Hoffenheim face off this Sunday at the Home Deluxe Arena in 1. Bundesliga.\r\nSC Paderborn 07 have 1 point to their name this season and occupy 15th position in the table. In th… [+1765 chars]
+55      Sept 18 : Netherlands' record scorer Memphis Depay was left out, but captain Virgil van Dijk continues his international career as new coach Xavi Hernandez named his first squad on Friday for the upc… [+1948 chars]
+56    Jürgen Klopp will give a first indication of how he wants to rebuild the German national team after another poor World Cup showing when the new selects his first squad on Thursday.\r\nHopes in former B… [+4319 chars]
+57      Bayern Munich's Harry Kane scored his 100th and 101st Bundesliga goals in record time during a 7-0 home thrashing of Union Berlin on Friday, as Michael Olise netted a hat-trick and Jamal Musiala put … [+2022 chars]
+58  This would be a wild turn of events, eh?\r\nPer this report, Bayern Munich is jousting for position with Real Madrid and Liverpool for PSV Eindhoven's Paul Wanner:\r\nLiverpool are one of a few clubs rep… [+3367 chars]
+59      Jürgen Klopp announced his first squad in charge of the Germany national team, unveiling two separate lists for the four Nations League fixtures against the Netherlands, Greece, Serbia and Greece aga… [+2844 chars]
+60    Germany coach Jurgen Klopp handed 16 players their first call-ups on Thursday as he unveiled a 44-man squad for his first camp since taking over as coach in the summer.\r\nTeams are restricted to namin… [+3414 chars]
+61      The U.S. men's national team will usher in a batch of fresh faces for their first post-World Cup friendlies this fall, head coach Mauricio Pochettino introducing 13 uncapped players to the fold for a… [+2975 chars]
+62     Below is the German national team roster. The list format contains each player broken down by position and with their respective club teams detailed as well.&lt;li&gt;Karim Adeyemi, FC Barcelona\r\n&lt;/li&gt;&lt;li&gt;… [+700 chars]
+63     Bayern hosted Union Berlin in Munich and handed them a resounding 7-0 thrashing, featuring a hat-trick from Olise and two goals from Kane, with Musiala and Saibari rounding out the scoreline.\r\nAfter … [+712 chars]
+64    Real Madrid spent the majority of the summer trying to reinforce their defensive unit, with purchases such as Marc Cucurella, Ibrahima Konate, Denzel Dumfries.\r\nHowever, the club's early performances… [+1891 chars]
+65    Italy coach Roberto Mancini on Friday called up 34 players, nine for the first time, for the opening four games of his second stint in charge of the Azzurri.\r\nMancini succeeded Gennaro Gattuso, who r… [+2285 chars]
+66      Newcastle United have joined the competition for Leicester City's 18-year-old midfielder Louis Page, according to TEAMtalk's Graeme Bailey. The English youth international attracted serious attention… [+2774 chars]
+67    Sept 18 : Cristiano Ronaldo has been included in new Portugal manager Jorge Jesus' first 25-man squad for the defending champions' upcoming four Nations League matches.\r\nIn August, Ronaldo fuelled sp… [+2366 chars]
+68      Sept 18 : Roberto Mancini has launched his second tenure as Italy head coach with a sweeping rebuild, naming an expanded 34-man roster on Friday for their Nations League games as the team try to rebo… [+2257 chars]
+69      (FILES) Belgium’s midfielder #06 Axel Witsel applauds the fans after the Qatar 2022 World Cup Group F football match between Belgium and Morocco at the Al-Thumama Stadium in Doha on November 27, 2022… [+1282 chars]
+70    Cristiano Ronaldo was called up for the start of Portugal’s Nations League campaign on Friday as Jorge Jesus named his first squad since taking over as coach.\r\nThe 41-year-old Ronaldo said last month… [+1310 chars]
+71    Coach Silvio Baldini called 25 Italy players for the final Under-21 European Championship qualifiers against Armenia and Poland, including Mattia Liberali, Luca Reggiani and Emanuele Lulli.\r\nThe Azzu… [+2875 chars]
+72      L'Équipe reports Paris Brunner could make Jürgen Klopp's Germany squad on Thursday. The new coach of Germany national team is expected to list a 40-man squad as there will be four UEFA Nations League… [+1116 chars]
+73       Former Liverpool, Borussia Dortmund, and Mainz 05 head coach Jürgen Klopp is wasting little time putting his own stamp on the German national team and Galatasaray's Leroy Sané appears to be one of th… [+998 chars]
+74       While the transfer window may be shut, Ajax are not quite done yet in reinforcing the squad. According to De Telegraaf, Ajax are just one of a number of sides keen on signing now former Tottenham mid… [+818 chars]
+75     Christophe Galtier gave us the WTF image of the weekend this Sunday.\r\nAs his Neom side claimed a 4-2 win over Al Fateh, the former PSG coach was sent off after giving the opposing bench the finger...… [+899 chars]
+76      Axel Witsel has officially retired from international football at the age of 37. The midfielder, who currently plays for Nice in Ligue 1, ends his career with the Belgian Red Devils having amassed 14… [+1052 chars]
+77      The Men's First Team beat NEC Nijmegen 5-0 to begin their UEFA Europa League campaign.Let's reflect on the standout stats from the game.&lt;li&gt;Juventus have won their opening match of a major European c… [+1007 chars]
+78    Leeds United defender Nico Elvedi has been named in the Switzerland squad for their upcoming UEFA Nations League fixtures.\r\nThe 29-year-old centre-back has 73 international caps and was a key member … [+1360 chars]
+79  Olise and Kane put on a show!\r\nOn Friday night, Bayern Munich treated themselves to a real festival away at Union Berlin (0-7) on Matchday 4 of the Bundesliga.\r\nThe match got underway with a superb g… [+1082 chars]
+80    As the media feud between Kylian Mbappé and Ousmane Dembélé over the Ballon d'Or rages on, Zinédine Zidane was asked to share his thoughts on the matter when announcing his squad.\r\nThe big surprise i… [+1352 chars]
+81      Paris Brunner (20) has begun the season in excellent form for AS Monaco. The German has benefited from the absences of Folarin Balogun and Matthis Abline up front to assert himself as the first-choic… [+1124 chars]
+82    A member of the summer recruitment drive at La Liga giants Barcelona is set to be imminently rewarded for his exploits since joining the club.\r\nThis comes amid the understanding that Karim Adeyemi is… [+1065 chars]
+83     In recent days, we have received a large number of ticket inquiries. We would therefore like to begin by thanking everyone for the great interest in attending our away match in Norway.\r\nFor this away… [+970 chars]
+84       Barcelona star Karim Adeyemi has this week been rewarded for his impressive efforts since taking his talents to Catalunya's capital. This comes courtesy of a return to the German national team setup.… [+901 chars]
+85     Veteran midfielder Axel Witsel announced his retirement from international football on Wednesday, bringing an end to a Belgium career which saw him become their second-most capped player.\r\nThe 37-yea… [+855 chars]
+86       Borussia Dortmund fans can breathe a sigh of relief. After a very concerning incident in last week's Champions League match against Villarreal, in which Konstantinos Karetsas was stretchered off the … [+791 chars]
+87       Paris Brunner looks set to be called up to Germany's U21 squad for the first time, as per a report from Florian Plettenberg. It comes amid a strong start to the season for the former Borussia Dortmun… [+748 chars]
+88      Having snapped a two-game Bundesliga losing streak with a 2-1 win over VfB Stuttgart at the weekend, TSG Hoffenheim begin their European campaign on Thursday with an away trip to Crete to face Greek … [+1321 chars]
+89  1\r\nManchester United completed their midfield revamp over the course of the summer, but it seems INEOS are not too happy with their current contingent.\r\nCarlos Baleba remains injured, while Andrey Sa… [+2755 chars]
+90      With a win in the rescheduled match, BVB could move even closer to the top of the table. With four wins and three draws so far, BVB sit in fourth place, ready to pounce. This is due not only to the r… [+3001 chars]
+91    The son of an American-born Icelandic mother and an American father, SV Elversberg forward Cole Campbell is eligible to represent both countries at international level.\r\nCampbell initially played for… [+2496 chars]
+92      Bundesliga Matchday 3 produced emphatic victories, individual brilliance and several performances that could prove significant as the season develops. RB Leipzig and Freiburg both scored five, Boruss… [+3665 chars]
+93      Some stats from the match between Juventus and NEC on Matchday 1 of the UEFA Europa League league phase&lt;li&gt;Juventus have won their opening match of a major European competition by a margin of at leas… [+2908 chars]
+94      Jürgen Klopp has nominated 44 players in two squads for his first four matches as German national team coach where established players and newcomers are to "have fun under pressure" in his rebuilding… [+3394 chars]
+95     Veteran midfielder Axel Witsel announced his retirement from international football on Wednesday, bringing an end to a Belgium career which saw him become their second-most capped player.\r\nThe 37-yea… [+849 chars]
+96    Leeds United defender Gabriel Gudmundsson has been named in Graham Potter's Sweden squad for the upcoming September/October international break.\r\nThe 27-year-old, who was born in Malmö, has won 28 ca… [+1567 chars]
+97    Filipe Luís has admitted that Paris Brunner's throat-slice celebration in front of the RC Strasbourg Alsace fans last week has been a "topic" at the club this week.\r\nThe celebration came after he lev… [+1580 chars]
+98    Jürgen Klopp has nominated 44 players and split them into two squads for his first four matches as German national team coach.\r\nLed by captain Joshua Kimmich, who returns into midfield from the right… [+1360 chars]
+99    Bundesliga president Hans-Joachim Watzke has joined German Football Federation (DFB) chief Bernd Neuendorf in calling for FIFA boss Gianni Infantino to leave.\r\n"He should go. No ifs, no buts," Watzke… [+1507 chars]
+100   Matthias Ginter has opened up about his conversation with new Germany head coach Jürgen Klopp after missing out on the squad for the upcoming Nations League matches.\r\nThe 32-year-old SC Freiburg defe… [+1742 chars]</code></pre>
+</div>
+</div>
+</section>
+<section id="now-write-a-quick-function-that-allows-the-user-to-easily-query-this-api.-the-inputs-to-the-function-should-be-the-titlesubject-to-search-for-string-a-time-period-to-search-from-string---youll-search-from-that-time-until-the-present-and-an-api-key." class="level4">
+<h4 class="anchored" data-anchor-id="now-write-a-quick-function-that-allows-the-user-to-easily-query-this-api.-the-inputs-to-the-function-should-be-the-titlesubject-to-search-for-string-a-time-period-to-search-from-string---youll-search-from-that-time-until-the-present-and-an-api-key.">3) Now write a quick function that allows the user to easily query this API. The inputs to the function should be the title/subject to search for (string), a time period to search from (string - you’ll search from that time until the present), and an API key.</h4>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a> get_news <span class="ot">&lt;-</span> <span class="cf">function</span>(subject, date, api_key) {</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>   url <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"https://newsapi.org/v2/everything?q="</span>, subject,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"&amp;from="</span>, date,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"&amp;language=en"</span>,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"&amp;apiKey="</span>, api_key)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>   result <span class="ot">&lt;-</span> <span class="fu">GET</span>(url)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>   parsed <span class="ot">&lt;-</span> <span class="fu">content</span>(result, <span class="at">as =</span> <span class="st">"text"</span>, <span class="at">encoding =</span> <span class="st">"UTF-8"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>     <span class="fu">fromJSON</span>()</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>   <span class="fu">return</span>(parsed<span class="sc">$</span>articles)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a> }</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="co">#Articles about Bundesliga:</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>bundesliga_news <span class="ot">&lt;-</span> <span class="fu">get_news</span>(<span class="st">"Bundesliga"</span>, <span class="st">"2026-09-14"</span>, news_api_key)</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="co">#Articles about Fifa:</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>NFL_news <span class="ot">&lt;-</span> <span class="fu">get_news</span>(<span class="st">"NFL"</span>, <span class="st">"2026-09-14"</span>, news_api_key)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+</section>
+<section id="task-2---summarizing-roller-coaster-data" class="level3">
+<h3 class="anchored" data-anchor-id="task-2---summarizing-roller-coaster-data">Task 2 - Summarizing Roller Coaster Data</h3>
+<section id="reading-in-this-dataset-and-converting-to-factors-as-needed" class="level4">
+<h4 class="anchored" data-anchor-id="reading-in-this-dataset-and-converting-to-factors-as-needed">Reading in this dataset and converting to factors as needed</h4>
+</section>
+<section id="look-at-how-the-data-is-stored-and-see-if-everything-makes-sense." class="level4">
+<h4 class="anchored" data-anchor-id="look-at-how-the-data-is-stored-and-see-if-everything-makes-sense.">4) Look at how the data is stored and see if everything makes sense.</h4>
+</section>
+<section id="document-any-missing-values-in-the-data" class="level4">
+<h4 class="anchored" data-anchor-id="document-any-missing-values-in-the-data">5) Document any missing values in the data</h4>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#read in roller coaster data</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>rc_data <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">"https://www4.stat.ncsu.edu/online/datasets/635USrollercoasters.csv"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>Boundary, Latitude, Longitude) <span class="sc">|&gt;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.character) <span class="sc">&amp;</span> <span class="sc">!</span>Coaster, factor)) <span class="sc">|&gt;</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">rename</span>(<span class="st">'Inversions'</span> <span class="ot">=</span> <span class="st">'Inversions?'</span>, <span class="st">'num_inversions'</span> <span class="ot">=</span> <span class="st">'# of Inversions'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 635 Columns: 21
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (12): Coaster, Park, City, State, Census Region, AgeGroup, Scale, Type, ...
+dbl  (9): Year Opened, TopSpeed, MaxHeight, Drop, Length, Duration, # of Inv...
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#check structure of roller coaster data</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(rc_data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>tibble [635 × 20] (S3: tbl_df/tbl/data.frame)
+ $ Coaster       : chr [1:635] "Adrenaline Peak" "Adventure Express" "Afterburn" "Aftershock" ...
+ $ Park          : Factor w/ 197 levels "Adventure City",..: 130 100 26 155 20 21 75 161 166 99 ...
+ $ City          : Factor w/ 171 levels "Aberdeen","Abilene",..: 118 92 30 12 151 166 122 65 51 44 ...
+ $ State         : Factor w/ 40 levels "Alabama","Arizona",..: 30 28 27 9 7 37 26 10 21 37 ...
+ $ Census Region : Factor w/ 4 levels "Midwest","Northeast",..: 4 1 3 4 3 3 2 1 1 3 ...
+ $ Year Opened   : num [1:635] 2018 1991 1999 2008 2010 ...
+ $ AgeGroup      : Factor w/ 3 levels "1:Older","2:Recent",..: 3 2 2 3 3 2 2 2 3 2 ...
+ $ TopSpeed      : num [1:635] 45 35 62 65.6 22 67 35 66 48 50 ...
+ $ MaxHeight     : num [1:635] 72 63 113 192 25 ...
+ $ Scale         : Factor w/ 4 levels "Extreme","Family",..: 1 4 1 1 2 1 4 1 4 1 ...
+ $ Type          : Factor w/ 2 levels "Steel","Wood": 1 1 1 1 1 1 1 2 2 1 ...
+ $ Design        : Factor w/ 7 levels "Bobsled","Flying",..: 4 4 3 3 4 3 1 4 4 4 ...
+ $ Drop          : num [1:635] 70 47 110 177 22.5 170 20 147 80 144 ...
+ $ Length        : num [1:635] 1050 2963 2956 1204 628 ...
+ $ Duration      : num [1:635] 66 140 167 92 47 190 100 143 110 110 ...
+ $ Inversions    : Factor w/ 2 levels "No","Yes": 2 1 2 2 1 2 1 1 1 2 ...
+ $ num_inversions: num [1:635] 3 0 6 3 0 6 0 0 0 4 ...
+ $ Make          : Factor w/ 53 levels "Allan Herschell Company",..: 15 2 5 48 53 5 21 21 18 2 ...
+ $ Latitude      : num [1:635] 45.5 39.4 35.3 47.9 28 ...
+ $ Longitude     : num [1:635] -122.7 -84.3 -80.8 -116.7 -82.6 ...</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#document any missing values in the data (from notes)</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>sum_na <span class="ot">&lt;-</span> <span class="cf">function</span>(column){</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>(<span class="fu">is.na</span>(column))</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>na_counts <span class="ot">&lt;-</span> rc_data <span class="sc">|&gt;</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), sum_na))<span class="sc">|&gt;</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a> dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="fu">where</span>(<span class="sc">~</span> .x <span class="sc">&gt;</span> <span class="dv">0</span>))</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>na_counts</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 6
+  TopSpeed MaxHeight  Drop Length Duration  Make
+     &lt;int&gt;     &lt;int&gt; &lt;int&gt;  &lt;int&gt;    &lt;int&gt; &lt;int&gt;
+1       74         8   128     33       66    36</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(na_counts)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 345</code></pre>
+</div>
+</div>
+</section>
+<section id="create-a-one-way-contingency-table-a-two-way-contingency-table-and-a-three-way-contingency-table-for-some-of-the-factor-variables-you-created-previously.-use-table-to-accomplish-this." class="level4">
+<h4 class="anchored" data-anchor-id="create-a-one-way-contingency-table-a-two-way-contingency-table-and-a-three-way-contingency-table-for-some-of-the-factor-variables-you-created-previously.-use-table-to-accomplish-this.">6) Create a one-way contingency table, a two-way contingency table, and a three-way contingency table for some of the factor variables you created previously. Use table() to accomplish this.</h4>
+<section id="interpret-a-number-from-each-resulting-table-that-is-pick-out-a-value-produced-and-explain-whatthat-value-means." class="level5">
+<h5 class="anchored" data-anchor-id="interpret-a-number-from-each-resulting-table-that-is-pick-out-a-value-produced-and-explain-whatthat-value-means.">Interpret a number from each resulting table (that is, pick out a value produced and explain whatthat value means.)</h5>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(rc_data <span class="sc">|&gt;</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>        dplyr<span class="sc">::</span><span class="fu">select</span>(num_inversions))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>num_inversions
+  0   1   2   3   4   5   6   7   8 
+465  26  30  40  24  30   8  11   1 </code></pre>
+</div>
+</div>
+<p>We can see above the number of roller coasters with certain numbers of inversions, with 0 being the most common and 1-5 being the next most common number of inversions. There are 456 coasters with 0 inversions.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(rc_data <span class="sc">|&gt;</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>        dplyr<span class="sc">::</span><span class="fu">select</span>(Type, Design))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       Design
+Type    Bobsled Flying Inverted Sit Down Stand Up Suspended Wing
+  Steel       3      9       42      456        4         7    9
+  Wood        1      0        0      104        0         0    0</code></pre>
+</div>
+</div>
+<p>We can see above the design of roller coasters by each type, either steel or wood. Steel coasters are the most common by quite a lot, with the vast majority of those steel coasters being either Inverted or Sit Down coasters. There are no Inverted wood coasters however, with the vast majority being Sit Down coasters and one being a bobsled coaster. There are 456 Sit Down steel coasters.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(rc_data <span class="sc">|&gt;</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>        dplyr<span class="sc">::</span><span class="fu">select</span>(Type, Design, Scale))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>, , Scale = Extreme
+
+       Design
+Type    Bobsled Flying Inverted Sit Down Stand Up Suspended Wing
+  Steel       0      9       36      158        4         0    9
+  Wood        0      0        0       53        0         0    0
+
+, , Scale = Family
+
+       Design
+Type    Bobsled Flying Inverted Sit Down Stand Up Suspended Wing
+  Steel       0      0        6      153        0         4    0
+  Wood        0      0        0       15        0         0    0
+
+, , Scale = Kiddie
+
+       Design
+Type    Bobsled Flying Inverted Sit Down Stand Up Suspended Wing
+  Steel       0      0        0       27        0         0    0
+  Wood        0      0        0        1        0         0    0
+
+, , Scale = Thrill
+
+       Design
+Type    Bobsled Flying Inverted Sit Down Stand Up Suspended Wing
+  Steel       3      0        0      118        0         3    0
+  Wood        1      0        0       35        0         0    0</code></pre>
+</div>
+</div>
+<p>Now we have extended the Type by Design table to incorporate the Scale. The most common type of coaster Scale is extreme, with Family and Thrill close behind, and very few kiddie. There are 158 Extreme, Steel, Sit Down coasters in our data.</p>
+</section>
+</section>
+<section id="create-a-conditional-two-way-table-using-table.-that-is-condition-on-one-variables-setting-andcreate-a-two-way-table.-do-this-using-two-different-methods" class="level4">
+<h4 class="anchored" data-anchor-id="create-a-conditional-two-way-table-using-table.-that-is-condition-on-one-variables-setting-andcreate-a-two-way-table.-do-this-using-two-different-methods">7) Create a conditional two-way table using table(). That is, condition on one variable’s setting andcreate a two-way table. Do this using two different methods:</h4>
+<section id="once-by-subsetting-the-data-say-with-filter-and-then-creating-the-two-way-table" class="level5">
+<h5 class="anchored" data-anchor-id="once-by-subsetting-the-data-say-with-filter-and-then-creating-the-two-way-table">Once, by subsetting the data (say with filter()) and then creating the two-way table</h5>
+</section>
+<section id="once-by-creating-a-three-way-table-and-subsetting-it" class="level5">
+<h5 class="anchored" data-anchor-id="once-by-creating-a-three-way-table-and-subsetting-it">Once, by creating a three-way table and subsetting it</h5>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co">#subsetting with filter()</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>rc_filt <span class="ot">&lt;-</span> rc_data <span class="sc">|&gt;</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Scale <span class="sc">==</span> <span class="st">"Extreme"</span>)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(rc_filt <span class="sc">|&gt;</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>        dplyr<span class="sc">::</span><span class="fu">select</span>(Type, Design, Scale)) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>, , Scale = Extreme
+
+       Design
+Type    Bobsled Flying Inverted Sit Down Stand Up Suspended Wing
+  Steel       0      9       36      158        4         0    9
+  Wood        0      0        0       53        0         0    0
+
+, , Scale = Family
+
+       Design
+Type    Bobsled Flying Inverted Sit Down Stand Up Suspended Wing
+  Steel       0      0        0        0        0         0    0
+  Wood        0      0        0        0        0         0    0
+
+, , Scale = Kiddie
+
+       Design
+Type    Bobsled Flying Inverted Sit Down Stand Up Suspended Wing
+  Steel       0      0        0        0        0         0    0
+  Wood        0      0        0        0        0         0    0
+
+, , Scale = Thrill
+
+       Design
+Type    Bobsled Flying Inverted Sit Down Stand Up Suspended Wing
+  Steel       0      0        0        0        0         0    0
+  Wood        0      0        0        0        0         0    0</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co">#subsetting with []</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>twt_subset <span class="ot">&lt;-</span> <span class="fu">table</span>(rc_filt <span class="sc">|&gt;</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>        dplyr<span class="sc">::</span><span class="fu">select</span>(Type, Design, Scale)) </span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>twt_subset[,,<span class="dv">1</span>] </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       Design
+Type    Bobsled Flying Inverted Sit Down Stand Up Suspended Wing
+  Steel       0      9       36      158        4         0    9
+  Wood        0      0        0       53        0         0    0</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="create-a-two-way-contingency-table-using-group_by-and-summarize-from-dplyr.-then-use-pivot_wider-to-make-the-result-look-more-like-the-output-from-table." class="level4">
+<h4 class="anchored" data-anchor-id="create-a-two-way-contingency-table-using-group_by-and-summarize-from-dplyr.-then-use-pivot_wider-to-make-the-result-look-more-like-the-output-from-table.">8) Create a two-way contingency table using group_by() and summarize() from dplyr. Then use pivot_wider() to make the result look more like the output from table().</h4>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>rc_data <span class="sc">|&gt;</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(Type, Design) <span class="sc">|&gt;</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">sum =</span> dplyr<span class="sc">::</span><span class="fu">n</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_wider</span>(<span class="at">names_from =</span> Design, <span class="at">values_from =</span> sum)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has regrouped the output.
+ℹ Summaries were computed grouped by Type and Design.
+ℹ Output is grouped by Type.
+ℹ Use `summarise(.groups = "drop_last")` to silence this message.
+ℹ Use `summarise(.by = c(Type, Design))` for per-operation grouping
+  (`?dplyr::dplyr_by`) instead.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 8
+# Groups:   Type [2]
+  Type  Bobsled Flying Inverted `Sit Down` `Stand Up` Suspended  Wing
+  &lt;fct&gt;   &lt;int&gt;  &lt;int&gt;    &lt;int&gt;      &lt;int&gt;      &lt;int&gt;     &lt;int&gt; &lt;int&gt;
+1 Steel       3      9       42        456          4         7     9
+2 Wood        1     NA       NA        104         NA        NA    NA</code></pre>
+</div>
+</div>
+</section>
+<section id="create-a-stacked-bar-graph-and-a-side-by-side-bar-graph.-give-relevant-x-and-y-labels-and-a-title-for-the-plots." class="level4">
+<h4 class="anchored" data-anchor-id="create-a-stacked-bar-graph-and-a-side-by-side-bar-graph.-give-relevant-x-and-y-labels-and-a-title-for-the-plots.">9) Create a stacked bar graph and a side-by-side bar graph. Give relevant x and y labels, and a title for the plots.</h4>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(rc_data, <span class="fu">aes</span>(<span class="at">x =</span> Type, <span class="at">fill =</span> Design)) <span class="sc">+</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>() <span class="sc">+</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Type of roller coaster"</span>, <span class="at">y =</span> <span class="st">"Count"</span>) <span class="sc">+</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_discrete</span>(<span class="st">"Design"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ST558_Homework5_Petzold_files/figure-html/Task 2 Question 9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(rc_data, <span class="fu">aes</span>(<span class="at">x =</span> Type, <span class="at">fill =</span> Design)) <span class="sc">+</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">position =</span> <span class="st">"dodge"</span>) <span class="sc">+</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Type of roller coaster"</span>, <span class="at">y =</span> <span class="st">"Count"</span>) <span class="sc">+</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_discrete</span>(<span class="st">"Design"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ST558_Homework5_Petzold_files/figure-html/Task 2 Question 9-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
