@@ -7,14 +7,15 @@ source("helpers.R")
 # Define UI for application that draws a histogram
 ui <- fluidPage(
 
-  "Add a title panel here!",
+  titlePanel("Correlation Exploration"),
   sidebarLayout(
     sidebarPanel(
       h2("Select Variables to Find Correlation:"),
-      "Put your selectize inputs here!",
-      "Give them internal IDs of corr_x and corr_y.",
-      "Note the vector with these names comes from the helpers.R files. The object is called `numeric_vars`. Make sure you don't assign the same initial value to both inputs!",
+      selectizeInput(inputId = "corr_x", label = "X Variable", choices = numeric_vars, selected = "PINCP"),
+      selectizeInput(inputId = "corr_y", label = "Y Variable", choices = numeric_vars, selected = "JWMNP"),
+      
       br(),
+      
       "Place your radio buttons here! One radio button for each variable we may subset on. Set the internal IDs for these to be hhl_corr, fs_corr, and schl_corr.",
       "Notice that you can use choiceNames and choiceValues to have different values show vs the values you use internally for comparisons. There are 'internal' values already used in the server file - the first large commented section - so you should set the internal values to match those!",
       h2("Select a Sample Size"),
