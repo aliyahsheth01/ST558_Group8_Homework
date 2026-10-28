@@ -17,6 +17,7 @@ The first thing we'll do is create a tibble out of provided the data.
 #| warning: false
 #| message: false
 # Load the tidyverse, ggplot and save the data to a tibble
+library(lubridate)
 library(tidyverse)
 library(ggplot2)
 
@@ -24,7 +25,6 @@ library(ggplot2)
 
 bike_demand<-read_csv("data/SeoulBikeData.csv",locale=locale(encoding="latin1"))
 
-bike_demand
 ```
 
 Note that the `locale=locale(encoding="latin1")` argument (used to fix the error mentioned in the assignment document) was found on Stack Overflow, via Google.
@@ -37,9 +37,168 @@ Note that the `locale=locale(encoding="latin1")` argument (used to fix the error
 Now that we have a tibble, the next thing we'll do is check to see if there are any missing data. To do that, we visually inspect all 8,760 rows of the tibble. Just kidding, we'll use the `is.na()` function to check that and then sum it by column, to see how many missing values we are dealing with. 
 
 ```{r}
+# Look for missing data
+
 colSums(is.na(bike_demand))
 ```
 
 Zero's across the board, which is great!
 
 ### 2. 
+
+Next up, I'll check all the columns and basic summary stats to make sure everything is making sense.
+
+```{r}
+# Look at raw tibble
+
+bike_demand
+```
+
+Here, we see the following columns with character data: `Date`, `Seasons`, `Holiday`, and `Functioning day` and the following columns featuring numeric (double) data: `Rented Bike Count`, `Hour`, `Temperature(°C)`, `Humidity(%)`, `Wind speed (m/s)`, `Visibility (10m)`, `Dew point temperature(°C)`, `Solar Radiation (MJ/m2)`, `Rainfall(mm)`, and `Snowfall (cm)`. Of these, one might argue that `Hour` needs to should be converted because it's a time. However, it's useful to leave it as is because it's measuring the time that's elapsed since the beginning of the day. 
+
+To make sure the data themselves are reasonable, a good place to start is basic summary statistics: 
+
+```{r}
+# verify the data pass the smell test
+
+summary(bike_demand)
+```
+
+Looking closely at the numeric variables here, nothing stands out as unreasonable. 
+
+### 3. 
+Next up, we'll use the `lubridate` package to convert our first column to an actual date. Note that the `Date` column gives day, then month, then year. Also note that the column features `/` as separators, but lubridate expects dashes. 
+
+**Note** I've changeed the name of the tibble at this point, so we can call the unchanged (`bike_demand`) tibble later, if necessary.
+
+```{r}
+# Turn first columm into date data type
+
+demand_data<-bike_demand|>
+  mutate(Date = dmy(Date))
+
+demand_data
+```
+
+Now, just to be sure nothing got messed up too badly: 
+```{r}
+# Check for newly missing data
+
+sum(is.na(demand_data$Date))
+```
+### 4. 
+
+Next up, we'll turn the character variables in `Seasons`, `Holiday`, and `Functioning Day` into factors. To begin, I'd like to look at what character strings are showing up because, in particular, I'm not sure what `Functioning Day` is all about. 
+
+```{r}
+#Retrieve observations
+
+unique(demand_data$Seasons)
+
+unique(demand_data$Holiday)
+
+unique(demand_data$`Functioning Day`)
+```
+
+The strings in the first two columns make sense to me. Looking through the tibble above, I'm only seeing `Yes`, which makes me think that maybe that column is recording whether the bike being rented is functional that day. If so, it would make sense that there aren't any `No` entries, as there wouldn't have been a bike rented if it weren't functioning. Let's check to see if, in fact, there are no `No`'s.
+
+```{r}
+# Check to see if "No" exists
+
+sum(demand_data$'Functioning Day' == "No")
+```
+
+Well, I was wrong. There are some entries where the bike wasn't functional. Looking more closely at the information provided in the link, it says `Functional Day - NoFunc(Non Functional Hours), Fun(Functional hours)`. Maybe looking at only the entries where there is a `No` there might give a clue. 
+
+```{r}
+#Look more closely where Functioning Day = "No"
+
+filter(demand_data,`Functioning Day`== "No")
+```
+
+So, it's looking like there weren't any rentals when we had a `No` there. To confirm: 
+
+```{r}
+# Confirm no rentals when Functioning Day = "No"
+
+filter(demand_data,`Functioning Day`== "No") |> pull(`Rented Bike Count`)|>sum()
+```
+
+So, it's looking like that column is registering times when someone went to rent a bike, but the bike wasn't functioning (and so nothing was rented). 
+
+With that in mind, we'll next finish what we set out to do in this problem: create factors. 
+
+```{r}
+# Create levels as appropriate
+
+demand_data <- mutate(demand_data,
+  SeasonsF = factor(Seasons, levels = c("Winter", "Spring", "Summer", "Autumn")),
+  HolidayF = factor(Holiday, levels = c("No Holiday", "Holiday")),
+  FunctioningF = factor(`Functioning Day`, levels = c("Yes", "No"))
+)
+
+demand_data
+```
+
+### 5. 
+
+Next up, we'll rename the columns so they're a bit friendlier (and all lower case). Note that I'll rename the factorized columns with lower case (sans `F`) for simplicity and tack on `_old` to the columns we no longer want to use.
+
+```{r}
+# Rename columns
+
+demand_data <- demand_data |>
+  rename(
+    date = 1, 
+    bike_count = 2,
+    hour = 3, 
+    temp = 4, 
+    humidity = 5, 
+    wind_speed = 6, 
+    visibility = 7, 
+    dew_pt = 8, 
+    solar_rad = 9, 
+    rainfall = 10, 
+    snowfall = 11, 
+    Seasons_old = 12, 
+    Holiday_old = 13, 
+    Functioning_old = 14, 
+    seasons = 15, 
+    holiday = 16, 
+    functioning = 17
+  )
+
+demand_data
+  
+```
+
+
+### 6. 
+
+For this part, we'll create summary tables. To being, we'll do a basic summary across the numeric variables. Recall that, earlier, we noticed that the tibble records whether the bike was functioning. So, in the summary below, I'm going to subset on times when the bike was functioning.
+
+```{r}
+# Five +1 number summaries across numeric data
+
+six_num_sum <- apply(X = demand_data |>
+                       filter(functioning == "Yes")|>
+                        select(where(is.numeric)),
+                      MARGIN = 2, 
+                      FUN = summary
+                      )
+six_num_sum
+```
+
+Next up, let's look at some one way tables based on categorical variables.
+
+```{r}
+# One way tables
+one_way <- list(
+  seasons_summary = demand_data |> group_by(seasons) |> summarize(count = n()),
+  holiday_summary = demand_data |> group_by(holiday) |> summarize(count = n()),
+  functioning_summary = demand_data |> group_by(functioning) |> summarize(count = n())
+)
+
+one_way
+```
+
