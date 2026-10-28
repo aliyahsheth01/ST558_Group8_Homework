@@ -1,3 +1,5 @@
 project:
   type: website
+  render:
+    - "!ST558_Homework4_Petzold.qmd"
   output-dir: docs

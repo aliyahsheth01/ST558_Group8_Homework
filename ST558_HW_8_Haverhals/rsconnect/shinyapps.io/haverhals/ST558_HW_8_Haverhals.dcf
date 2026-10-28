@@ -1,0 +1,12 @@
+name: ST558_HW_8_Haverhals
+title: ST558_HW_8_Haverhals
+username: haverhals
+account: haverhals
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 18238530
+bundleId: 12720892
+url: https://haverhals.shinyapps.io/ST558_HW_8_Haverhals/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
