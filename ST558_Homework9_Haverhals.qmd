@@ -1,17 +1,18 @@
 ---
 title: "ST558_Homework_9_Haverhals"
-format: html
+format:
+  html:
+    embed-resources: true
 editor: visual
 ---
 
-
 # Introduction
 
-In this assignment, we will be analyzing and creating models from data in the [Seoul Bike Sharing Demand](https://archive.ics.uci.edu/dataset/560/seoul+bike+sharing+demand) data set. 
+In this assignment, we will be analyzing and creating models from data in the [Seoul Bike Sharing Demand](https://archive.ics.uci.edu/dataset/560/seoul+bike+sharing+demand) data set.
 
 ## Reading the data
 
-The first thing we'll do is create a tibble out of provided the data. 
+The first thing we'll do is create a tibble out of provided the data.
 
 ```{r}
 #| warning: false
@@ -29,12 +30,13 @@ bike_demand<-read_csv("data/SeoulBikeData.csv",locale=locale(encoding="latin1"))
 
 Note that the `locale=locale(encoding="latin1")` argument (used to fix the error mentioned in the assignment document) was found on Stack Overflow, via Google.
 
-#EDA
+# EDA
 
 ## Checking the Data
 
-### 1. 
-Now that we have a tibble, the next thing we'll do is check to see if there are any missing data. To do that, we visually inspect all 8,760 rows of the tibble. Just kidding, we'll use the `is.na()` function to check that and then sum it by column, to see how many missing values we are dealing with. 
+### 1.
+
+Now that we have a tibble, the next thing we'll do is check to see if there are any missing data. To do that, we visually inspect all 8,760 rows of the tibble. Just kidding, we'll use the `is.na()` function to check that and then sum it by column, to see how many missing values we are dealing with.
 
 ```{r}
 # Look for missing data
@@ -44,7 +46,7 @@ colSums(is.na(bike_demand))
 
 Zero's across the board, which is great!
 
-### 2. 
+### 2.
 
 Next up, I'll check all the columns and basic summary stats to make sure everything is making sense.
 
@@ -54,9 +56,9 @@ Next up, I'll check all the columns and basic summary stats to make sure everyth
 bike_demand
 ```
 
-Here, we see the following columns with character data: `Date`, `Seasons`, `Holiday`, and `Functioning day` and the following columns featuring numeric (double) data: `Rented Bike Count`, `Hour`, `Temperature(°C)`, `Humidity(%)`, `Wind speed (m/s)`, `Visibility (10m)`, `Dew point temperature(°C)`, `Solar Radiation (MJ/m2)`, `Rainfall(mm)`, and `Snowfall (cm)`. Of these, one might argue that `Hour` needs to should be converted because it's a time. However, it's useful to leave it as is because it's measuring the time that's elapsed since the beginning of the day. 
+Here, we see the following columns with character data: `Date`, `Seasons`, `Holiday`, and `Functioning day` and the following columns featuring numeric (double) data: `Rented Bike Count`, `Hour`, `Temperature(°C)`, `Humidity(%)`, `Wind speed (m/s)`, `Visibility (10m)`, `Dew point temperature(°C)`, `Solar Radiation (MJ/m2)`, `Rainfall(mm)`, and `Snowfall (cm)`. Of these, one might argue that `Hour` needs to should be converted because it's a time. However, it's useful to leave it as is because it's measuring the time that's elapsed since the beginning of the day.
 
-To make sure the data themselves are reasonable, a good place to start is basic summary statistics: 
+To make sure the data themselves are reasonable, a good place to start is basic summary statistics:
 
 ```{r}
 # verify the data pass the smell test
@@ -64,10 +66,11 @@ To make sure the data themselves are reasonable, a good place to start is basic 
 summary(bike_demand)
 ```
 
-Looking closely at the numeric variables here, nothing stands out as unreasonable. 
+Looking closely at the numeric variables here, nothing stands out as unreasonable.
 
-### 3. 
-Next up, we'll use the `lubridate` package to convert our first column to an actual date. Note that the `Date` column gives day, then month, then year. Also note that the column features `/` as separators, but lubridate expects dashes. 
+### 3.
+
+Next up, we'll use the `lubridate` package to convert our first column to an actual date. Note that the `Date` column gives day, then month, then year. Also note that the column features `/` as separators, but lubridate expects dashes.
 
 **Note** I've changeed the name of the tibble at this point, so we can call the unchanged (`bike_demand`) tibble later, if necessary.
 
@@ -80,15 +83,17 @@ demand_data<-bike_demand|>
 demand_data
 ```
 
-Now, just to be sure nothing got messed up too badly: 
+Now, just to be sure nothing got messed up too badly:
+
 ```{r}
 # Check for newly missing data
 
 sum(is.na(demand_data$Date))
 ```
-### 4. 
 
-Next up, we'll turn the character variables in `Seasons`, `Holiday`, and `Functioning Day` into factors. To begin, I'd like to look at what character strings are showing up because, in particular, I'm not sure what `Functioning Day` is all about. 
+### 4.
+
+Next up, we'll turn the character variables in `Seasons`, `Holiday`, and `Functioning Day` into factors. To begin, I'd like to look at what character strings are showing up because, in particular, I'm not sure what `Functioning Day` is all about.
 
 ```{r}
 #Retrieve observations
@@ -108,7 +113,7 @@ The strings in the first two columns make sense to me. Looking through the tibbl
 sum(demand_data$'Functioning Day' == "No")
 ```
 
-Well, I was wrong. There are some entries where the bike wasn't functional. Looking more closely at the information provided in the link, it says `Functional Day - NoFunc(Non Functional Hours), Fun(Functional hours)`. Maybe looking at only the entries where there is a `No` there might give a clue. 
+Well, I was wrong. There are some entries where the bike wasn't functional. Looking more closely at the information provided in the link, it says `Functional Day - NoFunc(Non Functional Hours), Fun(Functional hours)`. Maybe looking at only the entries where there is a `No` there might give a clue.
 
 ```{r}
 #Look more closely where Functioning Day = "No"
@@ -116,7 +121,7 @@ Well, I was wrong. There are some entries where the bike wasn't functional. Look
 filter(demand_data,`Functioning Day`== "No")
 ```
 
-So, it's looking like there weren't any rentals when we had a `No` there. To confirm: 
+So, it's looking like there weren't any rentals when we had a `No` there. To confirm:
 
 ```{r}
 # Confirm no rentals when Functioning Day = "No"
@@ -124,9 +129,9 @@ So, it's looking like there weren't any rentals when we had a `No` there. To con
 filter(demand_data,`Functioning Day`== "No") |> pull(`Rented Bike Count`)|>sum()
 ```
 
-So, it's looking like that column is registering times when someone went to rent a bike, but the bike wasn't functioning (and so nothing was rented). 
+So, it's looking like that column is registering times when someone went to rent a bike, but the bike wasn't functioning (and so nothing was rented).
 
-With that in mind, we'll next finish what we set out to do in this problem: create factors. 
+With that in mind, we'll next finish what we set out to do in this problem: create factors.
 
 ```{r}
 # Create levels as appropriate
@@ -140,7 +145,7 @@ demand_data <- mutate(demand_data,
 demand_data
 ```
 
-### 5. 
+### 5.
 
 Next up, we'll rename the columns so they're a bit friendlier (and all lower case). Note that I'll rename the factorized columns with lower case (sans `F`) for simplicity and tack on `_old` to the columns we no longer want to use.
 
@@ -172,8 +177,7 @@ demand_data
   
 ```
 
-
-### 6. 
+### 6.
 
 For this part, we'll create summary tables. To being, we'll do a basic summary across the numeric variables. Recall that, earlier, we noticed that the tibble records whether the bike was functioning. So, in the summary below, I'm going to subset on times when the bike was functioning.
 
@@ -202,3 +206,142 @@ one_way <- list(
 one_way
 ```
 
+Next, we compare bike rental counts between functioning and nonfunctioning hours. This helps us decide which observations to retain for our analysis.
+
+```{r}
+# Summarize hourly rentals by functioning status
+demand_data |>
+  group_by(functioning) |>
+  summarize(
+    hours = n(),
+    mean_rentals = mean(bike_count),
+    median_rentals = median(bike_count),
+    sd_rentals = sd(bike_count),
+    min_rentals = min(bike_count),
+    max_rentals = max(bike_count)
+  )
+```
+
+Nonfunctioning hours have zero recorded rentals. We exclude these hours so that the remaining analysis describes bike rental demand while the service was functioning.
+
+```{r}
+# Retain functioning hours for the remaining analysis
+demand_data <- demand_data |>
+  filter(functioning == "Yes")
+
+# Check the number of retained rows
+nrow(demand_data)
+```
+
+Using the functioning hours, we next compare hourly bike rental counts across seasons.
+
+```{r}
+# Summarize hourly rentals within each season
+demand_data |>
+  group_by(seasons) |>
+  summarize(
+    hours = n(),
+    mean_rentals = mean(bike_count),
+    median_rentals = median(bike_count),
+    sd_rentals = sd(bike_count),
+    min_rentals = min(bike_count),
+    max_rentals = max(bike_count)
+  )
+```
+
+Summer had the highest average hourly bike rental count, at approximately 1,034 rentals, followed by autumn at 924 and spring at 746. Winter had the lowest average, at approximately 226 rentals per hour. The medians followed the same seasonal pattern. Hourly rental counts also varied more in summer, which had the largest standard deviation at approximately 690 rentals, compared with approximately 150 in winter. These summaries suggest that rental demand differs across seasons, although they do not account for other factors such as weather.
+
+We also compare hourly rental counts between holidays and nonholidays.
+
+```{r}
+# Summarize hourly rentals by holiday status
+demand_data |>
+  group_by(holiday) |>
+  summarize(
+    hours = n(),
+    mean_rentals = mean(bike_count),
+    median_rentals = median(bike_count),
+    sd_rentals = sd(bike_count),
+    min_rentals = min(bike_count),
+    max_rentals = max(bike_count)
+  )
+```
+
+Nonholidays had a higher average hourly rental count than holidays: approximately 739 versus 529 rentals. The median was also higher on nonholidays, at 561 compared with 259 on holidays. Rental counts showed somewhat greater variability on nonholidays, with a standard deviation of approximately 644 compared with 574 on holidays. We compare averages rather than total rentals because the dataset contains many more functioning hours on nonholidays than on holidays. These are descriptive comparisons and do not establish that holiday status causes the difference in rental demand.
+
+So far, each observation represents one functioning hour. Next, we will summarize the data by date, season, and holiday status so that each retained day has one observation for the remaining analysis.
+
+### 7.
+
+Next, we combine the hourly observations into daily summaries. We group by date, season, and holiday status, then calculate daily totals for bike rentals, rainfall, and snowfall. For the remaining weather variables, we calculate daily averages. These summaries use the functioning hours retained in the previous step.
+
+```{r}
+# Combine the retained hourly observations into daily summaries
+daily_demand <- demand_data |>
+  group_by(date, seasons, holiday) |>
+  summarize(
+    bike_count = sum(bike_count),
+    rainfall = sum(rainfall),
+    snowfall = sum(snowfall),
+    temp = mean(temp),
+    humidity = mean(humidity),
+    wind_speed = mean(wind_speed),
+    visibility = mean(visibility),
+    dew_pt = mean(dew_pt),
+    solar_rad = mean(solar_rad),
+    .groups = "drop"
+  )
+
+# View the daily dataset
+daily_demand
+```
+
+### 8.
+
+Now that the data have been summarized by day, we revisit the numerical summaries. The bike rental count now represents the total rentals during each day’s retained functioning hours. Rainfall and snowfall are summed across those hours, while the other weather variables represent averages.
+
+```{r}
+# Summarize the numeric variables in the daily dataset
+daily_summary <- apply(
+  X = daily_demand |>
+    select(where(is.numeric)),
+  MARGIN = 2,
+  FUN = summary
+)
+
+daily_summary
+```
+
+Daily bike rental totals ranged from 977 to 36,149, with an average of approximately 17,485 and a median of 18,563. The middle 50% of daily totals fell between 6,967 and 26,285, showing substantial variation across days. Average daily temperature also varied considerably, ranging from approximately −14.7°C to 33.7°C. Rainfall and snowfall summaries contained many zeros, indicating that precipitation was absent on many of the retained days.
+
+```{r}
+# Compare the distribution of daily rentals across seasons
+ggplot(
+  data = daily_demand,
+  mapping = aes(x = seasons, y = bike_count)
+) +
+  geom_boxplot() +
+  labs(
+    title = "Daily Bike Rentals by Season",
+    x = "Season",
+    y = "Daily Bike Rental Count"
+  )
+```
+
+Daily bike rental counts differed across seasons. Summer had the highest median daily rental count, followed by autumn, spring, and winter. Winter also had the smallest spread in the middle 50% of daily counts, while spring had the largest. Summer had three unusually low daily totals, shown as points below the lower whisker. These observations may warrant closer examination, but the plot alone does not establish why they were low.
+
+```{r}
+# Explore daily rentals in relation to average temperature
+ggplot(
+  data = daily_demand,
+  mapping = aes(x = temp, y = bike_count)
+) +
+  geom_point() +
+  labs(
+    title = "Daily Bike Rentals and Temperature",
+    x = "Average Daily Temperature (°C)",
+    y = "Daily Bike Rental Count"
+  )
+```
+
+Daily bike rentals generally increased with average daily temperature, although the relationship appears curved rather than perfectly straight. Rental counts were generally highest around 20–25°C and tended to decrease at higher temperatures. There was also considerable variation among days with similar temperatures, suggesting that temperature alone does not explain daily rental demand.
