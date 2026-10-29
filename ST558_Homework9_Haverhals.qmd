@@ -70,9 +70,9 @@ Looking closely at the numeric variables here, nothing stands out as unreasonabl
 
 ### 3.
 
-Next up, we'll use the `lubridate` package to convert our first column to an actual date. Note that the `Date` column gives day, then month, then year. Also note that the column features `/` as separators, but lubridate expects dashes.
+Next up, we'll use the `lubridate` package to convert our first column to an actual date. Note that the `Date` column gives day, then month, then year. 
 
-**Note** I've changeed the name of the tibble at this point, so we can call the unchanged (`bike_demand`) tibble later, if necessary.
+**Note** I've changed the name of the tibble at this point, so we can call the unchanged (`bike_demand`) tibble later, if necessary.
 
 ```{r}
 # Turn first columm into date data type
@@ -86,7 +86,7 @@ demand_data
 Now, just to be sure nothing got messed up too badly:
 
 ```{r}
-# Check for newly missing data
+# Check for new date column missing data
 
 sum(is.na(demand_data$Date))
 ```
@@ -121,7 +121,7 @@ Well, I was wrong. There are some entries where the bike wasn't functional. Look
 filter(demand_data,`Functioning Day`== "No")
 ```
 
-So, it's looking like there weren't any rentals when we had a `No` there. To confirm:
+It looks like there weren't any rentals when we had a `No` there. To confirm:
 
 ```{r}
 # Confirm no rentals when Functioning Day = "No"
@@ -129,7 +129,7 @@ So, it's looking like there weren't any rentals when we had a `No` there. To con
 filter(demand_data,`Functioning Day`== "No") |> pull(`Rented Bike Count`)|>sum()
 ```
 
-So, it's looking like that column is registering times when someone went to rent a bike, but the bike wasn't functioning (and so nothing was rented).
+So, it seems like that column is registering times when someone went to rent a bike, but the bike wasn't functioning (and so nothing was rented).
 
 With that in mind, we'll next finish what we set out to do in this problem: create factors.
 
