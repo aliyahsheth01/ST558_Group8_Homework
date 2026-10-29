@@ -345,3 +345,55 @@ ggplot(
 ```
 
 Daily bike rentals generally increased with average daily temperature, although the relationship appears curved rather than perfectly straight. Rental counts were generally highest around 20–25°C and tended to decrease at higher temperatures. There was also considerable variation among days with similar temperatures, suggesting that temperature alone does not explain daily rental demand.
+
+Next, we examine correlations among the daily numeric variables. These describe the direction and strength of pairwise linear relationships, including relationships between bike rental counts and weather variables. We also examine correlations among the weather variables because some predictors may contain similar information.
+
+```{r}
+# Select the numeric variables from the daily dataset
+daily_numeric <- daily_demand |>
+  select(where(is.numeric))
+
+# Calculate Pearson correlations
+daily_correlations <- cor(daily_numeric)
+
+# Display correlations rounded to two decimal places
+round(daily_correlations, digits = 2)
+```
+
+Daily bike rental counts had positive correlations with temperature (0.75), solar radiation (0.74), and dew point temperature (0.65). Correlations with rainfall (−0.24) and snowfall (−0.27) were negative but weaker. Humidity had little linear association with rental counts (0.04), although this does not rule out a curved relationship or an association after accounting for other variables. Temperature and dew point were very strongly correlated (0.96), suggesting that these predictors contain overlapping information. Including both in a regression model may make their individual coefficients harder to interpret.
+
+# Split the Data
+
+We next randomly divide the daily data into approximately 75% training data and 25% test data. We stratify the split by season so that each season is represented in roughly similar proportions in both sets. The training data will be used to fit the models, and the test data will be used to compare their prediction errors. We set a random seed so that the split can be reproduced.
+
+```{r}
+# Make the random split reproducible
+set.seed(558)
+
+# Split the daily data, sampling within each season
+bike_split <- rsample::initial_split(
+  daily_demand,
+  prop = 0.75,
+  strata = seasons
+)
+
+# Extract the training and test datasets
+bike_train <- rsample::training(bike_split)
+bike_test <- rsample::testing(bike_split)
+
+# Check the number of days in each dataset
+nrow(bike_train)
+nrow(bike_test)
+
+# Check seasonal representation
+table(bike_train$seasons)
+table(bike_test$seasons)
+```
+
+The split produced 263 training observations and 90 test observations. Each season is represented in both datasets, with approximately three-quarters of its days assigned to training and the remainder assigned to testing.
+
+# Fitting Multiple Linear Regression Models
+
+We will use multiple linear regression to predict daily bike rental counts from weather and calendar variables. Before fitting the models, we will use the date to create a weekday/weekend factor in both datasets, then exclude the date itself as a predictor. We will also standardize the numeric weather predictors by subtracting their training-set means and dividing by their training-set standard deviations. The test predictors will be standardized using those same training-set values.
+
+We will compare three models: one containing the specified weather and calendar predictors, a second adding the specified interactions, and a third adding squared temperature and humidity terms. Each model will be fitted using the training data and evaluated using test-set root mean squared error (RMSE), where a smaller value indicates lower prediction error. Following the assignment instructions, we will then refit the model with the lowest test RMSE using the full daily dataset and report its coefficients.

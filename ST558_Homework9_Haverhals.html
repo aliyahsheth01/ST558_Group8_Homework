@@ -4622,10 +4622,93 @@ Max.     25.037500 1.21666667</code></pre>
 </div>
 </div>
 <p>Daily bike rentals generally increased with average daily temperature, although the relationship appears curved rather than perfectly straight. Rental counts were generally highest around 20–25°C and tended to decrease at higher temperatures. There was also considerable variation among days with similar temperatures, suggesting that temperature alone does not explain daily rental demand.</p>
-
-
+<p>Next, we examine correlations among the daily numeric variables. These describe the direction and strength of pairwise linear relationships, including relationships between bike rental counts and weather variables. We also examine correlations among the weather variables because some predictors may contain similar information.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Select the numeric variables from the daily dataset</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>daily_numeric <span class="ot">&lt;-</span> daily_demand <span class="sc">|&gt;</span></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">where</span>(is.numeric))</span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate Pearson correlations</span></span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>daily_correlations <span class="ot">&lt;-</span> <span class="fu">cor</span>(daily_numeric)</span>
+<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Display correlations rounded to two decimal places</span></span>
+<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(daily_correlations, <span class="at">digits =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>           bike_count rainfall snowfall  temp humidity wind_speed visibility
+bike_count       1.00    -0.24    -0.27  0.75     0.04      -0.19       0.17
+rainfall        -0.24     1.00    -0.02  0.14     0.53      -0.10      -0.22
+snowfall        -0.27    -0.02     1.00 -0.27     0.07       0.02      -0.10
+temp             0.75     0.14    -0.27  1.00     0.40      -0.26       0.00
+humidity         0.04     0.53     0.07  0.40     1.00      -0.23      -0.56
+wind_speed      -0.19    -0.10     0.02 -0.26    -0.23       1.00       0.21
+visibility       0.17    -0.22    -0.10  0.00    -0.56       0.21       1.00
+dew_pt           0.65     0.26    -0.21  0.96     0.63      -0.29      -0.15
+solar_rad        0.74    -0.32    -0.23  0.55    -0.27       0.10       0.27
+           dew_pt solar_rad
+bike_count   0.65      0.74
+rainfall     0.26     -0.32
+snowfall    -0.21     -0.23
+temp         0.96      0.55
+humidity     0.63     -0.27
+wind_speed  -0.29      0.10
+visibility  -0.15      0.27
+dew_pt       1.00      0.38
+solar_rad    0.38      1.00</code></pre>
+</div>
+</div>
+<p>Daily bike rental counts had positive correlations with temperature (0.75), solar radiation (0.74), and dew point temperature (0.65). Correlations with rainfall (−0.24) and snowfall (−0.27) were negative but weaker. Humidity had little linear association with rental counts (0.04), although this does not rule out a curved relationship or an association after accounting for other variables. Temperature and dew point were very strongly correlated (0.96), suggesting that these predictors contain overlapping information. Including both in a regression model may make their individual coefficients harder to interpret.</p>
 </section>
 </section>
+</section>
+<section id="split-the-data" class="level1">
+<h1>Split the Data</h1>
+<p>We next randomly divide the daily data into approximately 75% training data and 25% test data. We stratify the split by season so that each season is represented in roughly similar proportions in both sets. The training data will be used to fit the models, and the test data will be used to compare their prediction errors. We set a random seed so that the split can be reproduced.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Make the random split reproducible</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">558</span>)</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Split the daily data, sampling within each season</span></span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>bike_split <span class="ot">&lt;-</span> rsample<span class="sc">::</span><span class="fu">initial_split</span>(</span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>  daily_demand,</span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">prop =</span> <span class="fl">0.75</span>,</span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">strata =</span> seasons</span>
+<span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb48-10"><a href="#cb48-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-11"><a href="#cb48-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract the training and test datasets</span></span>
+<span id="cb48-12"><a href="#cb48-12" aria-hidden="true" tabindex="-1"></a>bike_train <span class="ot">&lt;-</span> rsample<span class="sc">::</span><span class="fu">training</span>(bike_split)</span>
+<span id="cb48-13"><a href="#cb48-13" aria-hidden="true" tabindex="-1"></a>bike_test <span class="ot">&lt;-</span> rsample<span class="sc">::</span><span class="fu">testing</span>(bike_split)</span>
+<span id="cb48-14"><a href="#cb48-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-15"><a href="#cb48-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Check the number of days in each dataset</span></span>
+<span id="cb48-16"><a href="#cb48-16" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(bike_train)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 263</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(bike_test)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 90</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check seasonal representation</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(bike_train<span class="sc">$</span>seasons)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Winter Spring Summer Autumn 
+    67     67     69     60 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(bike_test<span class="sc">$</span>seasons)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Winter Spring Summer Autumn 
+    23     23     23     21 </code></pre>
+</div>
+</div>
+<p>The split produced 263 training observations and 90 test observations. Each season is represented in both datasets, with approximately three-quarters of its days assigned to training and the remainder assigned to testing.</p>
+</section>
+<section id="fitting-multiple-linear-regression-models" class="level1">
+<h1>Fitting Multiple Linear Regression Models</h1>
+<p>We will use multiple linear regression to predict daily bike rental counts from weather and calendar variables. Before fitting the models, we will use the date to create a weekday/weekend factor in both datasets, then exclude the date itself as a predictor. We will also standardize the numeric weather predictors by subtracting their training-set means and dividing by their training-set standard deviations. The test predictors will be standardized using those same training-set values.</p>
+<p>We will compare three models: one containing the specified weather and calendar predictors, a second adding the specified interactions, and a third adding squared temperature and humidity terms. Each model will be fitted using the training data and evaluated using test-set root mean squared error (RMSE), where a smaller value indicates lower prediction error. Following the assignment instructions, we will then refit the model with the lowest test RMSE using the full daily dataset and report its coefficients.</p>
+
+
 </section>
 
 </main> <!-- /main -->
