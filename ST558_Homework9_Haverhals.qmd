@@ -70,7 +70,7 @@ Looking closely at the numeric variables here, nothing stands out as unreasonabl
 
 ### 3.
 
-Next up, we'll use the `lubridate` package to convert our first column to an actual date. Note that the `Date` column gives day, then month, then year. 
+Next up, we'll use the `lubridate` package to convert our first column to an actual date. Note that the `Date` column gives day, then month, then year.
 
 **Note** I've changed the name of the tibble at this point, so we can call the unchanged (`bike_demand`) tibble later, if necessary.
 
@@ -397,3 +397,68 @@ The split produced 263 training observations and 90 test observations. Each seas
 We will use multiple linear regression to predict daily bike rental counts from weather and calendar variables. Before fitting the models, we will use the date to create a weekday/weekend factor in both datasets, then exclude the date itself as a predictor. We will also standardize the numeric weather predictors by subtracting their training-set means and dividing by their training-set standard deviations. The test predictors will be standardized using those same training-set values.
 
 We will compare three models: one containing the specified weather and calendar predictors, a second adding the specified interactions, and a third adding squared temperature and humidity terms. Each model will be fitted using the training data and evaluated using test-set root mean squared error (RMSE), where a smaller value indicates lower prediction error. Following the assignment instructions, we will then refit the model with the lowest test RMSE using the full daily dataset and report its coefficients.
+
+## Prepping Data for Modeling
+
+Let's start by creating the weekday/weekend factor, using the *mutate* and *wday* functions from ***tidyverse*** and ***lubridate*** respectively. We will create a wrapper function for this process, and then apply it to both our testing and training data sets.
+
+```{r}
+day_to_weekenday <- function(df, date_col, new_col_name = "day_type"){
+    df |>
+    mutate("{new_col_name}" := factor(
+      ifelse(wday({{date_col}}, week_start = 1) %in% c(6, 7), "weekend", "weekday"),
+      levels = c("weekend", "weekday")
+    ))
+}
+
+bike_train<-day_to_weekenday(bike_train,bike_train$date)
+bike_test<-day_to_weekenday(bike_test,bike_test$date)
+```
+
+Next, let's standardize our variables. We'll create a function to standardize each numeric column based on the mean and standard deviation of an inputted training set, enacting the standardizing on the "test" set, but we can just input the training set as the test set to standardize it in the same way.
+
+```{r}
+standardize_variables <- function(df_test, df_train) {
+  col_names <- names(df_train)
+  for (col in col_names) {
+    orig_col <- df_train[[col]]
+    is_num <- is.numeric(orig_col)
+    is_date <- inherits(orig_col, c("Date", "POSIXt"))
+    if (is_num && !is_date) {
+      m <- mean(orig_col, na.rm = TRUE)
+      s <- sd(orig_col, na.rm = TRUE)
+      if (is.na(s) || s == 0) {
+        s <- 1 
+      }
+      df_test[[col]] <- (df_test[[col]] - m) / s
+    }
+  }
+  return(df_test)
+}
+bike_train_szd<-standardize_variables(bike_train,bike_train)
+bike_test_szd<-standardize_variables(bike_test,bike_train)
+```
+
+## Model 1: All Variables with no Interactions
+
+Our first model is a standard linear model using all of our standardized numeric variables, and also our factor/categorical variables.
+
+```{r}
+model_1 <- lm(bike_count ~ seasons + holiday + day_type + rainfall + snowfall + temp + humidity + wind_speed + visibility + dew_pt + solar_rad, data = bike_train_szd)
+```
+
+## Model 2: All Variables with Limited Interactions
+
+Our second model includes all of the previous predictors, but also interactions between seasons and holidays, seasons and temperature, and finally temperature and rainfall.
+
+```{r}
+model_2 <- lm(bike_count ~ seasons*holiday + seasons*temp + temp*rainfall + seasons + holiday + day_type + rainfall + snowfall + temp + humidity + wind_speed + visibility + dew_pt + solar_rad, data = bike_train_szd)
+```
+
+## Model 3: All Variables with Limited Interactions and Quadratic Terms
+
+Our third and final model includes all previous terms, and adds a quadratic term for temperature and humidity using I() notation.
+
+```{r}
+model_3 <- lm(bike_count ~ seasons*holiday + seasons*temp + temp*rainfall + seasons + holiday + day_type + rainfall + snowfall + I(temp)^2 + I(humidity)^2 + wind_speed + visibility + dew_pt + solar_rad, data = bike_train_szd)
+```
