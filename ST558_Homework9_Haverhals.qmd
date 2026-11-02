@@ -403,16 +403,16 @@ We will compare three models: one containing the specified weather and calendar 
 Let's start by creating the weekday/weekend factor, using the *mutate* and *wday* functions from ***tidyverse*** and ***lubridate*** respectively. We will create a wrapper function for this process, and then apply it to both our testing and training data sets.
 
 ```{r}
-day_to_weekenday <- function(df, date_col, new_col_name = "day_type"){
+day_to_weekenday <- function(df, new_col_name = "day_type"){
     df |>
-    mutate("{new_col_name}" := factor(
-      ifelse(wday({{date_col}}, week_start = 1) %in% c(6, 7), "weekend", "weekday"),
+    mutate(day_type = factor(
+      ifelse(wday(date, week_start = 1) %in% c(6, 7), "weekend", "weekday"),
       levels = c("weekend", "weekday")
     ))
 }
 
-bike_train<-day_to_weekenday(bike_train,bike_train$date)
-bike_test<-day_to_weekenday(bike_test,bike_test$date)
+bike_train<-day_to_weekenday(bike_train)
+bike_test<-day_to_weekenday(bike_test)
 ```
 
 Next, let's standardize our variables. We'll create a function to standardize each numeric column based on the mean and standard deviation of an inputted training set, enacting the standardizing on the "test" set, but we can just input the training set as the test set to standardize it in the same way.
@@ -460,5 +460,183 @@ model_2 <- lm(bike_count ~ seasons*holiday + seasons*temp + temp*rainfall + seas
 Our third and final model includes all previous terms, and adds a quadratic term for temperature and humidity using I() notation.
 
 ```{r}
-model_3 <- lm(bike_count ~ seasons*holiday + seasons*temp + temp*rainfall + seasons + holiday + day_type + rainfall + snowfall + I(temp)^2 + I(humidity)^2 + wind_speed + visibility + dew_pt + solar_rad, data = bike_train_szd)
+model_3 <- lm(bike_count ~ seasons*holiday + seasons*temp + temp*rainfall + seasons + holiday + day_type + rainfall + snowfall + I(temp^2) + I(humidity^2) + wind_speed + visibility + dew_pt + solar_rad, data = bike_train_szd)
 ```
+
+## RMSE Function
+
+```{r}
+
+calc_rmse <- function(actual, predicted) {
+
+  sqrt(mean((actual - predicted)^2))
+
+}
+
+# Generate predictions from each model on test data
+
+pred_1 <- predict(
+  model_1,
+  newdata = bike_test_szd
+)
+
+pred_2 <- predict(
+  model_2,
+  newdata = bike_test_szd
+)
+
+pred_3 <- predict(
+  model_3,
+  newdata = bike_test_szd
+)
+
+# Calculate the test RMSE for each model
+
+rmse_1 <- calc_rmse(
+  bike_test_szd$bike_count,
+  pred_1
+)
+
+rmse_2 <- calc_rmse(
+  bike_test_szd$bike_count,
+  pred_2
+)
+
+rmse_3 <- calc_rmse(
+  bike_test_szd$bike_count,
+  pred_3
+)
+
+# Put the results into a tibble
+
+rmse_results <- tibble(
+  model = c("Model 1", "Model 2", "Model 3"),
+  rmse = c(rmse_1, rmse_2, rmse_3)
+)
+
+# Sort models from lowest to highest RMSE
+
+rmse_results <- rmse_results |>
+  arrange(rmse)
+
+rmse_results
+
+```
+
+## Vizualise RMSE
+
+```{r}
+
+ggplot(
+  rmse_results,
+  aes(x = model, y = rmse)
+) +
+  geom_col(fill = "steelblue") +
+  labs(
+    title = "Test RMSE by Model",
+    x = "Model",
+    y = "RMSE"
+  ) +
+  theme_minimal()
+
+best_model_name <- rmse_results |>
+  slice_min(rmse, n = 1, with_ties = FALSE) |>
+  pull(model)
+
+best_model_name
+
+best_rmse <- min(rmse_results$rmse)
+
+best_rmse
+
+```
+
+As we can see above, Model 3 has the lowest RMSE out of the 3 models. This suggests that Model 3 provided the best predictive performance of the 3 specifications on our test data. We will therefore select this model and refit using the entire dataset.
+
+## Standardize full data
+
+```{r}
+
+numeric_vars <- c(
+  "temp",
+  "humidity",
+  "wind_speed",
+  "visibility",
+  "dew_pt",
+  "solar_rad",
+  "rainfall",
+  "snowfall")
+
+
+# Create weekday/weekend variable in the full dataset
+
+bike_full <- day_to_weekenday(daily_demand)
+
+# Calculate means for the full dataset
+
+full_means <- sapply(
+  bike_full[numeric_vars],
+  mean
+)
+
+# Calculate standard deviations for the full dataset
+
+full_sds <- sapply(
+  bike_full[numeric_vars],
+  sd
+)
+
+# Standardize the full dataset
+
+bike_full_szd <- standardize_variables(bike_full, bike_full)
+
+```
+
+#Fit best model
+
+```{r}
+# Store the three models
+model_list <- list(
+  "Model 1" = model_1,
+  "Model 2" = model_2,
+  "Model 3" = model_3
+)
+
+# Get formula from the model with the lowest RMSE
+best_formula <- formula(model_list[[best_model_name]])
+
+# Refit using the full dataset
+final_model <- lm(
+  formula = best_formula,
+  data = bike_full_szd
+)
+
+# View full model summary
+summary(final_model)
+
+#Final Coefficients
+final_coefs <- coef(final_model)
+
+# Create a tibble of coefficient estimates
+
+coefs_table <- tibble(
+  term = names(final_coefs),
+  estimate = as.numeric(final_coefs)
+)
+
+# Display coefficient table
+
+knitr::kable(
+  coefs_table,
+  digits = 3,
+  caption = "Estimated Coefficients for the Final Model"
+)
+```
+
+After comparing the predictive performance of our three multiple linear regression models, we selected Model 3 because it produced the smallest test-set RMSE. We then refitted this model using our entire daily dataset, standardizing all numeric predictors using their means and standard deviations calculated from the full dataset.
+
+The coefficient estimates are displayed in the table above. Since the numeric predictors were standardized, their coefficients represent the estimated change in daily bike rentals associated with a one-standard-deviation increase in the predictor, holding other terms constant. For categorical variables, coefficients represent differences relative to their reference categories.
+
+For predictors involved in interactions or quadratic terms, the interpretation is more complicated because their estimated effects depend on the values of other predictors.
+
+Overall, this analysis allowed us to investigate how weather conditions and calendar-related variables are associated with daily bike rental demand, while comparing the predictive performance of increasingly complex linear regression models.
