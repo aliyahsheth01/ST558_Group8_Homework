@@ -129,7 +129,7 @@ It looks like there weren't any rentals when we had a `No` there. To confirm:
 filter(demand_data,`Functioning Day`== "No") |> pull(`Rented Bike Count`)|>sum()
 ```
 
-So, it seems like that column is registering times when someone went to rent a bike, but the bike wasn't functioning (and so nothing was rented).
+The nonfunctioning-hour records all have zero rentals. This indicates that the bike-sharing service was not functioning during those hours; it does not tell us whether anyone attempted to rent a bike.
 
 With that in mind, we'll next finish what we set out to do in this problem: create factors.
 
@@ -415,11 +415,14 @@ bike_train<-day_to_weekenday(bike_train)
 bike_test<-day_to_weekenday(bike_test)
 ```
 
-Next, let's standardize our variables. We'll create a function to standardize each numeric column based on the mean and standard deviation of an inputted training set, enacting the standardizing on the "test" set, but we can just input the training set as the test set to standardize it in the same way.
+Next, we standardize the eight numeric weather predictors using the training-set means and standard deviations. We apply those same training-set values to the test data. The bike rental count remains in its original units so that predictions and RMSE are expressed as rentals per day.
 
 ```{r}
 standardize_variables <- function(df_test, df_train) {
-  col_names <- names(df_train)
+  col_names <- c(
+    "temp", "humidity", "wind_speed", "visibility",
+    "dew_pt", "solar_rad", "rainfall", "snowfall"
+  )
   for (col in col_names) {
     orig_col <- df_train[[col]]
     is_num <- is.numeric(orig_col)
@@ -460,7 +463,15 @@ model_2 <- lm(bike_count ~ seasons*holiday + seasons*temp + temp*rainfall + seas
 Our third and final model includes all previous terms, and adds a quadratic term for temperature and humidity using I() notation.
 
 ```{r}
-model_3 <- lm(bike_count ~ seasons*holiday + seasons*temp + temp*rainfall + seasons + holiday + day_type + rainfall + snowfall + I(temp^2) + I(humidity^2) + wind_speed + visibility + dew_pt + solar_rad, data = bike_train_szd)
+model_3 <- lm(
+  bike_count ~ seasons * holiday +
+    seasons * temp +
+    temp * rainfall +
+    day_type + snowfall + humidity +
+    wind_speed + visibility + dew_pt + solar_rad +
+    I(temp^2) + I(humidity^2),
+  data = bike_train_szd
+)
 ```
 
 ## RMSE Function
@@ -551,7 +562,7 @@ best_rmse
 
 ```
 
-As we can see above, Model 3 has the lowest RMSE out of the 3 models. This suggests that Model 3 provided the best predictive performance of the 3 specifications on our test data. We will therefore select this model and refit using the entire dataset.
+Model 3 had the lowest test-set RMSE, at approximately 3,059 rentals per day, compared with 3,098 for Model 2 and 4,205 for Model 1. Its improvement over Model 2 was small: approximately 39 rentals per day in RMSE. Following the assignment instructions, we select Model 3 and refit it using the full daily dataset.
 
 ## Standardize full data
 
@@ -592,7 +603,7 @@ bike_full_szd <- standardize_variables(bike_full, bike_full)
 
 ```
 
-#Fit best model
+# Fit best model
 
 ```{r}
 # Store the three models
@@ -635,8 +646,8 @@ knitr::kable(
 
 After comparing the predictive performance of our three multiple linear regression models, we selected Model 3 because it produced the smallest test-set RMSE. We then refitted this model using our entire daily dataset, standardizing all numeric predictors using their means and standard deviations calculated from the full dataset.
 
-The coefficient estimates are displayed in the table above. Since the numeric predictors were standardized, their coefficients represent the estimated change in daily bike rentals associated with a one-standard-deviation increase in the predictor, holding other terms constant. For categorical variables, coefficients represent differences relative to their reference categories.
+The final coefficient estimates are displayed above. The response remains in daily rental-count units, while the numeric weather predictors are standardized using full dataset means and standard deviations. For predictors without interaction or quadratic terms, a coefficient represents the estimated change in daily rentals for a one-standard-deviation increase, holding the other predictors fixed.
 
-For predictors involved in interactions or quadratic terms, the interpretation is more complicated because their estimated effects depend on the values of other predictors.
+The reference categories are winter, nonholiday, and weekend. Because the model contains interactions and quadratic terms, some effects depend on the values of other predictors. For example, seasonal differences depend on temperature and holiday status, and the relationship between temperature and rentals depends on season, rainfall, and temperature itself.
 
 Overall, this analysis allowed us to investigate how weather conditions and calendar-related variables are associated with daily bike rental demand, while comparing the predictive performance of increasingly complex linear regression models.
