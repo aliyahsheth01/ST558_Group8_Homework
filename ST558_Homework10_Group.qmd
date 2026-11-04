@@ -8,7 +8,7 @@ editor: visual
 
 # Introduction
 
-In this assignment, we continue analyzing the Seoul Bike Sharing Demand dataset using the data preparation and exploratory analysis from Homework 9. We will use the tidymodels framework to compare multiple linear regression models, a regression tree, bagged trees, and a random forest. We will use cross-validation on the training data to select models and tuning parameters, then compare the selected models on a held-out test set using RMSE and MAE.
+In this assignment, we continue analyzing the Seoul Bike Sharing Demand dataset using the data preparation and exploratory analysis from Homework 9. We will use the tidymodels framework to compare multiple linear regression models, a regression tree, bagged trees, and a random forest. We will use cross-validation on the training data to select models and tuning parameters, then compare the selected models on a held-out test set using root mean squared error (RMSE) and mean absolute error (MAE).
 
 ## Reading the data
 
@@ -439,3 +439,220 @@ bike_recipe_1 <- recipe(
 # View the recipe
 bike_recipe_1
 ```
+
+```{r}
+# Prepare a separate copy of the recipe for inspection
+recipe_1_check <- prep(
+  bike_recipe_1,
+  training = bike_train
+)
+
+# View the transformed training data
+recipe_1_preview <- bake(
+  recipe_1_check,
+  new_data = NULL
+)
+
+glimpse(recipe_1_preview)
+
+# Check that temperature was standardized
+mean(recipe_1_preview$temp)
+sd(recipe_1_preview$temp)
+
+# Confirm the outcome remains unchanged
+identical(
+  recipe_1_preview$bike_count,
+  bike_train$bike_count
+)
+```
+
+## Recipe 2: Main Effects and Interactions
+
+Our second recipe retains all preprocessing steps and predictors from Recipe 1, then adds interactions between season and holiday status, season and standardized temperature, and standardized temperature and rainfall. These terms allow the association of one predictor with rental counts to depend on another predictor.
+
+The training data contain only one summer holiday. When that observation is held out in Fold06, the fitting data contain no summer holidays, making the summer-by-holiday interaction column entirely zero. We therefore remove constant predictors within each fold using step_zv(). For that fold, predictions use the remaining terms without a separate summer-specific holiday adjustment. This handles the unestimable term but does not resolve the limited information available for this combination.
+
+```{r}
+# Extend Recipe 1 with the required interactions
+# Remove predictors that are constant within the fitting data
+bike_recipe_2 <- bike_recipe_1 |>
+  step_interact(
+    terms = ~ starts_with("seasons_"):holiday_Holiday +
+      starts_with("seasons_"):temp +
+      temp:rainfall
+  ) |>
+  step_zv(all_predictors())
+
+# View the recipe
+bike_recipe_2
+
+# Prepare a separate copy for inspection
+recipe_2_check <- prep(
+  bike_recipe_2,
+  training = bike_train
+)
+
+recipe_2_preview <- bake(
+  recipe_2_check,
+  new_data = NULL
+)
+
+# Check dimensions and interaction column names
+dim(recipe_2_preview)
+
+names(recipe_2_preview |>
+        select(contains("_x_")))
+```
+
+## Recipe 3: Interactions and Quadratic Terms
+
+Our third recipe retains all predictors and interactions from Recipe 2 and adds squared terms for standardized temperature and humidity. These terms allow curved relationships with daily bike rental counts. We retain the original linear temperature and humidity terms alongside their squared versions.
+
+```{r}
+# Extend Recipe 2 with squared standardized predictors
+bike_recipe_3 <- bike_recipe_2 |>
+  step_mutate(
+    temp_sq = temp^2,
+    humidity_sq = humidity^2
+  )
+
+# View the recipe
+bike_recipe_3
+
+# Prepare a separate copy for inspection
+recipe_3_check <- prep(
+  bike_recipe_3,
+  training = bike_train
+)
+
+recipe_3_preview <- bake(
+  recipe_3_check,
+  new_data = NULL
+)
+
+# Check dimensions and the new squared terms
+dim(recipe_3_preview)
+
+recipe_3_preview |>
+  select(temp, temp_sq, humidity, humidity_sq) |>
+  head()
+```
+
+## Linear Model Specification and Workflows
+
+We specify a linear regression model using the lm engine. We then create three workflows, each pairing this model specification with a different recipe. This keeps the model-fitting method consistent while allowing us to compare main effects, interactions, and quadratic terms.
+
+```{r}
+# Specify linear regression using the lm engine
+bike_lm_spec <- linear_reg() |>
+  set_engine("lm") |>
+  set_mode("regression")
+
+# Pair the model with Recipe 1
+bike_workflow_1 <- workflow() |>
+  add_recipe(bike_recipe_1) |>
+  add_model(bike_lm_spec)
+
+# Pair the model with Recipe 2
+bike_workflow_2 <- workflow() |>
+  add_recipe(bike_recipe_2) |>
+  add_model(bike_lm_spec)
+
+# Pair the model with Recipe 3
+bike_workflow_3 <- workflow() |>
+  add_recipe(bike_recipe_3) |>
+  add_model(bike_lm_spec)
+
+# Inspect the third workflow
+bike_workflow_3
+```
+
+## Compare Models Using Cross-Validation
+
+We evaluate the three linear regression workflows using the same 10-fold cross-validation splits. Within each split, preprocessing is estimated using only the observations used for fitting and then applied to the held-out fold. We compare average RMSE and MAE across folds and use the lowest average RMSE to select our MLR specification. The separate test dataset is not used for this selection.
+
+```{r}
+# Specify the prediction-error metrics
+bike_metrics <- metric_set(rmse, mae)
+
+# Evaluate Model 1 using the training-set CV folds
+bike_cv_1 <- fit_resamples(
+  bike_workflow_1,
+  resamples = bike_folds,
+  metrics = bike_metrics
+)
+
+# Evaluate Model 2 using the same folds
+bike_cv_2 <- fit_resamples(
+  bike_workflow_2,
+  resamples = bike_folds,
+  metrics = bike_metrics
+)
+
+# Evaluate Model 3 using the same folds
+bike_cv_3 <- fit_resamples(
+  bike_workflow_3,
+  resamples = bike_folds,
+  metrics = bike_metrics
+)
+
+# Combine the average CV results into one table
+bike_cv_results <- bind_rows(
+  collect_metrics(bike_cv_1) |>
+    mutate(model = "Model 1"),
+  collect_metrics(bike_cv_2) |>
+    mutate(model = "Model 2"),
+  collect_metrics(bike_cv_3) |>
+    mutate(model = "Model 3")
+) |>
+  select(model, .metric, mean, n, std_err) |>
+  arrange(.metric, mean)
+
+bike_cv_results
+```
+
+Model 3 had the lowest average cross-validation RMSE, at approximately 3,033 rentals per day, followed by Model 2 at 3,046 and Model 1 at 4,098. Model 3 also had the lowest average MAE. Its mean RMSE was only about 13 rentals per day lower than Model 2’s. We select Model 3 using our stated lowest-mean-RMSE criterion, without claiming that this small difference establishes a meaningful performance advantage.
+
+## Fit and Evaluate the Selected MLR Model
+
+We now fit the selected Model 3 workflow using all 263 training observations and evaluate its predictions on the 90 test observations. Preprocessing is estimated from the full training set and applied to the test set. We report test RMSE and MAE for later comparison with the selected tree-based models.
+
+```{r}
+# Keep the workflow selected using CV RMSE
+bike_best_mlr_workflow <- bike_workflow_3
+
+# Fit on all training data and evaluate on the test data
+bike_mlr_last_fit <- last_fit(
+  bike_best_mlr_workflow,
+  split = bike_split,
+  metrics = bike_metrics
+)
+
+# Display test-set RMSE and MAE
+bike_mlr_test_metrics <- collect_metrics(bike_mlr_last_fit)
+
+bike_mlr_test_metrics
+```
+
+The selected MLR model achieved a test-set RMSE of approximately 3,059 rentals per day and an MAE of approximately 2,132 rentals per day. Thus, the average absolute prediction error across the 90 test days was about 2,132 rentals. RMSE was larger because it gives greater weight to large errors. We will retain these results for comparison with the selected tree-based models.
+
+## Selected MLR Coefficients
+
+```{r}
+# Extract the workflow fitted on all 263 training days
+bike_mlr_fitted_workflow <- extract_workflow(bike_mlr_last_fit)
+
+# Extract the fitted regression and its coefficient table
+bike_mlr_coefficients <- bike_mlr_fitted_workflow |>
+  extract_fit_parsnip() |>
+  tidy()
+
+# Display all coefficients in the rendered document
+knitr::kable(
+  bike_mlr_coefficients,
+  digits = c(0, 3, 3, 3, 6),
+  caption = "Selected MLR Model: Training-Set Coefficients"
+)
+```
+
+These coefficients describe the selected MLR model fitted using all 263 training days. Numeric weather predictors were standardized using the training data, while rental counts remain in their original units. The reference categories are winter, nonholiday, and weekday. Holding the other predictors constant, weekends are associated with approximately 2,425 fewer daily rentals than weekdays. Because the model includes interactions and squared terms, temperature, humidity, season, and holiday coefficients must be interpreted together with their related terms. These associations do not establish causation.
