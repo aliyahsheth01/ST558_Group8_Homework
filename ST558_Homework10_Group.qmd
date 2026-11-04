@@ -57,7 +57,7 @@ Next up, I'll check all the columns and basic summary stats to make sure everyth
 bike_demand
 ```
 
-Here, we see the following columns with character data: `Date`, `Seasons`, `Holiday`, and `Functioning day` and the following columns featuring numeric (double) data: `Rented Bike Count`, `Hour`, `Temperature(°C)`, `Humidity(%)`, `Wind speed (m/s)`, `Visibility (10m)`, `Dew point temperature(°C)`, `Solar Radiation (MJ/m2)`, `Rainfall(mm)`, and `Snowfall (cm)`. Of these, one might argue that `Hour` needs to should be converted because it's a time. However, it's useful to leave it as is because it's measuring the time that's elapsed since the beginning of the day.
+Here, we see the following columns with character data: `Date`, `Seasons`, `Holiday`, and `Functioning day` and the following columns featuring numeric (double) data: `Rented Bike Count`, `Hour`, `Temperature(°C)`, `Humidity(%)`, `Wind speed (m/s)`, `Visibility (10m)`, `Dew point temperature(°C)`, `Solar Radiation (MJ/m2)`, `Rainfall(mm)`, and `Snowfall (cm)`. Of these, one might argue that `Hour` should be converted because it's a time. However, it's useful to leave it as is because it's measuring the time that's elapsed since the beginning of the day.
 
 To make sure the data themselves are reasonable, a good place to start is basic summary statistics:
 
@@ -76,7 +76,7 @@ Next up, we'll use the `lubridate` package to convert our first column to an act
 **Note** I've changed the name of the tibble at this point, so we can call the unchanged (`bike_demand`) tibble later, if necessary.
 
 ```{r}
-# Turn first columm into date data type
+# Turn first column into date data type
 
 demand_data<-bike_demand|>
   mutate(Date = dmy(Date))
@@ -540,7 +540,7 @@ recipe_3_preview |>
 
 ## Linear Model Specification and Workflows
 
-We specify a linear regression model using the lm engine. We then create three workflows, each pairing this model specification with a different recipe. This keeps the model-fitting method consistent while allowing us to compare main effects, interactions, and quadratic terms.
+We specify a linear regression model using the `lm` engine. We then create three workflows, each pairing this model specification with a different recipe. This keeps the model-fitting method consistent while allowing us to compare main effects, interactions, and quadratic terms.
 
 ```{r}
 # Specify linear regression using the lm engine
@@ -664,3 +664,87 @@ Next, we will fit a regression tree, bagged trees, and a random forest using Rec
 ## Regression Tree
 
 A regression tree predicts daily bike rental counts by dividing observations into groups based on predictor values. This approach can capture nonlinear relationships and interactions through its splits. We will use cross-validation to tune the tree’s complexity, balancing flexibility with its ability to predict observations not used for fitting.
+
+Before digging into fitting the model, we'll note that these models will be tuned on the training data. So, our next step will be to identify which hyperparameters we want to tune (`cost_complexity` and `tree_depth`).
+
+```{r}
+#Identify hyperparameters
+rt_tune_spec <- decision_tree(
+  cost_complexity = tune(),
+  tree_depth = tune()
+) |>
+  set_engine("rpart") |>
+  set_mode("regression")
+  
+```
+
+For the Regression Tree model, we move onto noting that we will not need to create a recipe for our data set. We will, though, need to set up our `tree_grid` for the purposes of tuning. 
+
+```{r}
+rt_tree_grid <- grid_regular(cost_complexity(),
+                          tree_depth(),
+                          levels = 5)
+```
+
+Next up, we'll setup a workflow to handle our model specification and preprocessor.
+
+```{r}
+#set seed for reproducibility
+set.seed(558)
+
+#Define workflow
+rt_wf <- workflow() |>
+  add_model(rt_tune_spec) |>
+  add_formula(bike_count ~ .)
+
+#Set up resamples
+rt_res <- rt_wf |>
+  tune_grid(
+    resamples = bike_folds,
+    grid = rt_tree_grid
+  )
+
+#View results
+rt_res
+
+
+```
+
+Now that we have our results, we can look at them more closely and select the best one. 
+
+```{r}
+# Collect metrics
+rt_res |> collect_metrics()
+```
+
+Lots of numbers there, so we'll use `show_best` to get the top 5: 
+
+```{r}
+rt_res |>
+  show_best(metric = "rmse")
+```
+
+Looking these over, I can see that the 5 best trees all feature a similar RMSE but we can select the bestest one: 
+
+```{r}
+#Pick the best tree
+best_rt <- rt_res |>
+  select_best(metric = "rmse")
+
+best_rt
+```
+
+Finally, to finish up with this model, we'll fit it to the entire training set with a finalized workflow. 
+
+```{r}
+#create final workflow
+final_rt_wf <- rt_wf |>
+  finalize_workflow(best_rt)
+
+#Fit final model to training data
+final_rt_fit <- final_rt_wf |>
+  last_fit(bike_split)
+
+final_rt_fit |> collect_metrics()
+```
+
