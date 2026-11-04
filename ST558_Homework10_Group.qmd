@@ -656,3 +656,11 @@ knitr::kable(
 ```
 
 These coefficients describe the selected MLR model fitted using all 263 training days. Numeric weather predictors were standardized using the training data, while rental counts remain in their original units. The reference categories are winter, nonholiday, and weekday. Holding the other predictors constant, weekends are associated with approximately 2,425 fewer daily rentals than weekdays. Because the model includes interactions and squared terms, temperature, humidity, season, and holiday coefficients must be interpreted together with their related terms. These associations do not establish causation.
+
+# Fitting Other Models
+
+Next, we will fit a regression tree, bagged trees, and a random forest using Recipe 1 from the MLR section. We will tune each model using the same 10-fold cross-validation splits from the training data and select tuning parameters based on the lowest average CV RMSE. Each selected model will then be fitted using the entire training set and evaluated on the held-out test set. We will compare their test RMSE and MAE with the selected MLR model.
+
+## Regression Tree
+
+A regression tree predicts daily bike rental counts by dividing observations into groups based on predictor values. This approach can capture nonlinear relationships and interactions through its splits. We will use cross-validation to tune the tree’s complexity, balancing flexibility with its ability to predict observations not used for fitting.
