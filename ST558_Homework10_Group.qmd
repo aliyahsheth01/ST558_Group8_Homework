@@ -678,7 +678,7 @@ rt_tune_spec <- decision_tree(
   
 ```
 
-For the Regression Tree model, we move on to set up our `tree_grid` for the purposes of tuning. 
+For the Regression Tree model, we move on to set up our `tree_grid` for the purposes of tuning.
 
 ```{r}
 rt_tree_grid <- grid_regular(cost_complexity(),
@@ -710,21 +710,21 @@ rt_res
 
 ```
 
-Now that we have our results, we can look at them more closely and select the best one. 
+Now that we have our results, we can look at them more closely and select the best one.
 
 ```{r}
 # Collect metrics
 rt_res |> collect_metrics()
 ```
 
-Lots of numbers there, so we'll use `show_best` to get the top 5: 
+Lots of numbers there, so we'll use `show_best` to get the top 5:
 
 ```{r}
 rt_res |>
   show_best(metric = "rmse")
 ```
 
-Looking these over, I can see that the 5 best trees all feature a similar RMSE but we can select one of the two bestest ones: 
+Looking these over, I can see that the 5 best trees all feature a similar RMSE but we can select one of the two bestest ones:
 
 ```{r}
 #Pick the best tree
@@ -734,7 +734,7 @@ best_rt <- rt_res |>
 best_rt
 ```
 
-Finally, to finish up with this model, we'll fit it to the entire training set with a finalized workflow. 
+Finally, to finish up with this model, we'll fit it to the entire training set with a finalized workflow.
 
 ```{r}
 #create final workflow
@@ -747,7 +747,6 @@ final_rt_fit <- final_rt_wf |>
 
 final_rt_fit |> collect_metrics()
 ```
-
 
 ## Bagged Regression
 
@@ -797,7 +796,6 @@ bt_res |>
 
 Looking at the five best ones, we see that there's more spread among the 5 best this time, so pulling out the very best one will help a lot. We'll do that, and conduct our final fit next.
 
-
 ```{r}
 #Pick the best tree
 best_bt <- bt_res |>
@@ -814,11 +812,9 @@ final_bt_fit <- final_bt_wf |>
 final_bt_fit |> collect_metrics()
 ```
 
-
 ## Random Forest
 
-To finish off this section, we'll create a Random Forest model. This will take a more adjustment than the bagged tree model and, to begin, we'll establish how many cores our computer's processor has, to speed the process: 
-
+To finish off this section, we'll create a Random Forest model. This will take a more adjustment than the bagged tree model and, to begin, we'll establish how many cores our computer's processor has, to speed the process:
 
 ```{r}
 #Find out how many cores
@@ -826,7 +822,7 @@ cores <- parallel::detectCores()
 cores
 ```
 
-Next, we'll set up our random forest model: 
+Next, we'll set up our random forest model:
 
 ```{r}
 rf_mod <- 
@@ -835,9 +831,10 @@ rf_mod <-
   set_mode("regression")
 ```
 
-Now we can put our workflow together and train and tune our model. 
+Now we can put our workflow together and train and tune our model.
 
 ```{r}
+library(ranger)
 rf_wf <- 
   workflow() |> 
   add_model(rf_mod) |> 
@@ -853,13 +850,15 @@ rf_res <-
 
 rf_res |> collect_metrics()
 ```
-As before, let's take a look at the five best RMSE's: 
+
+As before, let's take a look at the five best RMSE's:
+
 ```{r}
 bt_res |>
   show_best(metric = "rmse")
 ```
 
-Here, there's a best one that really stands out, so let's use that. 
+Here, there's a best one that really stands out, so let's use that.
 
 ```{r}
 #Pick the best model
@@ -878,3 +877,82 @@ final_rf_fit |> collect_metrics()
 ```
 
 The best one yet!
+
+# Compare on the Test Sets
+
+Now that we have our best models for each model family, it's time to compare them all. Since we're using RMSE and MAE as our metrics, we'll need to set the chosen metrics to those two before doing our last fit evaluations for each of the best models. Then, we can combine all of our metrics together into one table for a final comparison.
+
+```{r}
+# set the metrics to rmse and mae for comparison
+bike_metrics <- metric_set(rmse, mae)
+
+# extract the best model metrics from each of the model families
+best_MLR_test <- bike_best_mlr_workflow |>
+  last_fit(bike_split, metrics = bike_metrics)
+best_rt_test <- final_rt_wf |>
+  last_fit(bike_split, metrics = bike_metrics)
+best_bt_test <- final_bt_wf |>
+  last_fit(bike_split, metrics = bike_metrics)
+best_rf_test <- final_rf_wf |>
+  last_fit(bike_split, metrics = bike_metrics)
+# combine all of the model metrics into one table, labeled for clarity
+best_fits <- bind_rows(
+  "MLR"           = collect_metrics(best_MLR_test),
+  "Decision Tree" = collect_metrics(best_rt_test),
+  "Bagged Tree"  = collect_metrics(best_bt_test),
+  "Random Forest" = collect_metrics(best_rf_test),
+  .id = "model"
+)
+best_fits
+```
+
+Based on this, it seems that our Random Forest model is indeed the best fitted model, in terms of both RMSE and MAE.
+
+Next up, we'll do a final model summary for each of the best fitted models.
+
+## MLR Model Final Summary:
+
+To summarize the MLR model, we'll report the final coefficient table.
+
+```{r}
+# Extract the workflow fitted on all 263 training days
+MLR_final_model <- extract_workflow(best_MLR_test)
+
+# Extract the fitted regression and its coefficient table
+bike_mlr_coefficients <- MLR_final_model |>
+  extract_fit_parsnip() |>
+  tidy()
+
+# Display all coefficients in the rendered document
+knitr::kable(
+  bike_mlr_coefficients,
+  digits = c(0, 3, 3, 3, 6),
+  caption = "Selected MLR Model: Training-Set Coefficients"
+)
+```
+
+## Regression Tree Model Final Summary:
+
+For the regression tree summary, we'll give a plot of the final fit.
+
+```{r}
+rt_final_model <- extract_workflow(best_rt_test) 
+rt_final_model |>
+  extract_fit_engine() |>
+  rpart.plot::rpart.plot(roundint = FALSE)
+```
+
+## Bagged Tree Final Summary:
+
+For the bagged tree model's final summary, we'll create a variable importance plot.
+
+```{r}
+bt_final_model <- extract_fit_engine(best_bt_test)
+bt_final_model$imp |>
+  mutate(term = factor(term, levels = term)) |>
+  ggplot(aes(x = term, y = value)) +
+  geom_bar(stat ="identity") +
+  coord_flip()
+```
+
+## 
