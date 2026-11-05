@@ -678,7 +678,7 @@ rt_tune_spec <- decision_tree(
   
 ```
 
-For the Regression Tree model, we move onto noting that we will not need to create a recipe for our data set. We will, though, need to set up our `tree_grid` for the purposes of tuning. 
+For the Regression Tree model, we move on to set up our `tree_grid` for the purposes of tuning. 
 
 ```{r}
 rt_tree_grid <- grid_regular(cost_complexity(),
@@ -695,7 +695,7 @@ set.seed(558)
 #Define workflow
 rt_wf <- workflow() |>
   add_model(rt_tune_spec) |>
-  add_formula(bike_count ~ .)
+  add_recipe(bike_recipe_1)
 
 #Set up resamples
 rt_res <- rt_wf |>
@@ -724,7 +724,7 @@ rt_res |>
   show_best(metric = "rmse")
 ```
 
-Looking these over, I can see that the 5 best trees all feature a similar RMSE but we can select the bestest one: 
+Looking these over, I can see that the 5 best trees all feature a similar RMSE but we can select one of the two bestest ones: 
 
 ```{r}
 #Pick the best tree
@@ -748,3 +748,133 @@ final_rt_fit <- final_rt_wf |>
 final_rt_fit |> collect_metrics()
 ```
 
+
+## Bagged Regression
+
+Now that we've fit and tuned the Regression Tree model, we're ready to move onto the Bagged Tree model. We'll largely follow what we did above here, and re-use `tune_spec` as defined above. First, though, we need load the `baguette` library. Otherwise, we'll be able to re-purpose much of what we did above with the new model (with the addition of the number of bootstrap replication `times`). Note that I initially tried running the duplication 200 times but it took a long time to run, so I dropped that down for the tuning process.
+
+```{r}
+# Load library
+library(baguette)
+
+#Identify hyperparameters
+bt_tune_spec <- bag_tree(
+  cost_complexity = tune(),
+  tree_depth = tune()
+) |>
+  set_engine("rpart", times = 50) |>
+  set_mode("regression")
+
+bt_tree_grid <- grid_regular(cost_complexity(),
+                          tree_depth(),
+                          levels = 5)
+
+#set seed for reproducibility
+set.seed(558)
+
+#Define workflow
+bt_wf <- workflow() |>
+  add_model(bt_tune_spec) |>
+  add_recipe(bike_recipe_1)
+
+#Set up resamples
+bt_res <- bt_wf |>
+  tune_grid(
+    resamples = bike_folds,
+    grid = bt_tree_grid
+  )
+
+# Collect metrics
+bt_res |> collect_metrics()
+```
+
+I paused the code here to view the results. It looks like there is quite a range of different RMSE's here, so pulling out the best ones will be illustrative.
+
+```{r}
+bt_res |>
+  show_best(metric = "rmse")
+```
+
+Looking at the five best ones, we see that there's more spread among the 5 best this time, so pulling out the very best one will help a lot. We'll do that, and conduct our final fit next.
+
+
+```{r}
+#Pick the best tree
+best_bt <- bt_res |>
+  select_best(metric = "rmse")
+
+#create final workflow
+final_bt_wf <- bt_wf |>
+  finalize_workflow(best_bt)
+
+#Fit final model to training data
+final_bt_fit <- final_bt_wf |>
+  last_fit(bike_split)
+
+final_bt_fit |> collect_metrics()
+```
+
+
+## Random Forest
+
+To finish off this section, we'll create a Random Forest model. This will take a more adjustment than the bagged tree model and, to begin, we'll establish how many cores our computer's processor has, to speed the process: 
+
+
+```{r}
+#Find out how many cores
+cores <- parallel::detectCores()
+cores
+```
+
+Next, we'll set up our random forest model: 
+
+```{r}
+rf_mod <- 
+  rand_forest(mtry = tune(), min_n = tune(), trees = 1000) |> 
+  set_engine("ranger", num.threads = cores) |> 
+  set_mode("regression")
+```
+
+Now we can put our workflow together and train and tune our model. 
+
+```{r}
+rf_wf <- 
+  workflow() |> 
+  add_model(rf_mod) |> 
+  add_recipe(bike_recipe_1)
+
+set.seed(558)
+rf_res <- 
+  rf_wf |> 
+  tune_grid(bike_folds,
+            grid = 25,
+            control = control_grid(save_pred = TRUE),
+            metrics = bike_metrics)
+
+rf_res |> collect_metrics()
+```
+As before, let's take a look at the five best RMSE's: 
+```{r}
+bt_res |>
+  show_best(metric = "rmse")
+```
+
+Here, there's a best one that really stands out, so let's use that. 
+
+```{r}
+#Pick the best model
+best_rf <- rf_res |>
+  select_best(metric = "rmse")
+
+#create final workflow
+final_rf_wf <- rf_wf |>
+  finalize_workflow(best_rf)
+
+#Fit final model to training data
+final_rf_fit <- final_rf_wf |>
+  last_fit(bike_split)
+
+final_rf_fit |> collect_metrics()
+```
+
+The best one yet!
