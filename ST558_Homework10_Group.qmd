@@ -12,7 +12,7 @@ In this assignment, we continue analyzing the Seoul Bike Sharing Demand dataset 
 
 ## Reading the data
 
-The first thing we'll do is create a tibble out of provided the data.
+The first thing we'll do is read the provided data into a tibble.
 
 ```{r}
 #| warning: false
@@ -180,7 +180,7 @@ demand_data
 
 ### 6.
 
-For this part, we'll create summary tables. To being, we'll do a basic summary across the numeric variables. Recall that, earlier, we noticed that the tibble records whether the bike was functioning. So, in the summary below, I'm going to subset on times when the bike was functioning.
+For this part, we'll create summary tables. To begin, we'll do a basic summary across the numeric variables. Recall that, earlier, we noticed that the tibble records whether the bike was functioning. So, in the summary below, I'm going to subset on times when the bike was functioning.
 
 ```{r}
 # Five +1 number summaries across numeric data
@@ -724,7 +724,7 @@ rt_res |>
   show_best(metric = "rmse")
 ```
 
-Looking these over, I can see that the 5 best trees all feature a similar RMSE but we can select one of the two bestest ones:
+Looking these over, I can see that the 5 best trees all feature a similar RMSE but we can select one of the two models with the lowest mean CV RMSE:
 
 ```{r}
 #Pick the best tree
@@ -750,7 +750,7 @@ final_rt_fit |> collect_metrics()
 
 ## Bagged Regression
 
-Now that we've fit and tuned the Regression Tree model, we're ready to move onto the Bagged Tree model. We'll largely follow what we did above here, and re-use `tune_spec` as defined above. First, though, we need load the `baguette` library. Otherwise, we'll be able to re-purpose much of what we did above with the new model (with the addition of the number of bootstrap replication `times`). Note that I initially tried running the duplication 200 times but it took a long time to run, so I dropped that down for the tuning process.
+We next fit a bagged regression-tree model using Recipe 1 and the same training-set cross-validation folds. Bagging averages predictions from multiple trees fitted to bootstrap samples of the fitting data. We load the baguette package and define a new model specification, bt_tune_spec. We tune cost_complexity and tree_depth, while fixing the number of trees at 50 to limit computation time.
 
 ```{r}
 # Load library
@@ -814,7 +814,7 @@ final_bt_fit |> collect_metrics()
 
 ## Random Forest
 
-To finish off this section, we'll create a Random Forest model. This will take a more adjustment than the bagged tree model and, to begin, we'll establish how many cores our computer's processor has, to speed the process:
+Finally, we fit a random forest model. We begin by identifying the number of processor cores available so that we can use multiple threads when fitting the forest.
 
 ```{r}
 #Find out how many cores
@@ -827,7 +827,7 @@ Next, we'll set up our random forest model:
 ```{r}
 rf_mod <- 
   rand_forest(mtry = tune(), min_n = tune(), trees = 1000) |> 
-  set_engine("ranger", num.threads = cores) |> 
+  set_engine("ranger", num.threads = cores, importance = "permutation") |> 
   set_mode("regression")
 ```
 
@@ -854,11 +854,11 @@ rf_res |> collect_metrics()
 As before, let's take a look at the five best RMSE's:
 
 ```{r}
-bt_res |>
+rf_res |>
   show_best(metric = "rmse")
 ```
 
-Here, there's a best one that really stands out, so let's use that.
+Among the candidates evaluated, the lowest mean cross-validation RMSE was approximately 2,984 rentals per day, using mtry = 9 and min_n = 2. The next-lowest RMSE was approximately 2,990, indicating similar cross-validation performance. We select the first configuration using our lowest-mean-RMSE criterion.
 
 ```{r}
 #Pick the best model
@@ -881,6 +881,8 @@ The best one yet!
 # Compare on the Test Sets
 
 Now that we have our best models for each model family, it's time to compare them all. Since we're using RMSE and MAE as our metrics, we'll need to set the chosen metrics to those two before doing our last fit evaluations for each of the best models. Then, we can combine all of our metrics together into one table for a final comparison.
+
+The model-specific sections above report the initial training/test evaluations. For the combined comparison below, we fit the selected workflows again using the same training/test split and report both RMSE and MAE. Bagged trees and random forests use randomness, so repeated fits can produce slightly different predictions and error measures even when their tuning parameters remain unchanged. We use the results in this combined table for the final comparison and the corresponding fitted objects for the model summaries.
 
 ```{r}
 # set the metrics to rmse and mae for comparison
@@ -942,6 +944,8 @@ rt_final_model |>
   rpart.plot::rpart.plot(roundint = FALSE)
 ```
 
+The tree’s numeric weather predictors were standardized using the training data. Their split thresholds therefore represent standardized values rather than original measurement units: zero corresponds to the training mean, while positive and negative values indicate observations above and below that mean. Seasonal dummy variables use zero/one coding. The predicted rental counts shown in the nodes remain in rentals per day.
+
 ## Bagged Tree Final Summary:
 
 For the bagged tree model's final summary, we'll create a variable importance plot.
@@ -951,8 +955,13 @@ bt_final_model <- extract_fit_engine(best_bt_test)
 bt_final_model$imp |>
   mutate(term = factor(term, levels = term)) |>
   ggplot(aes(x = term, y = value)) +
-  geom_bar(stat ="identity") +
-  coord_flip()
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  labs(
+    title = "Bagged Tree Variable Importance",
+    x = "Predictor",
+    y = "Variable Importance"
+  )
 ```
 
 ## 
