@@ -951,17 +951,53 @@ The tree’s numeric weather predictors were standardized using the training dat
 For the bagged tree model's final summary, we'll create a variable importance plot.
 
 ```{r}
-bt_final_model <- extract_fit_engine(best_bt_test)
-bt_final_model$imp |>
-  mutate(term = factor(term, levels = term)) |>
+bt_final_model <- best_bt_test |>
+  extract_workflow() |>
+  extract_fit_engine()
+
+# Get variable importance measures
+bt_importance <- baguette::var_imp(bt_final_model)
+
+# Plot variable importance
+bt_importance |>
+  mutate(term = reorder(term, value)) |>
   ggplot(aes(x = term, y = value)) +
-  geom_bar(stat = "identity") +
+  geom_col() +
   coord_flip() +
   labs(
     title = "Bagged Tree Variable Importance",
     x = "Predictor",
     y = "Variable Importance"
-  )
+  ) +
+  theme_minimal()
 ```
 
-## 
+## Random Forest Variable Importance Plot
+
+```{r}
+
+rf_final_model <- best_rf_test |>
+  extract_workflow() |>
+  extract_fit_engine()
+
+# Extract permutation variable importance
+rf_importance <- tibble(
+  term = names(rf_final_model$variable.importance),
+  value = as.numeric(rf_final_model$variable.importance)
+)
+
+# Create the variable importance plot
+rf_importance |>
+  mutate(term = reorder(term, value)) |>
+  ggplot(aes(x = term, y = value)) +
+  geom_col() +
+  coord_flip() +
+  labs(
+    title = "Random Forest Variable Importance",
+    x = "Predictor",
+    y = "Permutation Importance"
+  ) +
+  theme_minimal()
+
+```
+
