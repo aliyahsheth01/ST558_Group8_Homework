@@ -1001,3 +1001,59 @@ rf_importance |>
 
 ```
 
+The random forest variable importance plot identifies the predictors that contribute the most to the model's predictive performance. We use permutation importance, which measures how much the model's prediction error increases when a predictor's values are randomly shuffled.
+
+## Fit the Overall Best Model
+
+```{r}
+
+# Rank models based on test RMSE
+model_rankings <- best_fits |>
+  filter(.metric == "rmse") |>
+  arrange(.estimate) |>
+  mutate(rank = row_number()) |>
+  select(rank, model, test_rmse = .estimate)
+
+# Display results
+knitr::kable(
+  model_rankings,
+  digits = 2,
+  caption = "Final Model Comparison Based on Test RMSE"
+)
+
+# Identify the best model
+best_model_name <- model_rankings$model[1]
+
+best_model_name
+
+```
+
+We compare the 4 models using their RMSE values on the held-out test set. Because lower RMSE indictes better predictive performance, we select the model with the lowest RMSE as our overall best model. 
+
+
+```{r}
+
+# Store finalized workflows for all four model families
+candidate_workflows <- list(
+  "MLR" = bike_best_mlr_workflow,
+  "Decision Tree" = final_rt_wf,
+  "Bagged Tree" = final_bt_wf,
+  "Random Forest" = final_rf_wf
+)
+
+# Select the best workflow
+best_overall_workflow <-
+  candidate_workflows[[best_model_name]]
+
+# Fit the selected model using the entire dataset
+set.seed(558)
+
+best_overall_fit <- best_overall_workflow |>
+  fit(data = daily_demand)
+
+# Display the final fitted model
+best_overall_fit
+
+```
+
+After we identified our best model, we refit that model using the entire dataset. This means the final model will use all data and not just the training data. The result can be used to predict the bike rental demand for new observations. 
