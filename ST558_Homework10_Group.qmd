@@ -858,7 +858,7 @@ rf_res |>
   show_best(metric = "rmse")
 ```
 
-Among the candidates evaluated, the lowest mean cross-validation RMSE was approximately 2,984 rentals per day, using mtry = 9 and min_n = 2. The next-lowest RMSE was approximately 2,990, indicating similar cross-validation performance. We select the first configuration using our lowest-mean-RMSE criterion.
+Among the candidates evaluated, the lowest mean cross-validation RMSE was approximately 2,982 rentals per day, using mtry = 9 and min_n = 2. The next-lowest RMSE was approximately 2,984, indicating similar cross-validation performance. We select the first configuration using our lowest-mean-RMSE criterion.
 
 ```{r}
 #Pick the best model
@@ -1028,7 +1028,7 @@ best_model_name
 
 ```
 
-We compare the 4 models using their RMSE values on the held-out test set. Because lower RMSE indictes better predictive performance, we select the model with the lowest RMSE as our overall best model. 
+We compare the 4 models using their RMSE values on the held-out test set. Because lower RMSE indicates better predictive performance, we select the model with the lowest RMSE as our overall best model. 
 
 
 ```{r}
